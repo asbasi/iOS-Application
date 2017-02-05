@@ -22,12 +22,16 @@ class CourseTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        let course1 = Course(name: "ECS 132A", instructor: "Rob", units: 4, quarter: "fall 2017")
+//        let course1 = Course(name: "ECS 132A", instructor: "Rob", units: 4, quarter: "fall 2017")
 
         
-        let course2 = Course(name: "ECS 154A", instructor: "instructor", units: 4, quarter: "fall 2017")
+//        let course2 = Course(name: "ECS 154A", instructor: "instructor", units: 4, quarter: "fall 2017")
         
         
+        let course1 = Course()
+        let course2 = Course()
+        course1.name = "hi"
+        course2.name = "bye"
         courses.append(course1)
         courses.append(course2)
     }

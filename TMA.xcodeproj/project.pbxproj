@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00416AD51E47E5DB00DA733D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00416AD41E47E5DB00DA733D /* Course.swift */; };
+		005709A81E47EFB1008D2D96 /* StudyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709A71E47EFB1008D2D96 /* StudyEvent.swift */; };
+		005709AA1E47EFF2008D2D96 /* Deadline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709A91E47EFF2008D2D96 /* Deadline.swift */; };
 		009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E131E42D37D00260378 /* AppDelegate.swift */; };
 		009C4E1B1E42D37D00260378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E191E42D37D00260378 /* Main.storyboard */; };
 		009C4E1D1E42D37D00260378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1C1E42D37D00260378 /* Assets.xcassets */; };
 		009C4E201E42D37D00260378 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */; };
 		009C4E2C1E42DD2800260378 /* CourseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */; };
-		009C4E2E1E42E27900260378 /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E2D1E42E27900260378 /* Course.swift */; };
 		009C4E321E42E3E300260378 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E311E42E3E300260378 /* CourseDetailViewController.swift */; };
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF402E1E47DDF70095B2FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402D1E47DDF70095B2FD /* Log.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
+		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00416AD41E47E5DB00DA733D /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
+		005709A71E47EFB1008D2D96 /* StudyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyEvent.swift; sourceTree = "<group>"; };
+		005709A91E47EFF2008D2D96 /* Deadline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deadline.swift; sourceTree = "<group>"; };
 		009C4E101E42D37D00260378 /* TMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		009C4E131E42D37D00260378 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		009C4E1A1E42D37D00260378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -27,11 +33,13 @@
 		009C4E1F1E42D37D00260378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		009C4E211E42D37D00260378 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseTableViewController.swift; path = ../CourseTableViewController.swift; sourceTree = "<group>"; };
-		009C4E2D1E42E27900260378 /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		009C4E311E42E3E300260378 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseDetailViewController.swift; path = ../CourseDetailViewController.swift; sourceTree = "<group>"; };
 		00DF402B1E47DC930095B2FD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
+		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
+		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +59,8 @@
 			children = (
 				009C4E121E42D37D00260378 /* TMA */,
 				009C4E111E42D37D00260378 /* Products */,
+				391E7A6DF7CB421A2A9EAF14 /* Pods */,
+				283FB7494105331B3EFB97C9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,19 +75,46 @@
 		009C4E121E42D37D00260378 /* TMA */ = {
 			isa = PBXGroup;
 			children = (
+				00AA39051E47EA0800D819DD /* Models */,
 				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
 				009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */,
 				009C4E131E42D37D00260378 /* AppDelegate.swift */,
+				00DF402F1E47E0700095B2FD /* Helpers.swift */,
 				009C4E191E42D37D00260378 /* Main.storyboard */,
-				009C4E2D1E42E27900260378 /* Course.swift */,
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
 				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
 				009C4E211E42D37D00260378 /* Info.plist */,
-				00DF402B1E47DC930095B2FD /* Event.swift */,
-				00DF402D1E47DDF70095B2FD /* Log.swift */,
-				00DF402F1E47E0700095B2FD /* Helpers.swift */,
 			);
 			path = TMA;
+			sourceTree = "<group>";
+		};
+		00AA39051E47EA0800D819DD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				00416AD41E47E5DB00DA733D /* Course.swift */,
+				00DF402B1E47DC930095B2FD /* Event.swift */,
+				00DF402D1E47DDF70095B2FD /* Log.swift */,
+				005709A71E47EFB1008D2D96 /* StudyEvent.swift */,
+				005709A91E47EFF2008D2D96 /* Deadline.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		283FB7494105331B3EFB97C9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9980388F43AECB0582C67FE /* Pods_TMA.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		391E7A6DF7CB421A2A9EAF14 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */,
+				B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,9 +124,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 009C4E241E42D37D00260378 /* Build configuration list for PBXNativeTarget "TMA" */;
 			buildPhases = (
+				832EF8610BE79042EE1E0ED9 /* [CP] Check Pods Manifest.lock */,
 				009C4E0C1E42D37D00260378 /* Sources */,
 				009C4E0D1E42D37D00260378 /* Frameworks */,
 				009C4E0E1E42D37D00260378 /* Resources */,
+				25148FF7246EA2DE9545DDAF /* [CP] Embed Pods Frameworks */,
+				7C6EB7E08A24550BA15C43AF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -146,17 +187,67 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		25148FF7246EA2DE9545DDAF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TMA/Pods-TMA-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C6EB7E08A24550BA15C43AF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TMA/Pods-TMA-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		832EF8610BE79042EE1E0ED9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		009C4E0C1E42D37D00260378 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */,
+				00416AD51E47E5DB00DA733D /* Course.swift in Sources */,
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
-				009C4E2E1E42E27900260378 /* Course.swift in Sources */,
 				00DF402E1E47DDF70095B2FD /* Log.swift in Sources */,
 				009C4E2C1E42DD2800260378 /* CourseTableViewController.swift in Sources */,
 				009C4E321E42E3E300260378 /* CourseDetailViewController.swift in Sources */,
+				005709A81E47EFB1008D2D96 /* StudyEvent.swift in Sources */,
+				005709AA1E47EFF2008D2D96 /* Deadline.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +367,7 @@
 		};
 		009C4E251E42D37D00260378 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TMA/Info.plist;
@@ -288,6 +380,7 @@
 		};
 		009C4E261E42D37D00260378 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TMA/Info.plist;

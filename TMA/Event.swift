@@ -7,13 +7,17 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Event {
-    var checked: Bool!
-    var title: String!
+class Event: Object {
+    dynamic var checked = false
+    dynamic var title: String!
+    dynamic var date = NSDate()
     
-    init(title: String) {
-        self.checked=false
-        self.title=title
-    }
+//    init(title: String, date: NSDate) {
+//        super.init()
+//        self.title=title
+//        self.date=date
+//    }
+    
 }
