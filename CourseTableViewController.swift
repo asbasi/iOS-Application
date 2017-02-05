@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import RealmSwift
 
 class CourseTableViewController: UITableViewController {
 
-    var courses: [Course] = []
+    let realm = try! Realm()
+
     
     
     override func viewDidLoad() {
@@ -21,19 +23,23 @@ class CourseTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-//        let course1 = Course(name: "ECS 132A", instructor: "Rob", units: 4, quarter: "fall 2017")
 
-        
-//        let course2 = Course(name: "ECS 154A", instructor: "instructor", units: 4, quarter: "fall 2017")
-        
+        let courses = self.realm.objects(Course.self)
         
         let course1 = Course()
         let course2 = Course()
         course1.name = "hi"
         course2.name = "bye"
-        courses.append(course1)
-        courses.append(course2)
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(course1)
+            print(courses.count)
+            realm.add(course2)
+        }
+        
+        
+        print(courses.count)
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,13 +56,15 @@ class CourseTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        let courses = self.realm.objects(Course.self)
         return courses.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath)
-
+        let courses = self.realm.objects(Course.self)
+        
         cell.textLabel!.text = courses[indexPath.row].name
         
         return cell
@@ -107,6 +115,7 @@ class CourseTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         let noteDetailViewController = segue.destination as! NoteDetailViewController
         var selectedIndexPath = tableView.indexPathForSelectedRow
+        let courses = self.realm.objects(Course.self)
         noteDetailViewController.course = courses[selectedIndexPath!.row]
     }
  

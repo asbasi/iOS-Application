@@ -12,7 +12,7 @@ import RealmSwift
 class Event: Object {
     dynamic var checked = false
     dynamic var title: String!
-    dynamic var date = NSDate()
+    dynamic var date: NSDate!
     
 //    init(title: String, date: NSDate) {
 //        super.init()

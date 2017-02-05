@@ -9,7 +9,7 @@
 import Foundation
 
 class Log: Event{
-    var duration: Int! //minutes
+    dynamic var duration: Int = 0 //minutes
     
 //    dynamic init(title: String, date: NSDate, duration: Int) {
 //        super.init(title: title, date: date)
