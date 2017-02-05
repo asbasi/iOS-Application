@@ -20,7 +20,7 @@ class NoteDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        NoteContent.text = course.content
+        NoteContent.text = course.name
     }
 
     override func didReceiveMemoryWarning() {

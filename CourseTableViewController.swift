@@ -22,13 +22,10 @@ class CourseTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        var course1 = Course()
-        course1.title = "Note 1"
-        course1.content = "Note 1 content"
+        let course1 = Course(name: "ECS 132A", instructor: "Rob", units: 4, quarter: "fall 2017")
+
         
-        var course2 = Course()
-        course2.title = "Note 2"
-        course2.content = "Note 2 content"
+        let course2 = Course(name: "ECS 154A", instructor: "instructor", units: 4, quarter: "fall 2017")
         
         
         courses.append(course1)
@@ -56,7 +53,7 @@ class CourseTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath)
 
-        cell.textLabel!.text = courses[indexPath.row].title
+        cell.textLabel!.text = courses[indexPath.row].name
         
         return cell
     }
@@ -104,7 +101,7 @@ class CourseTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        var noteDetailViewController = segue.destination as! NoteDetailViewController
+        let noteDetailViewController = segue.destination as! NoteDetailViewController
         var selectedIndexPath = tableView.indexPathForSelectedRow
         noteDetailViewController.course = courses[selectedIndexPath!.row]
     }
