@@ -1,47 +1,39 @@
 //
-//  CourseTableViewController.swift
+//  LogTableViewController.swift
 //  TMA
 //
-//  Created by Abdulrahman Sahmoud on 2/1/17.
+//  Created by Arvinder Basi on 2/5/17.
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
 import UIKit
 import RealmSwift
 
-class CourseTableViewController: UITableViewController {
+class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
-
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
 
+        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-
-        let courses = self.realm.objects(Course.self)
         
-        let course1 = Course()
-        let course2 = Course()
-        course1.name = "hi1"
-        course2.name = "bye2"
-        let realm = try! Realm()
+        let logs = self.realm.objects(Log.self)
+        
+        let log1 = Log()
+        log1.duration = 3
+        log1.title = "Bldad"
+        log1.date = NSDate()
         
         try! realm.write {
-            realm.add(course1)
-            print(courses.count)
-            realm.add(course2)
+            realm.add(log1)
         }
-        
-        
-        print(courses.count)
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,21 +50,22 @@ class CourseTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        let courses = self.realm.objects(Course.self)
-        return courses.count
+        let logs = self.realm.objects(Log.self)
+        return logs.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath)
-        let courses = self.realm.objects(Course.self)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath)
+
+        let logs = self.realm.objects(Log.self)
         
-        cell.textLabel!.text = courses[indexPath.row].name
+        cell.textLabel!.text = logs[indexPath.row].title
         
         return cell
     }
     
-    
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -108,18 +101,14 @@ class CourseTableViewController: UITableViewController {
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let noteDetailViewController = segue.destination as! NoteDetailViewController
-        var selectedIndexPath = tableView.indexPathForSelectedRow
-        let courses = self.realm.objects(Course.self)
-        noteDetailViewController.course = courses[selectedIndexPath!.row]
     }
- 
+    */
 
 }
