@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoteDetailViewController: UIViewController {
+class CourseDetailViewController: UIViewController {
 
     @IBOutlet weak var NoteContent: UILabel!
     var course: Course!

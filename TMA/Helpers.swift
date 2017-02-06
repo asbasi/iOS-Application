@@ -7,10 +7,14 @@
 //
 
 import Foundation
+import RealmSwift
 
 class Helpers{
-    static func generateRandomNumber(min: Int, max: Int) -> Int {
-        let randomNum = Int(arc4random_uniform(UInt32(max) - UInt32(min)) + UInt32(min))
-        return randomNum
+    static let realm = try! Realm()
+    
+    static func DB_insert(obj: Object){
+        try! self.realm.write {
+            self.realm.add(obj)
+        }
     }
 }
