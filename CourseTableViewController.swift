@@ -12,7 +12,7 @@ import RealmSwift
 class CourseTableViewController: UITableViewController {
 
     let realm = try! Realm()
-
+    var courseToEdit: Course!
     
 
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +74,6 @@ class CourseTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
-            print("delete button tapped")
             
             let courses = self.realm.objects(Course.self)
             try! self.realm.write {
@@ -85,8 +84,12 @@ class CourseTableViewController: UITableViewController {
         delete.backgroundColor = .red
 
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
-            print("edit button tapped")
-            tableView.reloadData()
+
+            let courses = self.realm.objects(Course.self)
+            self.courseToEdit = courses[index.row]
+            
+            
+            self.performSegue(withIdentifier: "editCourse", sender: nil)
         }
         edit.backgroundColor = .blue
 
@@ -114,6 +117,12 @@ class CourseTableViewController: UITableViewController {
             let courseAddViewController = segue.destination as! CourseAddViewController
             
             courseAddViewController.editOrAdd = "add"
+        }
+        else if segue.identifier! == "editCourse" {
+            let courseAddViewController = segue.destination as! CourseAddViewController
+            
+            courseAddViewController.editOrAdd = "edit"
+            courseAddViewController.course = courseToEdit!
         }
         else if segue.identifier! == "showCourse" {
             let courseDetailViewController = segue.destination as! CourseDetailViewController

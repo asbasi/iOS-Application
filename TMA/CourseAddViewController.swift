@@ -29,9 +29,11 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         let courses = self.realm.objects(Course.self)
         
         
-        let results = realm.objects(Course.self).filter("name = '\(nameTextField.text!)'")
-        if results.count != 0 {
-            return
+        if(editOrAdd=="add"){
+            let results = realm.objects(Course.self).filter("name = '\(nameTextField.text!)'")
+            if results.count != 0 {
+                return
+            }
         }
         
         if((nameTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)! || (unitTextField.text?.isEmpty)!) {
@@ -39,17 +41,28 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         }
 
         
-
-        self.course = Course()
-        course!.name = nameTextField.text!
-        
-        course!.instructor = instructorTextField.text!
-        course!.units = Int(unitTextField.text!)!
-        course!.quarter = pickerData[0][quarterPicker.selectedRow(inComponent: 0)]
-        
-        if(editOrAdd == "add") {
+        if(editOrAdd=="add"){
+            self.course = Course()
+            course!.name = nameTextField.text!
+            
+            course!.instructor = instructorTextField.text!
+            course!.units = Int(unitTextField.text!)!
+            course!.quarter = pickerData[0][quarterPicker.selectedRow(inComponent: 0)]
             Helpers.DB_insert(obj: course!)
         }
+        if(editOrAdd=="edit"){
+            try! self.realm.write {
+                course!.name = nameTextField.text!
+                
+                course!.instructor = instructorTextField.text!
+                course!.units = Int(unitTextField.text!)!
+                course!.quarter = pickerData[0][quarterPicker.selectedRow(inComponent: 0)]
+
+            }
+        }
+        
+        
+        
         
         self.navigationController?.popViewController(animated: true)
 
@@ -59,6 +72,14 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
+        
+        if self.editOrAdd == "edit" {
+            self.nameTextField.text = self.course!.name
+            self.instructorTextField.text = self.course!.instructor
+            self.unitTextField.text = "\(self.course!.units)"
+            var row = pickerData[0].index(of: self.course!.quarter)
+            self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
+        }
         
         
         // Do any additional setup after loading the view.
