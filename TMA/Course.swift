@@ -20,6 +20,10 @@ class Course: Object {
     dynamic var numberOfHoursLogged : Float = 0
     dynamic var numberOfHoursAllocated : Float = 0
     
+    override class func primaryKey() -> String? {
+        return "name"
+    }
+    
     func get_number_of_hours_logged() -> Float{
         return numberOfHoursLogged
     }

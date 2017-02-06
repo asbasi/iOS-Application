@@ -54,6 +54,10 @@ class CourseTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         let courses = self.realm.objects(Course.self)
+//        self.realm.add
+//        let realm = RLMRealm.defaultRealm()
+        
+//        print(self.realm.object(ofType: Course.self, forPrimaryKey: "ECS 154A")?.name)
         return courses.count
     }
 
