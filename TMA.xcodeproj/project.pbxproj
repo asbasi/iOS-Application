@@ -10,6 +10,7 @@
 		00416AD51E47E5DB00DA733D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00416AD41E47E5DB00DA733D /* Course.swift */; };
 		005709A81E47EFB1008D2D96 /* StudyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709A71E47EFB1008D2D96 /* StudyEvent.swift */; };
 		005709AA1E47EFF2008D2D96 /* Deadline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709A91E47EFF2008D2D96 /* Deadline.swift */; };
+		005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709AB1E480046008D2D96 /* CourseAddViewController.swift */; };
 		009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E131E42D37D00260378 /* AppDelegate.swift */; };
 		009C4E1B1E42D37D00260378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E191E42D37D00260378 /* Main.storyboard */; };
 		009C4E1D1E42D37D00260378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1C1E42D37D00260378 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		00416AD41E47E5DB00DA733D /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		005709A71E47EFB1008D2D96 /* StudyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyEvent.swift; sourceTree = "<group>"; };
 		005709A91E47EFF2008D2D96 /* Deadline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deadline.swift; sourceTree = "<group>"; };
+		005709AB1E480046008D2D96 /* CourseAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseAddViewController.swift; sourceTree = "<group>"; };
 		009C4E101E42D37D00260378 /* TMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		009C4E131E42D37D00260378 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		009C4E1A1E42D37D00260378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				00AA39051E47EA0800D819DD /* Models */,
 				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
 				009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */,
+				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
 				009C4E131E42D37D00260378 /* AppDelegate.swift */,
 				00DF402F1E47E0700095B2FD /* Helpers.swift */,
 				009C4E191E42D37D00260378 /* Main.storyboard */,
@@ -249,6 +252,7 @@
 				005709A81E47EFB1008D2D96 /* StudyEvent.swift in Sources */,
 				005709AA1E47EFF2008D2D96 /* Deadline.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
+				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

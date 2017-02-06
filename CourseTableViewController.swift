@@ -15,6 +15,12 @@ class CourseTableViewController: UITableViewController {
 
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,22 +33,10 @@ class CourseTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
-        let courses = self.realm.objects(Course.self)
-        
-        let course1 = Course()
-        let course2 = Course()
-        course1.name = "hi1"
-        course2.name = "bye2"
-        let realm = try! Realm()
-        
-        try! realm.write {
-            realm.add(course1)
-            print(courses.count)
-            realm.add(course2)
-        }
+//        let courses = self.realm.objects(Course.self)
         
         
-        print(courses.count)
+//        print(courses.count)
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,7 +59,7 @@ class CourseTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotesCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
         let courses = self.realm.objects(Course.self)
         
         cell.textLabel!.text = courses[indexPath.row].name
@@ -116,10 +110,16 @@ class CourseTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let noteDetailViewController = segue.destination as! NoteDetailViewController
-        var selectedIndexPath = tableView.indexPathForSelectedRow
         let courses = self.realm.objects(Course.self)
-        noteDetailViewController.course = courses[selectedIndexPath!.row]
+        if segue.identifier! == "addCourse" {
+            let courseAddViewController = segue.destination as! CourseAddViewController
+        }
+        else if segue.identifier! == "showCourse" {
+            let courseDetailViewController = segue.destination as! CourseDetailViewController
+            var selectedIndexPath = tableView.indexPathForSelectedRow
+
+            courseDetailViewController.course = courses[selectedIndexPath!.row]
+        }
     }
  
 
