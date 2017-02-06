@@ -12,6 +12,14 @@ import RealmSwift
 class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
+    var logToEdit: Log!
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +31,6 @@ class LogTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        
-        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,14 +100,49 @@ class LogTableViewController: UITableViewController {
 
     
     // MARK: - Navigation
-
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let logs = self.realm.objects(Log.self)
+            try! self.realm.write {
+                self.realm.delete(logs[index.row])
+            }
+            tableView.reloadData()
+        }
+        delete.backgroundColor = .red
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            
+            let logs = self.realm.objects(Log.self)
+            self.logToEdit = logs[index.row]
+            
+            
+            self.performSegue(withIdentifier: "editLog", sender: nil)
+        }
+        edit.backgroundColor = .blue
+        
+        return [delete, edit]
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let logs = self.realm.objects(Log.self)
         if segue.identifier! == "addLog" {
             let logAddViewController = segue.destination as! LogAddViewController
+            logAddViewController.operation = "add"
+        }
+        else if segue.identifier! == "editLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+            
+            logAddViewController.operation = "edit"
+            logAddViewController.log = logToEdit!
+        }
+        else if segue.identifier! == "showLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+            
+            logAddViewController.operation = "show"
+            logAddViewController.log = logs[tableView.indexPathForSelectedRow!.row]
         }
     }
-    
-
 }
