@@ -24,7 +24,6 @@ class LogAddViewController: UIViewController {
         
         log!.title = titleTextField.text
         log!.duration = Int(durationTextField.text!)!
-        log!
         
         Helpers.DB_insert(obj: log!)
         self.navigationController?.popViewController(animated: true)

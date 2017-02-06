@@ -198,7 +198,7 @@
                     <navigationItem key="navigationItem" title="Log" id="XPd-3A-90C">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="WrR-py-tNP">
                             <connections>
-                                <segue destination="Pm7-Va-Xbw" kind="show" id="DH5-Vh-7b9"/>
+                                <segue destination="Pm7-Va-Xbw" kind="show" identifier="addLog" id="DH5-Vh-7b9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

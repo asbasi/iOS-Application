@@ -24,7 +24,14 @@ class LogTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -95,10 +102,10 @@ class LogTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            let logs.self.realm.object(Log.self)
-            if segue.
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let logs = self.realm.objects(Log.self)
+        if segue.identifier! == "addLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+        }
     }
     
 
