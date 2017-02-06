@@ -19,11 +19,9 @@ class CourseAddViewController: UIViewController {
     
     @IBAction func test(_ sender: Any) {
         self.course = Course()
-        course?.name = nameTextField.text
-        try! self.realm.write {
-            self.realm.add(course!)
-        }
-        
+        course!.name = nameTextField.text
+
+        Helpers.DB_insert(obj: course!)
         self.navigationController?.popViewController(animated: true)
     }
     override func viewDidLoad() {
