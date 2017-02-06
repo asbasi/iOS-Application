@@ -20,6 +20,7 @@
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF402E1E47DDF70095B2FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402D1E47DDF70095B2FD /* Log.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
+		603F30D61E481458000B68CD /* LogAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603F30D51E481458000B68CD /* LogAddViewController.swift */; };
 		605724741E4800AC00B6BC8B /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605724731E4800AC00B6BC8B /* LogTableViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
+		603F30D51E481458000B68CD /* LogAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddViewController.swift; sourceTree = "<group>"; };
 		605724731E4800AC00B6BC8B /* LogTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +86,7 @@
 				009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */,
 				605724731E4800AC00B6BC8B /* LogTableViewController.swift */,
 				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
+				603F30D51E481458000B68CD /* LogAddViewController.swift */,
 				009C4E131E42D37D00260378 /* AppDelegate.swift */,
 				00DF402F1E47E0700095B2FD /* Helpers.swift */,
 				009C4E191E42D37D00260378 /* Main.storyboard */,
@@ -249,6 +252,7 @@
 				009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */,
 				00416AD51E47E5DB00DA733D /* Course.swift in Sources */,
 				605724741E4800AC00B6BC8B /* LogTableViewController.swift in Sources */,
+				603F30D61E481458000B68CD /* LogAddViewController.swift in Sources */,
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
 				00DF402E1E47DDF70095B2FD /* Log.swift in Sources */,
 				009C4E2C1E42DD2800260378 /* CourseTableViewController.swift in Sources */,

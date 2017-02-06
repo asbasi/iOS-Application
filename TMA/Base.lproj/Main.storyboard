@@ -91,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gk8-Zx-2f3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2828" y="-947.67616191904051"/>
+            <point key="canvasLocation" x="2721" y="-708"/>
         </scene>
         <!--Course Detail View Controller-->
         <scene sceneID="nqq-Mr-zri">
@@ -121,7 +121,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3gE-f9-t4c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3033" y="-229"/>
+            <point key="canvasLocation" x="2721" y="-64"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="ise-Uo-OTe">
@@ -195,11 +195,76 @@
                             <outlet property="delegate" destination="cJ2-th-tNl" id="V59-GP-oMO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Log" id="XPd-3A-90C"/>
+                    <navigationItem key="navigationItem" title="Log" id="XPd-3A-90C">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="WrR-py-tNP">
+                            <connections>
+                                <segue destination="Pm7-Va-Xbw" kind="show" id="DH5-Vh-7b9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cpb-5w-MaE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="236" y="-791"/>
+            <point key="canvasLocation" x="1849" y="-1118"/>
+        </scene>
+        <!--Add Log-->
+        <scene sceneID="2Sc-FC-WEn">
+            <objects>
+                <viewController id="Pm7-Va-Xbw" customClass="LogAddViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6ff-fv-AXI"/>
+                        <viewControllerLayoutGuide type="bottom" id="zbU-C7-vcg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AOF-2s-cdQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log Title: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JX6-OY-RjX">
+                                <rect key="frame" x="16" y="114" width="76" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log Duration:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vld-w3-J9f">
+                                <rect key="frame" x="16" y="157" width="103" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WgG-bq-SwS">
+                                <rect key="frame" x="136" y="152" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2QI-p6-ZPJ">
+                                <rect key="frame" x="100" y="105" width="259" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Log" id="TFQ-zq-1g5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="v8h-D7-wjD">
+                            <connections>
+                                <action selector="add_log:" destination="Pm7-Va-Xbw" id="Y1q-Ha-pH2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="durationTextField" destination="WgG-bq-SwS" id="gdx-27-OVY"/>
+                        <outlet property="titleTextField" destination="2QI-p6-ZPJ" id="e2j-gr-KyL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YyH-HN-iSa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2645.5999999999999" y="-1501.7991004497753"/>
         </scene>
         <!--Item-->
         <scene sceneID="KUc-ki-Yph">
@@ -216,7 +281,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KED-Oe-gdk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="910" y="-1076"/>
+            <point key="canvasLocation" x="910" y="-1117"/>
         </scene>
         <!--Overview-->
         <scene sceneID="XKc-Dr-AW7">

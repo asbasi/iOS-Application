@@ -23,17 +23,6 @@ class LogTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        let logs = self.realm.objects(Log.self)
-        
-        let log1 = Log()
-        log1.duration = 3
-        log1.title = "Bldad"
-        log1.date = NSDate()
-        
-        try! realm.write {
-            realm.add(log1)
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,14 +90,16 @@ class LogTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            let logs.self.realm.object(Log.self)
+            if segue.
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
