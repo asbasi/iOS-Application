@@ -14,7 +14,7 @@ class CourseTableViewController: UITableViewController {
     let realm = try! Realm()
 
     
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -110,20 +110,45 @@ class CourseTableViewController: UITableViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        let courses = self.realm.objects(Course.self)
-        if segue.identifier! == "addCourse" {
-            let courseAddViewController = segue.destination as! CourseAddViewController
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            print("delete button tapped")
+            
+            let courses = self.realm.objects(Course.self)
+            try! self.realm.write {
+                self.realm.delete(courses[index.row])
+            }
+            tableView.reloadData()
         }
-        else if segue.identifier! == "showCourse" {
-            let courseDetailViewController = segue.destination as! CourseDetailViewController
-            var selectedIndexPath = tableView.indexPathForSelectedRow
+        delete.backgroundColor = .red
 
-            courseDetailViewController.course = courses[selectedIndexPath!.row]
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            print("edit button tapped")
+            tableView.reloadData()
         }
+        edit.backgroundColor = .blue
+
+//        let share = UITableViewRowAction(style: .normal, title: "Share") { action, index in
+//            print("share button tapped")
+//        }
+//        share.backgroundColor = .blue
+        
+        return [delete, edit]
     }
- 
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+  
+    
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+//        
+//        let row = indexPath.row
+//        print(row)
+//    }
 
 }
