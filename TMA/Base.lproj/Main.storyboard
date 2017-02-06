@@ -159,17 +159,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Log" id="g8L-z5-Pa2"/>
+                    <tabBarItem key="tabBarItem" title="Log" image="log" id="g8L-z5-Pa2"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TO8-wF-dLt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="67" y="-672"/>
         </scene>
-        <!--Courses-->
+        <!--Overview-->
         <scene sceneID="XKc-Dr-AW7">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DUF-S6-hWR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Courses" id="aBW-3m-1Gp"/>
+                    <tabBarItem key="tabBarItem" title="Overview" image="overview" id="aBW-3m-1Gp"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bGi-8W-rgb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -188,7 +188,7 @@
         <scene sceneID="LKn-to-plX">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FYF-Le-yp6" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Planner" id="0s8-Fs-jct"/>
+                    <tabBarItem key="tabBarItem" title="Planner" image="planner" id="0s8-Fs-jct"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cNn-xE-CLN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -204,4 +204,9 @@
             <point key="canvasLocation" x="998" y="367"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="log" width="25" height="25"/>
+        <image name="overview" width="25" height="22"/>
+        <image name="planner" width="54" height="58"/>
+    </resources>
 </document>

@@ -31,8 +31,8 @@ class CourseTableViewController: UITableViewController {
         
         let course1 = Course()
         let course2 = Course()
-        course1.name = "hi"
-        course2.name = "bye"
+        course1.name = "hi1"
+        course2.name = "bye2"
         let realm = try! Realm()
         
         try! realm.write {
