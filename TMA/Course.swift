@@ -10,8 +10,6 @@ import Foundation
 import RealmSwift
 
 class Course: Object {
-    
-    dynamic var id: Int = 0 //TODO: manage that with the DB
     dynamic var name: String!
     dynamic var instructor: String!
     dynamic var units: Int = 0
@@ -37,17 +35,6 @@ class Course: Object {
     func get_number_of_hours_allocated(from: NSDate, to: NSDate) -> Float{
         return 10
     }
-    
-//    init(name: String, instructor: String, units: Int, quarter: String) {
-//        super.init()
-//        self.name = name
-//        self.instructor = instructor
-//        self.units = units
-//        self.quarter = quarter
-//        self.id = Helpers.generateRandomNumber(min: 0, max: 10000000)
-//    }
-    
-    
     
     
     // Specify properties to ignore (Realm won't persist these)

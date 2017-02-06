@@ -17,6 +17,9 @@ class CourseTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
+
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

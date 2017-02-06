@@ -13,11 +13,5 @@ class Event: Object {
     dynamic var checked = false
     dynamic var title: String!
     dynamic var date: NSDate!
-    
-//    init(title: String, date: NSDate) {
-//        super.init()
-//        self.title=title
-//        self.date=date
-//    }
-    
+        
 }

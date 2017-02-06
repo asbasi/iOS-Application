@@ -165,11 +165,11 @@
             </objects>
             <point key="canvasLocation" x="67" y="-672"/>
         </scene>
-        <!--Stats-->
+        <!--Courses-->
         <scene sceneID="XKc-Dr-AW7">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DUF-S6-hWR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stats" id="aBW-3m-1Gp"/>
+                    <tabBarItem key="tabBarItem" title="Courses" id="aBW-3m-1Gp"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bGi-8W-rgb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -184,11 +184,11 @@
             </objects>
             <point key="canvasLocation" x="909.60000000000002" y="-386.35682158920542"/>
         </scene>
-        <!--Courses-->
+        <!--Planner-->
         <scene sceneID="LKn-to-plX">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FYF-Le-yp6" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Courses" id="0s8-Fs-jct"/>
+                    <tabBarItem key="tabBarItem" title="Planner" id="0s8-Fs-jct"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cNn-xE-CLN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
