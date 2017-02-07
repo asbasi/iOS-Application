@@ -10,5 +10,5 @@ import Foundation
 
 class Log: Event{
     dynamic var duration: Int = 0 //minutes
-    
+    dynamic var courseName: String = ""
 }

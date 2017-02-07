@@ -12,6 +12,7 @@ import RealmSwift
 class LogTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var duration: UILabel!
+    
 }
 
 class LogTableViewController: UITableViewController {
