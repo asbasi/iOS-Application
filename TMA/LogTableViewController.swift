@@ -9,6 +9,11 @@
 import UIKit
 import RealmSwift
 
+class LogTableViewCell: UITableViewCell {
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var duration: UILabel!
+}
+
 class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
@@ -53,11 +58,12 @@ class LogTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
 
         let logs = self.realm.objects(Log.self)
         
-        cell.textLabel!.text = logs[indexPath.row].title
+        cell.title?.text = logs[indexPath.row].title
+        cell.duration?.text = "\(logs[indexPath.row].duration) hours"
         
         return cell
     }
