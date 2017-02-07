@@ -23,7 +23,6 @@ class LogTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        
         tableView.reloadData()
     }
     
@@ -53,16 +52,33 @@ class LogTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        let logs = self.realm.objects(Log.self)
-        return logs.count
+        
+        let courses = self.realm.objects(Course.self)
+        var logCount: Int = 0
+        
+        //get the number of log from the course list.
+        for i in 0 ..< courses.count{
+            logCount += courses[i].logs.count
+        }
+        return logCount
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
-
+        /*
         let logs = self.realm.objects(Log.self)
         
+        cell.title?.text = logs[indexPath.row].title
+        cell.duration?.text = "\(logs[indexPath.row].duration) hours"
+        */
+        let courses = self.realm.objects(Course.self)
+        var logs = List<Log>()
+        for i in 0 ..< courses.count{
+            for j in 0 ..< courses[i].logs.count{
+                logs.append(courses[i].logs[j])
+            }
+        }
         cell.title?.text = logs[indexPath.row].title
         cell.duration?.text = "\(logs[indexPath.row].duration) hours"
         

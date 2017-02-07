@@ -17,11 +17,10 @@ import RealmSwift
 
 class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     //test for coursePickerData
-    let coursePickerData = [["ECS 154", "ECS 150", "AMS 10"]]
     
     let realm = try! Realm()
     
-    @IBOutlet weak var courseTextField: UITextField!
+    @IBOutlet weak var coursePicker: UIPickerView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var durationTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
@@ -29,10 +28,11 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var log: Log?
     var operation: String = "" // "edit", "add", or "show"
     
-    var coursePicker = UIPickerView()
-    
-    
     @IBAction func done(_ sender: Any) {
+        //get the course
+        let courses = self.realm.objects(Course.self)
+        var course = realm.objects(Course.self).filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")
+        
         if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)!) {
             return;
         }
@@ -42,14 +42,21 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             
             log!.title = titleTextField.text
             log!.duration = Int(durationTextField.text!)!
-            log!.courseName = courseTextField.text!
-            Helpers.DB_insert(obj: log!)
+            //Helpers.DB_insert(obj: log!)
+            //find the related course and append to the end
+            //courses[coursePicker.selectedRow(inComponent: 0)].logs.append(log!)
+            try! self.realm.write{
+
+                //should have only one course in variable course
+                course[0].logs.append(log!)
+            }
+            
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
                 log!.title = titleTextField.text
                 log!.duration = Int(durationTextField.text!)!
-                log!.courseName = courseTextField.text!
+                
             }
         }
         
@@ -59,10 +66,11 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let courses = self.realm.objects(Course.self)
         //course picker setup
-        coursePicker.dataSource = self
-        coursePicker.delegate = self
-        courseTextField.inputView = coursePicker
+        self.coursePicker.dataSource = self
+        self.coursePicker.delegate = self
+        
         
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
@@ -72,18 +80,25 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.pageTitleTextField.title = "Edit Log"
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
-            self.courseTextField.text = "\(self.log!.courseName)"
+            //var row = courses.index(of: self.course!.name)
+            
+            
+            self.coursePicker.selectRow(0, inComponent: 0, animated: true)
         }
         else if (self.operation == "show")
         {
             self.pageTitleTextField.title = self.log!.title
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
-            self.courseTextField.text = "\(self.log!.courseName)"
+            
+            self.coursePicker.selectRow(0, inComponent: 0, animated: true)
 
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        //        NoteContent.text = course.name
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -103,10 +118,13 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     //MARK: - Picker View Data Sources and Delegates
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return coursePickerData.count
+        
+        return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return coursePickerData[component].count
+        let courses = self.realm.objects(Course.self)
+        
+        return courses.count
     }
     
     func pickerView(_
@@ -114,11 +132,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                     titleForRow row: Int,
                     forComponent component: Int
         ) -> String? {
-        return coursePickerData[component][row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        courseTextField.text = coursePickerData[component][row]
+        
+        let courses = self.realm.objects(Course.self)
+        return courses[row].name
     }
 
 }
