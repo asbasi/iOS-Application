@@ -13,10 +13,12 @@ class CourseTableViewController: UITableViewController {
 
     let realm = try! Realm()
     var courseToEdit: Course!
-    
+    var courses: Results<Course>!
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.courses = self.realm.objects(Course.self)
         
         tableView.reloadData()
     }
@@ -31,8 +33,6 @@ class CourseTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-
-//        let courses = self.realm.objects(Course.self)
         
         
 //        print(courses.count)
@@ -52,16 +52,14 @@ class CourseTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        let courses = self.realm.objects(Course.self)
-        return courses.count
+        return self.courses.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
-        let courses = self.realm.objects(Course.self)
         
-        cell.textLabel!.text = courses[indexPath.row].name
+        cell.textLabel!.text = self.courses[indexPath.row].name
         
         return cell
     }
@@ -75,9 +73,8 @@ class CourseTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let courses = self.realm.objects(Course.self)
             try! self.realm.write {
-                self.realm.delete(courses[index.row])
+                self.realm.delete(self.courses[index.row])
             }
             tableView.reloadData()
         }

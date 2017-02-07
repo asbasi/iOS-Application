@@ -27,34 +27,32 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     var log: Log?
     var operation: String = "" // "edit", "add", or "show"
+    var courses: Results<Course>!
     
     @IBAction func done(_ sender: Any) {
         //get the course
-        let courses = self.realm.objects(Course.self)
-        var course = realm.objects(Course.self).filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")
+        let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
         
         if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)!) {
             return;
         }
         
         if(self.operation == "add") {
-            self.log = Log()
+            let log = Log()
             
-            log!.title = titleTextField.text
-            log!.duration = Int(durationTextField.text!)!
-            log!.date = NSDate();
-            //find the related course and append to the end
-            try! self.realm.write{
-
-                //should have only one course in variable course
-                course[0].logs.append(log!)
-            }
+            log.title = titleTextField.text
+            log.duration = Int(durationTextField.text!)!
+            log.date = NSDate();
+            log.course = course
+            
+            Helpers.DB_insert(obj: log)
             
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
                 log!.title = titleTextField.text
                 log!.duration = Int(durationTextField.text!)!
+                log!.course = course
                 
             }
         }
@@ -65,7 +63,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let courses = self.realm.objects(Course.self)
+        
         //course picker setup
         self.coursePicker.dataSource = self
         self.coursePicker.delegate = self
@@ -79,7 +77,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.pageTitleTextField.title = "Edit Log"
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
-            //var row = courses.index(of: self.course!.name)
+            //var row = self.courses.index(of: self.course!.name)
             
             
             self.coursePicker.selectRow(0, inComponent: 0, animated: true)
@@ -97,6 +95,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
 
     override func viewWillAppear(_ animated: Bool) {
         //        NoteContent.text = course.name
+        self.courses = self.realm.objects(Course.self)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -121,9 +120,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        let courses = self.realm.objects(Course.self)
-        
-        return courses.count
+        return self.courses.count
     }
     
     func pickerView(_
@@ -132,8 +129,8 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                     forComponent component: Int
         ) -> String? {
         
-        let courses = self.realm.objects(Course.self)
-        return courses[row].name
+        
+        return self.courses[row].name
     }
 
 }

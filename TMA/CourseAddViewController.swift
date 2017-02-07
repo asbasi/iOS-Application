@@ -18,6 +18,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     
     var course: Course?
     var editOrAdd: String = "" // "edit" or "add"
+    var courses: Results<Course>!
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
@@ -26,11 +27,9 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     
     
     @IBAction func done(_ sender: Any) {
-        let courses = self.realm.objects(Course.self)
-        
         
         if(editOrAdd=="add"){
-            let results = realm.objects(Course.self).filter("name = '\(nameTextField.text!)'")
+            let results = self.courses.filter("name = '\(nameTextField.text!)'")
             if results.count != 0 {
                 return
             }
@@ -73,11 +72,13 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
         
+        self.courses = self.realm.objects(Course.self)
+        
         if self.editOrAdd == "edit" {
             self.nameTextField.text = self.course!.name
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"
-            var row = pickerData[0].index(of: self.course!.quarter)
+            let row = pickerData[0].index(of: self.course!.quarter)
             self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
         }
         

@@ -13,5 +13,6 @@ class Event: Object {
     dynamic var checked = false
     dynamic var title: String!
     dynamic var date: NSDate!
+    dynamic var course: Course!
         
 }

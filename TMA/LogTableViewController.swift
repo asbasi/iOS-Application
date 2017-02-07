@@ -12,24 +12,24 @@ import RealmSwift
 class LogTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var duration: UILabel!
-    
+    @IBOutlet weak var course: UILabel!
 }
 
 class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
     var logToEdit: Log!
+    var logs: Results<Log>!
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        self.logs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -53,75 +53,24 @@ class LogTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         
-        let courses = self.realm.objects(Course.self)
-        var logCount: Int = 0
+        let logs = self.realm.objects(Log.self)
         
-        //get the number of log from the course list.
-        for i in 0 ..< courses.count{
-            logCount += courses[i].logs.count
-        }
-        return logCount
+        return logs.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
         
-        let logs = self.realm.objects(Log.self)
+        let log = logs[indexPath.row]
         
-        cell.title?.text = logs[indexPath.row].title
-        cell.duration?.text = "\(logs[indexPath.row].duration) hours"
+        cell.title?.text = log.title
+        cell.duration?.text = "\(log.duration) hours"
+        cell.course?.text = log.course.name
  
-        /*
-        let courses = self.realm.objects(Course.self)
-        var logs = List<Log>()
-        for i in 0 ..< courses.count{
-            for j in 0 ..< courses[i].logs.count{
-                logs.append(courses[i].logs[j])
-            }
-        }
-        cell.title?.text = logs[indexPath.row].title
-        cell.duration?.text = "\(logs[indexPath.row].duration) hours"
-        */
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     
     // MARK: - Navigation
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
