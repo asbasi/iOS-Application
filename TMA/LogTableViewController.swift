@@ -66,12 +66,13 @@ class LogTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
-        /*
+        
         let logs = self.realm.objects(Log.self)
         
         cell.title?.text = logs[indexPath.row].title
         cell.duration?.text = "\(logs[indexPath.row].duration) hours"
-        */
+ 
+        /*
         let courses = self.realm.objects(Course.self)
         var logs = List<Log>()
         for i in 0 ..< courses.count{
@@ -81,7 +82,7 @@ class LogTableViewController: UITableViewController {
         }
         cell.title?.text = logs[indexPath.row].title
         cell.duration?.text = "\(logs[indexPath.row].duration) hours"
-        
+        */
         return cell
     }
     

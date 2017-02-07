@@ -42,9 +42,8 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             
             log!.title = titleTextField.text
             log!.duration = Int(durationTextField.text!)!
-            //Helpers.DB_insert(obj: log!)
+            log!.date = NSDate();
             //find the related course and append to the end
-            //courses[coursePicker.selectedRow(inComponent: 0)].logs.append(log!)
             try! self.realm.write{
 
                 //should have only one course in variable course
