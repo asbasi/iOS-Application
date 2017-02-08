@@ -82,7 +82,7 @@ class CourseTableViewController: UITableViewController {
             
             let course = self.courses[index.row]
             try! self.realm.write {
-                let logsToDelete = self.realm.objects(Log.self).filter("course.name = \(course.name)")
+                let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
                 self.realm.delete(logsToDelete)
                 self.realm.delete(course)
             }
