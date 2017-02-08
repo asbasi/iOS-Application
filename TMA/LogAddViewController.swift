@@ -23,6 +23,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var coursePicker: UIPickerView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var durationTextField: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
     
     var log: Log?
@@ -42,8 +43,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             
             log.title = titleTextField.text
             log.duration = Float(durationTextField.text!)!
-            log.date = NSDate();
+            log.date = datePicker.date as NSDate!
             log.course = course
+            
             try! self.realm.write {
                 course.numberOfHoursLogged += log.duration
             }
@@ -57,6 +59,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                 log!.title = titleTextField.text
                 log!.duration = Float(durationTextField.text!)!
                 log!.course = course
+                log!.date = datePicker.date as NSDate!
                 course.numberOfHoursLogged += log!.duration
                 
                 
@@ -69,6 +72,8 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
+
         self.courses = self.realm.objects(Course.self)
         
         //course picker setup
@@ -80,23 +85,15 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         if(self.operation == "add") {
             self.pageTitleTextField.title = "Add Log"
         }
-        else if (self.operation == "edit") {
+        else if (self.operation == "edit" || self.operation == "show") {
             self.pageTitleTextField.title = "Edit Log"
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
+            self.datePicker!.date = self.log!.date as Date
             //var row = self.courses.index(of: self.course!.name)
             
             
             self.coursePicker.selectRow(0, inComponent: 0, animated: true)
-        }
-        else if (self.operation == "show")
-        {
-            self.pageTitleTextField.title = self.log!.title
-            self.titleTextField.text = self.log!.title
-            self.durationTextField.text = "\(self.log!.duration)"
-            
-            self.coursePicker.selectRow(0, inComponent: 0, animated: true)
-
         }
     }
 

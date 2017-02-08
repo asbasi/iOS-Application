@@ -25,7 +25,7 @@ class LogTableViewController: UITableViewController {
     {
         super.viewWillAppear(animated)
         
-        self.logs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: true)
+        self.logs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
         
         tableView.reloadData()
     }
@@ -62,7 +62,7 @@ class LogTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
         
-        let log = logs[indexPath.row]
+        let log = self.logs[indexPath.row]
         
         cell.title?.text = log.title
         cell.duration?.text = "\(log.duration) hours"
@@ -88,10 +88,10 @@ class LogTableViewController: UITableViewController {
             let deleteAction = UIAlertAction(title: "Delete Log", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                let logs = self.realm.objects(Log.self)
+                
                 try! self.realm.write {
-                    logs[index.row].course.numberOfHoursLogged -= logs[index.row].duration
-                    self.realm.delete(logs[index.row])
+                    self.logs[index.row].course.numberOfHoursLogged -= self.logs[index.row].duration
+                    self.realm.delete(self.logs[index.row])
                 }
                 self.tableView.reloadData()
             })
@@ -109,8 +109,9 @@ class LogTableViewController: UITableViewController {
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             
-            let logs = self.realm.objects(Log.self)
-            self.logToEdit = logs[index.row]
+            
+            self.logToEdit = self.logs[index.row]
+            
             
             
             self.performSegue(withIdentifier: "editLog", sender: nil)
