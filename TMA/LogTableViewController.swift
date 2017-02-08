@@ -67,6 +67,12 @@ class LogTableViewController: UITableViewController {
         cell.title?.text = log.title
         cell.duration?.text = "\(log.duration) hours"
         cell.course?.text = log.course.name
+        if Calendar.current.isDateInToday(log.date as Date) {
+            cell.backgroundColor = UIColor(red: 239/255, green: 248/255, blue: 205/255, alpha: 1.0)
+        }
+        else {
+            cell.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 0.91, alpha: 1.0)
+        }
  
         return cell
     }
