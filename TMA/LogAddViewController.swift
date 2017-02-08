@@ -75,6 +75,10 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
 
         self.courses = self.realm.objects(Course.self)
+        var courseNames = [String]()
+        for course in self.courses {
+            courseNames.append(course.name)
+        }
         
         //course picker setup
         self.coursePicker.dataSource = self
@@ -90,10 +94,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
             self.datePicker!.date = self.log!.date as Date
-            //var row = self.courses.index(of: self.course!.name)
+            var courseRow = courseNames.index(of: self.log!.course.name)
             
-            
-            self.coursePicker.selectRow(0, inComponent: 0, animated: true)
+            self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
         }
     }
 
