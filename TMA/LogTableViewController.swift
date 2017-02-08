@@ -77,12 +77,27 @@ class LogTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let logs = self.realm.objects(Log.self)
-            try! self.realm.write {
-                logs[index.row].course.numberOfHoursLogged -= logs[index.row].duration
-                self.realm.delete(logs[index.row])
-            }
-            tableView.reloadData()
+            let optionMenu = UIAlertController(title: nil, message: "Log will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Log", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                let logs = self.realm.objects(Log.self)
+                try! self.realm.write {
+                    logs[index.row].course.numberOfHoursLogged -= logs[index.row].duration
+                    self.realm.delete(logs[index.row])
+                }
+                self.tableView.reloadData()
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            })
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
         }
         delete.backgroundColor = .red
         

@@ -80,12 +80,28 @@ class CourseTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let course = self.courses[index.row]
-            try! self.realm.write {
-                let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
-                self.realm.delete(logsToDelete)
-                self.realm.delete(course)
-            }
+            let optionMenu = UIAlertController(title: nil, message: "Course will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                let course = self.courses[index.row]
+                try! self.realm.write {
+                    let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
+                    self.realm.delete(logsToDelete)
+                    self.realm.delete(course)
+                }
+                self.tableView.reloadData()
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            })
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
             tableView.reloadData()
             
         }//end delete
