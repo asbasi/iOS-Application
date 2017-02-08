@@ -77,13 +77,14 @@ class CourseTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+
+            let course = self.courses[index.row]
             
-            let optionMenu = UIAlertController(title: nil, message: "Course will be deleted forever.", preferredStyle: .actionSheet)
+            let optionMenu = UIAlertController(title: nil, message: "\"\(course.name!)\" will be deleted forever.", preferredStyle: .actionSheet)
             
             let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
-                
-                let course = self.courses[index.row]
+
                 try! self.realm.write {
                     let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
                     self.realm.delete(logsToDelete)
@@ -100,8 +101,6 @@ class CourseTableViewController: UITableViewController {
             optionMenu.addAction(cancelAction)
             
             self.present(optionMenu, animated: true, completion: nil)
-            tableView.reloadData()
-            
         }//end delete
         delete.backgroundColor = .red
 

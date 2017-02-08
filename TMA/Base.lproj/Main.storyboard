@@ -394,7 +394,7 @@
             <objects>
                 <navigationController id="i9N-kH-Hkd" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Log" image="log" id="9Ew-mf-4mz"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="i74-LH-Ghg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="i74-LH-Ghg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -412,7 +412,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DUF-S6-hWR" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Overview" image="overview" id="aBW-3m-1Gp"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bGi-8W-rgb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bGi-8W-rgb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -431,7 +431,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FYF-Le-yp6" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Planner" image="planner" id="0s8-Fs-jct"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cNn-xE-CLN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cNn-xE-CLN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

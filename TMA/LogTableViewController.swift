@@ -89,9 +89,6 @@ class LogTableViewController: UITableViewController {
         debugPrint("DONE view DID load ------------")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func didReceiveMemoryWarning() {
@@ -150,14 +147,14 @@ class LogTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let optionMenu = UIAlertController(title: nil, message: "Log will be deleted forever.", preferredStyle: .actionSheet)
+            let log = self.logs[index.section][index.row]
             
+            let optionMenu = UIAlertController(title: nil, message: "\"\(log.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
+        
             let deleteAction = UIAlertAction(title: "Delete Log", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                
                 try! self.realm.write {
-                    let log = self.logs[index.section][index.row]
                     self.logs[index.section].remove(at: index.row)
                     if self.logs[index.section].count == 0 {
                         self.logs.remove(at: index.section)
@@ -184,9 +181,6 @@ class LogTableViewController: UITableViewController {
             
             
             self.logToEdit = self.logs[index.section][index.row]
-            
-            
-            
             self.performSegue(withIdentifier: "editLog", sender: nil)
         }
         edit.backgroundColor = .blue

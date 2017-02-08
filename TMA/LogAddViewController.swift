@@ -9,8 +9,6 @@
 //import UIKit
 //import RealmSwift
 //
-//class LogAddViewController: UIViewController {
-//
 
 import UIKit
 import RealmSwift
