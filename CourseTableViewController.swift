@@ -9,6 +9,12 @@
 import UIKit
 import RealmSwift
 
+class CourseTableViewCell: UITableViewCell {
+    @IBOutlet weak var course: UILabel!
+    @IBOutlet weak var percentage: UILabel!
+}
+
+
 class CourseTableViewController: UITableViewController {
 
     let realm = try! Realm()
@@ -57,9 +63,10 @@ class CourseTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
-        cell.textLabel!.text = self.courses[indexPath.row].name
+        cell.course!.text = self.courses[indexPath.row].name
+        cell.percentage!.text = "\(self.courses[indexPath.row].numberOfHoursLogged)" // / numberOfHoursAllocated
         
         return cell
     }
@@ -73,11 +80,15 @@ class CourseTableViewController: UITableViewController {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
+            let course = self.courses[index.row]
             try! self.realm.write {
-                self.realm.delete(self.courses[index.row])
+                let logsToDelete = self.realm.objects(Log.self).filter("course.name = \(course.name)")
+                self.realm.delete(logsToDelete)
+                self.realm.delete(course)
             }
             tableView.reloadData()
-        }
+            
+        }//end delete
         delete.backgroundColor = .red
 
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in

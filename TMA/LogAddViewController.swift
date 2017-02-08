@@ -41,18 +41,24 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             let log = Log()
             
             log.title = titleTextField.text
-            log.duration = Int(durationTextField.text!)!
+            log.duration = Float(durationTextField.text!)!
             log.date = NSDate();
             log.course = course
+            try! self.realm.write {
+                course.numberOfHoursLogged += log.duration
+            }
             
             Helpers.DB_insert(obj: log)
             
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
+                course.numberOfHoursLogged -= log!.duration
                 log!.title = titleTextField.text
-                log!.duration = Int(durationTextField.text!)!
+                log!.duration = Float(durationTextField.text!)!
                 log!.course = course
+                course.numberOfHoursLogged += log!.duration
+                
                 
             }
         }
@@ -63,6 +69,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.courses = self.realm.objects(Course.self)
         
         //course picker setup
         self.coursePicker.dataSource = self

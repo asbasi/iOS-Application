@@ -24,8 +24,10 @@ class LogTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        
         self.logs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: true)
+        
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -53,9 +55,7 @@ class LogTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         
-        let logs = self.realm.objects(Log.self)
-        
-        return logs.count
+        return self.logs.count
     }
 
     
@@ -79,6 +79,7 @@ class LogTableViewController: UITableViewController {
             
             let logs = self.realm.objects(Log.self)
             try! self.realm.write {
+                logs[index.row].course.numberOfHoursLogged -= logs[index.row].duration
                 self.realm.delete(logs[index.row])
             }
             tableView.reloadData()
