@@ -19,13 +19,40 @@ class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
     var logToEdit: Log!
-    var logs: Results<Log>!
+    var logs = [[Log]]()
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         
-        self.logs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
+        debugPrint("view WILL load ------------")
+        let cal = Calendar(identifier: .gregorian)
+        var logs = [[Log]]()
+        
+        let rawLogs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
+        
+        var allDates = [Date]()
+        for log in rawLogs {
+            let date = cal.startOfDay(for: log.date as Date)
+            if !allDates.contains(date)  {
+                allDates.append(date)
+                debugPrint("\(log.date)")
+            }
+        }
+        
+        
+        for dateBegin in allDates {
+            var components = DateComponents()
+            components.day = 1
+            components.second = -1
+            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+            
+            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: false)))
+            
+        }
+        self.logs = logs
+        debugPrint("DONE view WILL load ------------")
+        
         
         tableView.reloadData()
     }
@@ -33,6 +60,33 @@ class LogTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        debugPrint("view DID load ------------")
+        let cal = Calendar(identifier: .gregorian)
+        var logs = [[Log]]()
+        
+        let rawLogs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
+        
+        var allDates = [Date]()
+        for log in rawLogs {
+            let date = cal.startOfDay(for: log.date as Date)
+            if !allDates.contains(date)  {
+                allDates.append(date)
+                debugPrint("\(log.date)")
+            }
+        }
+        
+        
+        for dateBegin in allDates {
+            var components = DateComponents()
+            components.day = 1
+            components.second = -1
+            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+            
+            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: false)))
+            
+        }
+        self.logs = logs
+        debugPrint("DONE view DID load ------------")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -48,21 +102,34 @@ class LogTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return self.logs.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        "Today (Monday, January 23rd)"
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM dd"
+        let date = self.logs[section][0].date! as! Date
+        let strDate = formatter.string(from: date)
+        if Calendar.current.isDateInToday(date) {
+            return "Today (\(strDate))"
+        }
+        else {
+            return strDate
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
-        return self.logs.count
+        return self.logs[section].count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
         
-        let log = self.logs[indexPath.row]
+        let log = self.logs[indexPath.section][indexPath.row]
         
         cell.title?.text = log.title
         cell.duration?.text = "\(log.duration) hours"
@@ -90,9 +157,15 @@ class LogTableViewController: UITableViewController {
                 
                 
                 try! self.realm.write {
-                    self.logs[index.row].course.numberOfHoursLogged -= self.logs[index.row].duration
-                    self.realm.delete(self.logs[index.row])
+                    let log = self.logs[index.section][index.row]
+                    self.logs[index.section].remove(at: index.row)
+                    if self.logs[index.section].count == 0 {
+                        self.logs.remove(at: index.section)
+                    }
+                    log.course.numberOfHoursLogged -= log.duration
+                    self.realm.delete(log)
                 }
+                
                 self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
@@ -110,7 +183,7 @@ class LogTableViewController: UITableViewController {
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             
             
-            self.logToEdit = self.logs[index.row]
+            self.logToEdit = self.logs[index.section][index.row]
             
             
             
