@@ -108,7 +108,7 @@ class LogTableViewController: UITableViewController {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM dd"
-        let date = self.logs[section][0].date! as! Date
+        let date = self.logs[section][0].date! as Date
         let strDate = formatter.string(from: date)
         if Calendar.current.isDateInToday(date) {
             return "Today (\(strDate))"

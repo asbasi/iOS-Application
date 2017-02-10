@@ -64,7 +64,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             }
         }
         
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -92,7 +92,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
             self.datePicker!.date = self.log!.date as Date
-            var courseRow = courseNames.index(of: self.log!.course.name)
+            let courseRow = courseNames.index(of: self.log!.course.name)
             
             self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
         }

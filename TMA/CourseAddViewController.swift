@@ -63,7 +63,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         
         
         
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
 
     }
         
