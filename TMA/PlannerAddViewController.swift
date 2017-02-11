@@ -7,10 +7,16 @@
 //
 
 import UIKit
+import RealmSwift
 
-class EventAddViewController: UIViewController {
+class PlannerAddViewController: UIViewController {
 
+    let realm = try! Realm()
+    
+    
+    
     var operation: String = ""
+    var event: Event?
     
     override func viewDidLoad() {
         super.viewDidLoad()
