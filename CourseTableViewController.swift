@@ -18,6 +18,7 @@ class CourseTableViewCell: UITableViewCell {
 class CourseTableViewController: UITableViewController {
 
     let realm = try! Realm()
+    
     var courseToEdit: Course!
     var courses: Results<Course>!
 
@@ -114,11 +115,6 @@ class CourseTableViewController: UITableViewController {
         }
         edit.backgroundColor = .blue
 
-//        let share = UITableViewRowAction(style: .normal, title: "Share") { action, index in
-//            print("share button tapped")
-//        }
-//        share.backgroundColor = .blue
-        
         return [delete, edit]
     }
     

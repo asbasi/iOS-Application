@@ -7,7 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Log: Event{
-    dynamic var duration: Float = 0 //hours
+class Log: Item {
 }

@@ -7,3 +7,11 @@
 //
 
 import Foundation
+import RealmSwift
+
+class Item: Object {
+    dynamic var title: String!
+    dynamic var date: NSDate!
+    dynamic var course: Course!
+    dynamic var duration: Float = 0 //hours
+}
