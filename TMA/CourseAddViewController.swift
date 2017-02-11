@@ -26,13 +26,12 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var quarterPicker: UIPickerView!
     @IBOutlet weak var recommendedTextField: UITextField!
     
-    
     @IBAction func recommendedText(_ sender: Any) {
         if(!(unitTextField.text?.isEmpty)!)
         {
             let recommendedHoursPerUnit = 3
             
-            recommendedTextField!.text = "\(Int(unitTextField.text!)! * recommendedHoursPerUnit) study hours recommended."
+            recommendedTextField!.text = "\(Int(unitTextField.text!)! * recommendedHoursPerUnit) hours/week recommended."
         }
     }
     
