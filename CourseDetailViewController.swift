@@ -19,18 +19,37 @@ class CourseDetailViewController: UIViewController {
     
     // Setting the Chart Data here
     func setChar(data: [String], values: [Double]){
+        
+
+        
         barChartView.noDataText = "data needs to be provided for the chart."
         
         var dataEntries: [BarChartDataEntry] = []
         
         for i in 0..<data.count{
-            let dataEntry = BarChartDataEntry(x: Double(i), yValues: values)
+            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
+            //x: Double(i), yValues: values, label: data[i])
+            
             dataEntries.append(dataEntry)
+            
         }
         
+        barChartView.descriptionText = ""
+        barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        
+//        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+//        chartDataSet.colors = ChartColorTemplates.colorful()
+        
+        let ll = ChartLimitLine(limit: 10.0, label: "Target")
+        barChartView.rightAxis.addLimitLine(ll)
+        
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Studyhours")
-//        let charData = BarChartData(xVals: weekDays, dataSets: chartDataSet)
-//        barChartView.data = charData
+        chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
+        
+        barChartView.xAxis.labelPosition = .bottom
+        let chartData = BarChartData()
+        chartData.addDataSet(chartDataSet)
+        barChartView.data = chartData
         
     }
     
