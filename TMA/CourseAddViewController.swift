@@ -13,6 +13,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     let pickerData = [
         ["Fall 2016","Winter 2017","Spring 2017"]
     ]
+    var quarterPicker = UIPickerView()
     
     let realm = try! Realm()
     
@@ -23,8 +24,8 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
-    @IBOutlet weak var quarterPicker: UIPickerView!
     @IBOutlet weak var recommendedTextField: UITextField!
+    @IBOutlet weak var quarterTextField: UITextField!
     
     @IBAction func recommendedText(_ sender: Any) {
         if(!(unitTextField.text?.isEmpty)!)
@@ -55,7 +56,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             
             course!.instructor = instructorTextField.text!
             course!.units = Int(unitTextField.text!)!
-            course!.quarter = pickerData[0][quarterPicker.selectedRow(inComponent: 0)]
+            course!.quarter = quarterTextField.text!
             Helpers.DB_insert(obj: course!)
         }
         if(editOrAdd=="edit"){
@@ -64,7 +65,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
                 
                 course!.instructor = instructorTextField.text!
                 course!.units = Int(unitTextField.text!)!
-                course!.quarter = pickerData[0][quarterPicker.selectedRow(inComponent: 0)]
+                course!.quarter = quarterTextField.text!
 
             }
         }
@@ -78,8 +79,10 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
+        self.quarterTextField.inputView = quarterPicker
         
         self.courses = self.realm.objects(Course.self)
         
@@ -87,8 +90,9 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             self.nameTextField.text = self.course!.name
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"
-            let row = pickerData[0].index(of: self.course!.quarter)
-            self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
+            //let row = pickerData[0].index(of: self.course!.quarter)
+            //self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
+            self.quarterTextField.text = self.course!.quarter
         }
         
         
@@ -135,7 +139,9 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         return pickerData[component][row]
     }
     
-    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        quarterTextField.text = pickerData[component][row]
+    }
     
     
     

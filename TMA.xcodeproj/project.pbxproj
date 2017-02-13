@@ -18,41 +18,41 @@
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF402E1E47DDF70095B2FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402D1E47DDF70095B2FD /* Log.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
-		11F8580F1E516B2C007DCFAC /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F8580A1E516B04007DCFAC /* Charts.framework */; };
-		11F858101E516B2C007DCFAC /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 11F8580A1E516B04007DCFAC /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962C91E4ED00B001EAAC0 /* PlannerAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C81E4ED00B001EAAC0 /* PlannerAddViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		603F30D61E481458000B68CD /* LogAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603F30D51E481458000B68CD /* LogAddViewController.swift */; };
 		605724741E4800AC00B6BC8B /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605724731E4800AC00B6BC8B /* LogTableViewController.swift */; };
+		8F8CD68A1E51881F00D2B163 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8CD6851E5187CB00D2B163 /* Charts.framework */; };
+		8F8CD68B1E51881F00D2B163 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8CD6851E5187CB00D2B163 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		11F858091E516B04007DCFAC /* PBXContainerItemProxy */ = {
+		8F8CD6841E5187CB00D2B163 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11F858031E516B03007DCFAC /* Charts.xcodeproj */;
+			containerPortal = 8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06165F241D8110E600722320;
 			remoteInfo = Charts;
 		};
-		11F8580B1E516B04007DCFAC /* PBXContainerItemProxy */ = {
+		8F8CD6861E5187CB00D2B163 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11F858031E516B03007DCFAC /* Charts.xcodeproj */;
+			containerPortal = 8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06B120D51D811E6200D14B02;
 			remoteInfo = ChartsRealm;
 		};
-		11F8580D1E516B04007DCFAC /* PBXContainerItemProxy */ = {
+		8F8CD6881E5187CB00D2B163 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11F858031E516B03007DCFAC /* Charts.xcodeproj */;
+			containerPortal = 8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 06165F2E1D8110E600722320;
 			remoteInfo = ChartsTests;
 		};
-		11F858111E516B2C007DCFAC /* PBXContainerItemProxy */ = {
+		8F8CD68C1E51881F00D2B163 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 11F858031E516B03007DCFAC /* Charts.xcodeproj */;
+			containerPortal = 8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 06165F231D8110E600722320;
 			remoteInfo = Charts;
@@ -66,7 +66,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				11F858101E516B2C007DCFAC /* Charts.framework in Embed Frameworks */,
+				8F8CD68B1E51881F00D2B163 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,13 +87,13 @@
 		00DF402B1E47DC930095B2FD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		11F858031E516B03007DCFAC /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../Downloads/Chart Try/Library/Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962C81E4ED00B001EAAC0 /* PlannerAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerAddViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		603F30D51E481458000B68CD /* LogAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddViewController.swift; sourceTree = "<group>"; };
 		605724731E4800AC00B6BC8B /* LogTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
+		8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../../../../../../../Volumes/Media/Downloads/Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,7 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */,
-				11F8580F1E516B2C007DCFAC /* Charts.framework in Frameworks */,
+				8F8CD68A1E51881F00D2B163 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +132,7 @@
 		009C4E121E42D37D00260378 /* TMA */ = {
 			isa = PBXGroup;
 			children = (
-				11F858031E516B03007DCFAC /* Charts.xcodeproj */,
+				8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */,
 				00AA39051E47EA0800D819DD /* Models */,
 				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
 				009C4E2B1E42DD2800260378 /* CourseTableViewController.swift */,
@@ -162,16 +162,6 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		11F858041E516B03007DCFAC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				11F8580A1E516B04007DCFAC /* Charts.framework */,
-				11F8580C1E516B04007DCFAC /* ChartsRealm.framework */,
-				11F8580E1E516B04007DCFAC /* ChartsTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		283FB7494105331B3EFB97C9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +177,16 @@
 				B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		8F8CD67F1E5187CB00D2B163 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8F8CD6851E5187CB00D2B163 /* Charts.framework */,
+				8F8CD6871E5187CB00D2B163 /* ChartsRealm.framework */,
+				8F8CD6891E5187CB00D2B163 /* ChartsTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,7 +207,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				11F858121E516B2C007DCFAC /* PBXTargetDependency */,
+				8F8CD68D1E51881F00D2B163 /* PBXTargetDependency */,
 			);
 			name = TMA;
 			productName = TMA;
@@ -244,8 +244,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 11F858041E516B03007DCFAC /* Products */;
-					ProjectRef = 11F858031E516B03007DCFAC /* Charts.xcodeproj */;
+					ProductGroup = 8F8CD67F1E5187CB00D2B163 /* Products */;
+					ProjectRef = 8F8CD67E1E5187CB00D2B163 /* Charts.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -256,25 +256,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		11F8580A1E516B04007DCFAC /* Charts.framework */ = {
+		8F8CD6851E5187CB00D2B163 /* Charts.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Charts.framework;
-			remoteRef = 11F858091E516B04007DCFAC /* PBXContainerItemProxy */;
+			remoteRef = 8F8CD6841E5187CB00D2B163 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		11F8580C1E516B04007DCFAC /* ChartsRealm.framework */ = {
+		8F8CD6871E5187CB00D2B163 /* ChartsRealm.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = ChartsRealm.framework;
-			remoteRef = 11F8580B1E516B04007DCFAC /* PBXContainerItemProxy */;
+			remoteRef = 8F8CD6861E5187CB00D2B163 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		11F8580E1E516B04007DCFAC /* ChartsTests.xctest */ = {
+		8F8CD6891E5187CB00D2B163 /* ChartsTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ChartsTests.xctest;
-			remoteRef = 11F8580D1E516B04007DCFAC /* PBXContainerItemProxy */;
+			remoteRef = 8F8CD6881E5187CB00D2B163 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -364,10 +364,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		11F858121E516B2C007DCFAC /* PBXTargetDependency */ = {
+		8F8CD68D1E51881F00D2B163 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
-			targetProxy = 11F858111E516B2C007DCFAC /* PBXContainerItemProxy */;
+			targetProxy = 8F8CD68C1E51881F00D2B163 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
