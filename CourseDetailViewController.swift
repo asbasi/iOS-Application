@@ -7,16 +7,43 @@
 //
 
 import UIKit
+import Charts
 
 class CourseDetailViewController: UIViewController {
 
     @IBOutlet weak var NoteContent: UILabel!
+    @IBOutlet weak var barChartView: BarChartView!
+    
     var course: Course!
+    var weekDays: [String]!
+    
+    // Setting the Chart Data here
+    func setChar(data: [String], values: [Double]){
+        barChartView.noDataText = "data needs to be provided for the chart."
+        
+        var dataEntries: [BarChartDataEntry] = []
+        
+        for i in 0..<data.count{
+            let dataEntry = BarChartDataEntry(x: Double(i), yValues: values)
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Studyhours")
+//        let charData = BarChartData(xVals: weekDays, dataSets: chartDataSet)
+//        barChartView.data = charData
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"]
+        //hardcoding the hours for now
+        let studyHours = [5.0, 10.0, 6.0, 8.0, 3.0, 12.0, 7.0]
+        
+        setChar(data: weekDays, values: studyHours)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
