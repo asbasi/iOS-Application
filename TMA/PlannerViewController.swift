@@ -26,7 +26,7 @@ class CheckBox: UIButton {
     }
     
     override func awakeFromNib() {
-        self.addTarget(self, action: Selector("buttonClicked:"), for: UIControlEvents.touchUpInside)
+        self.addTarget(self, action: Selector(("buttonClicked:")), for: UIControlEvents.touchUpInside)
         self.isChecked = false
     }
     
@@ -37,18 +37,42 @@ class CheckBox: UIButton {
     }
 }
 
-class PlannerTableViewController: UITableViewController {
+class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    
+    @IBOutlet weak var segmentController: UISegmentedControl!
+    @IBOutlet weak var myTableView: UITableView!
     let realm = try! Realm()
     var eventToEdit: Event!
     var events: Results<Event>!
+
     
+    var allTypesOfEvents = [Results<Event>!]() //0: Active, 1: Finished, 2: All
+    
+    
+    
+    @IBAction func segmentChanged(_ sender: Any) {
+        debugPrint("segmentChanged \(segmentController.selectedSegmentIndex)")
+        self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
+        
+        self.myTableView.reloadData()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.events = self.realm.objects(Event.self)
+        let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byKeyPath: "date", ascending: true)
         
-        tableView.reloadData()
+        let finishedEvents = self.realm.objects(Event.self).filter("checked = true").sorted(byKeyPath: "date", ascending: true)
+        
+        let allEvents = self.realm.objects(Event.self).sorted(byKeyPath: "date", ascending: true)
+        
+        self.allTypesOfEvents = [activeEvents, finishedEvents, allEvents]
+        
+        self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
+//        self.events = self.allTypesOfEvents[0]
+        
+        debugPrint("im done with viewwillappear")
+        self.myTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -62,18 +86,18 @@ class PlannerTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return self.events.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "plannerCell", for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.myTableView.dequeueReusableCell(withIdentifier: "plannerCell", for: indexPath)
 
         cell.textLabel!.text = self.events[indexPath.row].title
 
@@ -81,39 +105,12 @@ class PlannerTableViewController: UITableViewController {
     }
 
     // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
@@ -128,7 +125,7 @@ class PlannerTableViewController: UITableViewController {
                     event.course.numberOfHoursAllocated -= event.duration
                     self.realm.delete(event)
                 }
-                self.tableView.reloadData()
+                self.myTableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
             
@@ -169,7 +166,7 @@ class PlannerTableViewController: UITableViewController {
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "showEvent" {
-            var selectedIndexPath = tableView.indexPathForSelectedRow
+            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
 
             eventAddViewController.operation = "show"
             eventAddViewController.event = events[selectedIndexPath!.row]
