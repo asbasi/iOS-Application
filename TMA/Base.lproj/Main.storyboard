@@ -228,6 +228,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="fiS-Ui-bDR" kind="show" identifier="showEvent" id="8Jp-QH-lZG"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -260,6 +263,7 @@
                     <connections>
                         <outlet property="myTableView" destination="24c-Wd-ChE" id="ucx-bk-ARs"/>
                         <outlet property="segmentController" destination="Bwu-bi-czA" id="Rt3-oJ-EXZ"/>
+                        <segue destination="fiS-Ui-bDR" kind="show" identifier="editEvent" id="gPf-eW-CPG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4g-B0-zRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -592,7 +596,8 @@
         <image name="planner" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DH5-Vh-7b9"/>
-        <segue reference="MeO-ov-Air"/>
+        <segue reference="OeT-oK-jtn"/>
+        <segue reference="7cT-4E-fMU"/>
+        <segue reference="gPf-eW-CPG"/>
     </inferredMetricsTieBreakers>
 </document>
