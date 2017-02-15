@@ -7,5 +7,6 @@ target 'TMA' do
   
   # Pods for TMA
   pod 'RealmSwift'
+  pod 'Charts/Realm'
 
 end
