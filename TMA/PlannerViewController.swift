@@ -60,11 +60,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byProperty: "date", ascending: true)
+        let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byKeyPath: "date", ascending: true)
         
-        let finishedEvents = self.realm.objects(Event.self).filter("checked = true").sorted(byProperty: "date", ascending: true)
+        let finishedEvents = self.realm.objects(Event.self).filter("checked = true").sorted(byKeyPath: "date", ascending: true)
         
-        let allEvents = self.realm.objects(Event.self).sorted(byProperty: "date", ascending: true)
+        let allEvents = self.realm.objects(Event.self).sorted(byKeyPath: "date", ascending: true)
         
         self.allTypesOfEvents = [activeEvents, finishedEvents, allEvents]
         

@@ -29,7 +29,7 @@ class LogTableViewController: UITableViewController {
         let cal = Calendar(identifier: .gregorian)
         var logs = [[Log]]()
         
-        let rawLogs = self.realm.objects(Log.self).sorted(byProperty: "date", ascending: false)
+        let rawLogs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
         
         var allDates = [Date]()
         for log in rawLogs {
@@ -47,7 +47,7 @@ class LogTableViewController: UITableViewController {
             components.second = -1
             let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
             
-            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byProperty: "date", ascending: false)))
+            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: false)))
             
         }
         self.logs = logs
