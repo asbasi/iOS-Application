@@ -18,30 +18,35 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     let realm = try! Realm()
     
-    @IBOutlet weak var coursePicker: UIPickerView!
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var durationTextField: UITextField!
-    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
+    @IBOutlet weak var courseTextField: UITextField!
+    
+    @IBOutlet weak var dateTextField: UITextField!
     
     var log: Log?
     var operation: String = "" // "edit", "add", or "show"
     var courses: Results<Course>!
-    
+    var coursePicker = UIPickerView()
+    var datePicker = UIDatePicker()
+    var pickedDate = NSDate()
     @IBAction func done(_ sender: Any) {
-        //get the course
-        let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
         
-        if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)!) {
+        if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (courseTextField.text?.isEmpty)!) {
             return;
         }
+        
+        //get the course
+        let course = self.courses.filter("name = '\(courseTextField.text!)'")[0]
         
         if(self.operation == "add") {
             let log = Log()
             
             log.title = titleTextField.text
             log.duration = Float(durationTextField.text!)!
-            log.date = datePicker.date as NSDate!
+            log.date = pickedDate
             log.course = course
             
             try! self.realm.write {
@@ -57,7 +62,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                 log!.title = titleTextField.text
                 log!.duration = Float(durationTextField.text!)!
                 log!.course = course
-                log!.date = datePicker.date as NSDate!
+                log!.date = pickedDate
                 course.numberOfHoursLogged += log!.duration
                 
                 
@@ -71,6 +76,11 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     override func viewDidLoad() {
         super.viewDidLoad()
         datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
+        
+        //dateFormatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
 
         self.courses = self.realm.objects(Course.self)
         var courseNames = [String]()
@@ -81,7 +91,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         //course picker setup
         self.coursePicker.dataSource = self
         self.coursePicker.delegate = self
-        
+        self.courseTextField.inputView = coursePicker
+        //date picker setup
+        createDatePicker()
         
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
@@ -91,10 +103,10 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             self.pageTitleTextField.title = "Edit Log"
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
-            self.datePicker!.date = self.log!.date as Date
-            let courseRow = courseNames.index(of: self.log!.course.name)
-            
-            self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
+            self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+            //let courseRow = courseNames.index(of: self.log!.course.name)
+            self.courseTextField.text = self.log!.course.name
+            //self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
         }
     }
 
@@ -137,5 +149,32 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         
         return self.courses[row].name
     }
-
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        courseTextField.text = self.courses[row].name
+    }
+    
+    func createDatePicker() {
+        //toolbar
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        //bar button item
+        let pickerDoneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        toolbar.setItems([pickerDoneButton], animated: false)
+        dateTextField.inputAccessoryView = toolbar
+        
+        //assign date picker to text field
+        dateTextField.inputView = datePicker
+    }
+    
+    func donePressed() {
+        pickedDate = datePicker.date as NSDate
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+        
+        self.view.endEditing(true)
+    }
 }
