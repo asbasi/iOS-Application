@@ -93,6 +93,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             //let row = pickerData[0].index(of: self.course!.quarter)
             //self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
             self.quarterTextField.text = self.course!.quarter
+            recommendedText(self)
         }
         
         
