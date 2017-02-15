@@ -60,33 +60,33 @@ class LogTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debugPrint("view DID load ------------")
-        let cal = Calendar(identifier: .gregorian)
-        var logs = [[Log]]()
-        
-        let rawLogs = self.realm.objects(Log.self).sorted(byProperty: "date", ascending: false)
-        
-        var allDates = [Date]()
-        for log in rawLogs {
-            let date = cal.startOfDay(for: log.date as Date)
-            if !allDates.contains(date)  {
-                allDates.append(date)
-                debugPrint("\(log.date)")
-            }
-        }
-        
-        
-        for dateBegin in allDates {
-            var components = DateComponents()
-            components.day = 1
-            components.second = -1
-            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
-            
-            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byProperty: "date", ascending: false)))
-            
-        }
-        self.logs = logs
-        debugPrint("DONE view DID load ------------")
+//        debugPrint("view DID load ------------")
+//        let cal = Calendar(identifier: .gregorian)
+//        var logs = [[Log]]()
+//        
+//        let rawLogs = self.realm.objects(Log.self).sorted(byProperty: "date", ascending: false)
+//        
+//        var allDates = [Date]()
+//        for log in rawLogs {
+//            let date = cal.startOfDay(for: log.date as Date)
+//            if !allDates.contains(date)  {
+//                allDates.append(date)
+//                debugPrint("\(log.date)")
+//            }
+//        }
+//        
+//        
+//        for dateBegin in allDates {
+//            var components = DateComponents()
+//            components.day = 1
+//            components.second = -1
+//            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+//            
+//            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byProperty: "date", ascending: false)))
+//            
+//        }
+//        self.logs = logs
+//        debugPrint("DONE view DID load ------------")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }

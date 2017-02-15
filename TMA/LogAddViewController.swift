@@ -1,10 +1,10 @@
-////
-////  LogAddViewController.swift
-////  TMA
-////
-////  Created by Arvinder Basi on 2/5/17.
-////  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
-////
+//
+//  LogAddViewController.swift
+//  TMA
+//
+//  Created by Arvinder Basi on 2/5/17.
+//  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
+//
 //
 //import UIKit
 //import RealmSwift

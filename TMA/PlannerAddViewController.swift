@@ -50,12 +50,12 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
-                course.numberOfHoursLogged -= event!.duration
+                course.numberOfHoursAllocated -= event!.duration
                 event!.title = titleTextField.text
                 event!.duration = Float(durationTextField.text!)!
                 event!.course = course
                 event!.date = datePicker.date as NSDate!
-                course.numberOfHoursLogged += event!.duration
+                course.numberOfHoursAllocated += event!.duration
                 
                 
             }
