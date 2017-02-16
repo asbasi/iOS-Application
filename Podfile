@@ -8,5 +8,6 @@ target 'TMA' do
   # Pods for TMA
   pod 'RealmSwift'
   pod 'Charts'
+  pod 'BEMCheckBox'
 
 end

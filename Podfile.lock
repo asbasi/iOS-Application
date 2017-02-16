@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.0)
   - Charts (3.0.1):
     - Charts/Core (= 3.0.1)
   - Charts/Core (3.0.1)
@@ -9,14 +10,16 @@ PODS:
     - Realm (= 2.4.2)
 
 DEPENDENCIES:
+  - BEMCheckBox
   - Charts
   - RealmSwift
 
 SPEC CHECKSUMS:
+  BEMCheckBox: e18e4a148905b290bd03d98b767651c104f4eda3
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
   Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
   RealmSwift: 9556c0fe0f0cfecacfb755ae9e68ff379fc6bead
 
-PODFILE CHECKSUM: ff6614c5b41944810f3d4dd91f7304c9cae5816c
+PODFILE CHECKSUM: 9942735dead2a973e0b0a1bd087d7ca1633a7b53
 
 COCOAPODS: 1.2.0
