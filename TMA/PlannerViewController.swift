@@ -13,6 +13,12 @@ import BEMCheckBox
 class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
+    
+    var buttonAction: ((_ sender: AnyObject) -> Void)?
+    
+    @IBAction func checkboxToggled(_ sender: AnyObject) {
+        self.buttonAction?(sender)
+    }
 }
 
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -24,10 +30,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     var eventToEdit: Event!
     var events: Results<Event>!
 
-    
     var allTypesOfEvents = [Results<Event>!]() //0: Active, 1: Finished, 2: All
-    
-    
     
     @IBAction func segmentChanged(_ sender: Any) {
         debugPrint("segmentChanged \(segmentController.selectedSegmentIndex)")
@@ -35,6 +38,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.myTableView.reloadData()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -78,15 +82,37 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
 
         cell.title?.text = self.events[indexPath.row].title
-        cell.checkbox.on = false
+        cell.checkbox.on = self.events[indexPath.row].checked
+        
+        cell.buttonAction = { (_ sender: AnyObject) -> Void in
+            try! self.realm.write {
+                self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+            }
+            self.myTableView.reloadData()
+        }
         
         return cell
     }
-
+    
     // Override to support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = self.myTableView.cellForRow(at: indexPath) as! PlannerViewCell
+        
+        print("Entered didSelectRow")
+        
+        // Only reload the data if selected cell's checkbox was flipped.
+        if(self.events[indexPath.row].checked != cell.checkbox.on)
+        {
+            try! self.realm.write {
+                self.events[indexPath.row].checked = cell.checkbox.on
+            }
+            self.myTableView.reloadData()
+        }
     }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
