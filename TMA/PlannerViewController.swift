@@ -99,21 +99,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = self.myTableView.cellForRow(at: indexPath) as! PlannerViewCell
-        
-        print("Entered didSelectRow")
-        
-        // Only reload the data if selected cell's checkbox was flipped.
-        if(self.events[indexPath.row].checked != cell.checkbox.on)
-        {
-            try! self.realm.write {
-                self.events[indexPath.row].checked = cell.checkbox.on
-            }
-            self.myTableView.reloadData()
-        }
-    }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
