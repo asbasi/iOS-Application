@@ -23,14 +23,15 @@ class PlannerViewCell: UITableViewCell {
 
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var myTableView: UITableView!
-    let realm = try! Realm()
-    var eventToEdit: Event!
-    var events: Results<Event>!
 
-    var allTypesOfEvents = [Results<Event>!]() //0: Active, 1: Finished, 2: All
+    let realm = try! Realm()
+    
+    var eventToEdit: Event!
+    var events = [[Event]]()
+
+    var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
     @IBAction func segmentChanged(_ sender: Any) {
         debugPrint("segmentChanged \(segmentController.selectedSegmentIndex)")
@@ -39,8 +40,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.myTableView.reloadData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func populateSegments()
+    {
+        let cal = Calendar(identifier: .gregorian)
         
         let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byKeyPath: "date", ascending: true)
         
@@ -48,12 +50,53 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let allEvents = self.realm.objects(Event.self).sorted(byKeyPath: "date", ascending: true)
         
-        self.allTypesOfEvents = [activeEvents, finishedEvents, allEvents]
+        let rawEvents = [activeEvents, finishedEvents, allEvents]
+        
+        for segment in 0...2
+        {
+            var events = [[Event]]()
+            var allDates = [Date]()
+            for event in rawEvents[segment]
+            {
+                let date = cal.startOfDay(for: event.date as Date)
+                if !allDates.contains(date)  {
+                    allDates.append(date)
+                }
+            }
+            
+            for dateBegin in allDates
+            {
+                var components = DateComponents()
+                components.day = 1
+                components.second = 1
+                let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+                
+                if(segment == 0) // Active
+                {
+                    events.append(Array(self.realm.objects(Event.self).filter("checked = false AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                }
+                else if(segment == 1) // Finished
+                {
+                    events.append(Array(self.realm.objects(Event.self).filter("checked = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                }
+                else if(segment == 2) // All
+                {
+                    events.append(Array(self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                }
+            }
+            
+            self.allTypesOfEvents[segment] = events
+        }
+        
         
         self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
-//        self.events = self.allTypesOfEvents[0]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        debugPrint("im done with viewwillappear")
+        populateSegments()
+        
         self.myTableView.reloadData()
     }
     
@@ -67,28 +110,59 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     // MARK: - Table view data source
-
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        //        "Today (Monday, January 23rd)"
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM dd"
+        let date = self.events[section][0].date! as Date
+        let strDate = formatter.string(from: date)
+        if Calendar.current.isDateInToday(date) {
+            return "Today (\(strDate))"
+        }
+        else {
+            return strDate
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return self.events.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.events.count
+        return self.events[section].count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
 
-        cell.title?.text = self.events[indexPath.row].title
-        cell.checkbox.on = self.events[indexPath.row].checked
+        cell.title?.text = self.events[indexPath.section][indexPath.row].title
+        cell.checkbox.on = self.events[indexPath.section][indexPath.row].checked
         
         cell.buttonAction = { (_ sender: AnyObject) -> Void in
             try! self.realm.write {
-                self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+                self.events[indexPath.section][indexPath.row].checked = !self.events[indexPath.section][indexPath.row].checked
+                
+                self.populateSegments()
             }
             self.myTableView.reloadData()
+        }
+        
+        let date = self.events[indexPath.section][indexPath.row].date as Date
+        
+        if Calendar.current.isDateInToday(self.events[indexPath.section] [indexPath.row].date as Date) // Today.
+        {
+            cell.backgroundColor = UIColor(red: 239/255, green: 248/255, blue: 205/255, alpha: 1.0)
+        }
+        else if NSDate().compare(date) == .orderedDescending // Before Today.
+        {
+            cell.backgroundColor = UIColor(red: 255/255, green: 166/255, blue: 166/255, alpha: 1.0)
+        }
+        else // After Today.
+        {
+            cell.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 0.91, alpha: 1.0)
         }
         
         return cell
@@ -104,7 +178,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let event = self.events[index.row]
+            let event = self.events[index.section][index.row]
             
             let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
             
@@ -112,6 +186,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 (alert: UIAlertAction!) -> Void in
                 
                 try! self.realm.write {
+                    self.events[index.section].remove(at: index.row)
+                    if self.events[index.section].count == 0
+                    {
+                        self.events.remove(at: index.section)
+                    }
+                    
                     event.course.numberOfHoursAllocated -= event.duration
                     self.realm.delete(event)
                 }
@@ -131,8 +211,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             
-            let events = self.realm.objects(Event.self)
-            self.eventToEdit = events[index.row]
+            self.eventToEdit = self.events[index.section][index.row]
             
             self.performSegue(withIdentifier: "editEvent", sender: nil)
         }

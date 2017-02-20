@@ -18,6 +18,7 @@ class LogTableViewCell: UITableViewCell {
 class LogTableViewController: UITableViewController {
 
     let realm = try! Realm()
+    
     var logToEdit: Log!
     var logs = [[Log]]()
     
