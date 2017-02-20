@@ -88,7 +88,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             self.allTypesOfEvents[segment] = events
         }
         
-        
         self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
     }
     
@@ -121,6 +120,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let strDate = formatter.string(from: date)
         if Calendar.current.isDateInToday(date) {
             return "Today (\(strDate))"
+        }
+        else if Calendar.current.isDateInTomorrow(date) {
+            return "Tommorow (\(strDate))"
         }
         else {
             return strDate
