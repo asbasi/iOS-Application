@@ -14,16 +14,18 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
     let realm = try! Realm()
     
     
-    @IBOutlet weak var coursePicker: UIPickerView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var durationTextField: UITextField!
-    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
+    @IBOutlet weak var courseTextField: UITextField!
+    @IBOutlet weak var dateTextField: UITextField!
     
     var operation: String = ""
     var event: Event?
     var courses: Results<Course>!
-    
+    var coursePicker = UIPickerView()
+    var datePicker = UIDatePicker()
+    var pickedDate = NSDate()
 
     @IBAction func done(_ sender: Any) {
         //get the course
@@ -67,7 +69,11 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
+        //datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
+        //dateFormatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
         
         self.courses = self.realm.objects(Course.self)
         var courseNames = [String]()
@@ -75,9 +81,23 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
             courseNames.append(course.name)
         }
         
+        
         //course picker setup
-        self.coursePicker.dataSource = self
+        self.coursePicker.showsSelectionIndicator = true
         self.coursePicker.delegate = self
+        self.coursePicker.dataSource = self
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(courseDonePressed))
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        self.courseTextField.inputView = coursePicker
+        self.courseTextField.inputAccessoryView = toolBar
+        
+        //date picker setup
+        createDatePicker()
         
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
@@ -87,10 +107,8 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
             self.pageTitleTextField.title = "Edit Event"
             self.titleTextField.text = self.event!.title
             self.durationTextField.text = "\(self.event!.duration)"
-            self.datePicker!.date = self.event!.date as Date
-            let courseRow = courseNames.index(of: self.event!.course.name)
-            
-            self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
+            self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+            self.courseTextField.text = self.event!.course.name
         }    }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -129,5 +147,40 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
         
         
         return self.courses[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.courseTextField.text = self.courses[row].name
+    }
+    
+    
+    func createDatePicker() {
+        //toolbar
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        //bar button item
+        let pickerDoneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(dateDonePressed))
+        toolbar.setItems([pickerDoneButton], animated: false)
+        dateTextField.inputAccessoryView = toolbar
+        
+        //assign date picker to text field
+        dateTextField.inputView = datePicker
+    }
+    
+    func dateDonePressed() {
+        pickedDate = datePicker.date as NSDate
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+        
+        self.view.endEditing(true)
+    }
+    
+    func courseDonePressed() {
+        
+        courseTextField.resignFirstResponder()
+        
     }
 }

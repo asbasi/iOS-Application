@@ -87,9 +87,18 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.quarterPicker.showsSelectionIndicator = true
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(quarterDonePressed))
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
         self.quarterTextField.inputView = quarterPicker
+        self.quarterTextField.inputAccessoryView = toolBar
         
         self.colorPicker.dataSource = self
         self.colorPicker.delegate = self
@@ -176,6 +185,8 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         return ""
     }
     
-    
+    func quarterDonePressed() {
+        quarterTextField.resignFirstResponder()
+    }
     
 }
