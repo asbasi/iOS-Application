@@ -3,6 +3,7 @@ PODS:
   - Charts (3.0.1):
     - Charts/Core (= 3.0.1)
   - Charts/Core (3.0.1)
+  - KDCircularProgress (1.5.2)
   - Realm (2.4.2):
     - Realm/Headers (= 2.4.2)
   - Realm/Headers (2.4.2)
@@ -12,14 +13,16 @@ PODS:
 DEPENDENCIES:
   - BEMCheckBox
   - Charts
+  - KDCircularProgress
   - RealmSwift
 
 SPEC CHECKSUMS:
   BEMCheckBox: e18e4a148905b290bd03d98b767651c104f4eda3
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  KDCircularProgress: 12f677b2deb02409ab48c6cae1898d146b8ad549
   Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
   RealmSwift: 9556c0fe0f0cfecacfb755ae9e68ff379fc6bead
 
-PODFILE CHECKSUM: 9942735dead2a973e0b0a1bd087d7ca1633a7b53
+PODFILE CHECKSUM: c7b479135006c8935109abe46d944bd93a19a6bf
 
 COCOAPODS: 1.2.0

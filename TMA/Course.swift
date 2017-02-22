@@ -14,6 +14,7 @@ class Course: Object {
     dynamic var instructor: String!
     dynamic var units: Int = 0
     dynamic var quarter: String!
+    dynamic var courseColor: String!
     dynamic var numberOfHoursLogged : Float = 0
     dynamic var numberOfHoursAllocated : Float = 0
     

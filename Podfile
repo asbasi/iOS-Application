@@ -9,5 +9,5 @@ target 'TMA' do
   pod 'RealmSwift'
   pod 'Charts'
   pod 'BEMCheckBox'
-
+  pod 'KDCircularProgress'
 end

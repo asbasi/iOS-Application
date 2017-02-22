@@ -18,7 +18,6 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     let realm = try! Realm()
     
-    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var durationTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!

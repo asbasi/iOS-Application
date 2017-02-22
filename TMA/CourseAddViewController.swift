@@ -13,7 +13,12 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     let pickerData = [
         ["Fall 2016","Winter 2017","Spring 2017"]
     ]
+    let pickerColor = [
+        ["Red", "Green", "Blue", "Black", "Orange", "Yellow"]
+    ]
+    
     var quarterPicker = UIPickerView()
+    var colorPicker = UIPickerView()
     
     let realm = try! Realm()
     
@@ -26,6 +31,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var unitTextField: UITextField!
     @IBOutlet weak var recommendedTextField: UITextField!
     @IBOutlet weak var quarterTextField: UITextField!
+    @IBOutlet weak var colorTextField: UITextField!
     
     @IBAction func recommendedText(_ sender: Any) {
         if(!(unitTextField.text?.isEmpty)!)
@@ -57,6 +63,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             course!.instructor = instructorTextField.text!
             course!.units = Int(unitTextField.text!)!
             course!.quarter = quarterTextField.text!
+            course!.courseColor = colorTextField.text!
             Helpers.DB_insert(obj: course!)
         }
         if(editOrAdd=="edit"){
@@ -66,7 +73,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
                 course!.instructor = instructorTextField.text!
                 course!.units = Int(unitTextField.text!)!
                 course!.quarter = quarterTextField.text!
-
+                course!.courseColor = colorTextField.text!
             }
         }
         
@@ -84,6 +91,10 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         self.quarterPicker.delegate = self
         self.quarterTextField.inputView = quarterPicker
         
+        self.colorPicker.dataSource = self
+        self.colorPicker.delegate = self
+        self.colorTextField.inputView = colorPicker
+        
         self.courses = self.realm.objects(Course.self)
         
         if self.editOrAdd == "edit" {
@@ -93,9 +104,10 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             //let row = pickerData[0].index(of: self.course!.quarter)
             //self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
             self.quarterTextField.text = self.course!.quarter
+            self.colorTextField.text = self.course!.courseColor
             recommendedText(self)
+            
         }
-        
         
         // Do any additional setup after loading the view.
     }
@@ -120,16 +132,25 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
      }
      */
 
-    
-    
-    
+
     //MARK: - Picker View Data Sources and Delegates
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return pickerData.count
+        if pickerView == quarterPicker{
+            return pickerData.count
+        }
+        else if pickerView == colorPicker{
+            return pickerColor.count
+        }
+        return 0
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData[component].count
+        if pickerView == quarterPicker{
+            return pickerData[component].count
+        }else if pickerView == colorPicker{
+            return pickerColor[component].count
+        }
+        return 0
     }
     
     func pickerView(_
@@ -137,11 +158,22 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
                     titleForRow row: Int,
                     forComponent component: Int
         ) -> String? {
-        return pickerData[component][row]
+        if pickerView == quarterPicker{
+            return pickerData[component][row]
+        }
+        else if pickerView == colorPicker{
+            return pickerColor[component][row]
+        }
+        return ""
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        quarterTextField.text = pickerData[component][row]
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) -> String!{
+        if pickerView == quarterPicker{
+            return pickerData[component][row]
+        }else if pickerView == colorPicker{
+            return pickerColor[component][row]
+        }
+        return ""
     }
     
     

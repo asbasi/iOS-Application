@@ -9,14 +9,20 @@
 import UIKit
 import Charts
 import RealmSwift
+import KDCircularProgress
 
 class CourseDetailViewController: UIViewController {
 
     
-    @IBOutlet weak var NoteContent: UILabel!
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var barChartView: BarChartView!
+
+
+    @IBOutlet weak var circularProgressView: KDCircularProgress!
     
+    @IBOutlet weak var precentageText: UILabel!
+   
+    let maxCount = 100
     let realm = try! Realm()
     
     var allTypesOfCharts = [([String],[Double])]() //names,values
@@ -63,6 +69,15 @@ class CourseDetailViewController: UIViewController {
         
     }
     
+    func setAngle() -> Void {
+        // The value of precentageText should to be the hours assigned for the day
+        // and then the value of toAngle has to relate to that value
+        
+        circularProgressView.animate(toAngle: 70, duration: 0.5, completion: nil)
+//        circularProgressView.value(forKey: "50%")
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +85,9 @@ class CourseDetailViewController: UIViewController {
         
         //hardcoding the hours for now
         var studyHours = [Double]()
+        
+        circularProgressView.angle = 0
+        setAngle()
         
         var components = DateComponents()
         components.second = -1
