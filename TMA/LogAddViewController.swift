@@ -89,9 +89,19 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         }
         
         //course picker setup
-        self.coursePicker.dataSource = self
+        self.coursePicker.showsSelectionIndicator = true
         self.coursePicker.delegate = self
+        self.coursePicker.dataSource = self
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(courseDonePressed))
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
         self.courseTextField.inputView = coursePicker
+        self.courseTextField.inputAccessoryView = toolBar
+        
         //date picker setup
         createDatePicker()
         
@@ -151,8 +161,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        courseTextField.text = self.courses[row].name
+        self.courseTextField.text = self.courses[row].name
     }
+    
     
     func createDatePicker() {
         //toolbar
@@ -160,7 +171,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         toolbar.sizeToFit()
         
         //bar button item
-        let pickerDoneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        let pickerDoneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(dateDonePressed))
         toolbar.setItems([pickerDoneButton], animated: false)
         dateTextField.inputAccessoryView = toolbar
         
@@ -168,13 +179,19 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         dateTextField.inputView = datePicker
     }
     
-    func donePressed() {
+    func dateDonePressed() {
         pickedDate = datePicker.date as NSDate
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
-        dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+        self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
         
         self.view.endEditing(true)
+    }
+    
+    func courseDonePressed() {
+        
+        courseTextField.resignFirstResponder()
+        
     }
 }
