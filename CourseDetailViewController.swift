@@ -12,13 +12,23 @@ import RealmSwift
 
 class CourseDetailViewController: UIViewController {
 
+    
     @IBOutlet weak var NoteContent: UILabel!
+    @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var barChartView: BarChartView!
     
     let realm = try! Realm()
     
+    var allTypesOfCharts = [([String],[Double])]() //names,values
+    
+    
+    @IBAction func segmentChanged(_ sender: Any) {
+        let (a,b) =  allTypesOfCharts[segmentController.selectedSegmentIndex]
+        
+        setChar(data: a, values: b)
+    }
+    
     var course: Course!
-    var weekDays = [String]()
     
     // Setting the Chart Data here
     func setChar(data: [String], values: [Double]){
@@ -63,24 +73,50 @@ class CourseDetailViewController: UIViewController {
         
         var components = DateComponents()
         components.second = -1
+        var weekDays = [String]()
         
-        
-        
+
+        //weekly
         for offsetDay in [6,5,4,3,2,1,0]{
             let calendar = Calendar.current
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            
+            debugPrint(nDaysAgo.startOfDay)
+            debugPrint(nDaysAgo.endOfDay)
+            debugPrint("============")
             studyHours.append(0)
             for element in x {
+                debugPrint("*****")
+                debugPrint(element.date)
+                debugPrint("*****")
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
             
             weekDays.append(nDaysAgo.dayOfTheWeek()!)
         }
-        
         setChar(data: weekDays, values: studyHours )
+        allTypesOfCharts.append((weekDays,studyHours))
+        debugPrint("----------MONTHLY ------------")
+        
+        //monthly
+        studyHours = [Double]()
+        for offsetDay in [28,21,14,7]{
+            let calendar = Calendar.current
+            let start = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
+            let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
+            debugPrint(start.startOfDay)
+            debugPrint(end.startOfDay)
+            debugPrint("------------------")
+            let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
+            
+            studyHours.append(0)
+            for element in x {
+                studyHours[studyHours.endIndex-1] += Double(element.duration)
+            }
+            debugPrint(studyHours)
+        }
+        allTypesOfCharts.append((["1","2","3","4"],studyHours))
         
         
     }
