@@ -191,6 +191,5 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     func courseDonePressed() {
         
         courseTextField.resignFirstResponder()
-        
     }
 }

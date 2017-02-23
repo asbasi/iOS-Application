@@ -189,13 +189,13 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     }
 
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) -> String!{
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if pickerView == quarterPicker{
-            return pickerData[component][row]
+            self.quarterTextField.text = pickerData[component][row]
         }else if pickerView == colorPicker{
-            return pickerColor[component][row]
+            self.colorTextField.text = pickerColor[component][row]
         }
-        return ""
+        
     }
     
     func quarterDonePressed() {
