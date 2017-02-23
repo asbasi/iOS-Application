@@ -11,6 +11,52 @@ import Charts
 import RealmSwift
 import KDCircularProgress
 
+
+class Ring:UIButton
+{
+    let realm = try! Realm()
+    var percentage: Float!
+    override func draw(_ rect: CGRect)
+    {
+        let all_logs = self.realm.objects(Log.self)
+        let all_planner = self.realm.objects(Event.self)
+        
+        percentage = 100 * Helpers.add_duration(events: all_logs)/Helpers.add_duration(events: all_planner)
+        
+        
+        drawRingFittingInsideView()
+        
+        let path = UIBezierPath(ovalIn: rect)
+        UIColor.green.setFill()
+        path.fill()
+        self.setTitle("\(percentage!)%", for: .normal)
+    }
+    
+    internal func drawRingFittingInsideView()->()
+    {
+        let halfSize:CGFloat = min( bounds.size.width/2, bounds.size.height/2)
+        let desiredLineWidth:CGFloat = 3    // your desired value
+        
+        let angle = (Double(percentage) / 100) * M_PI * 2
+        let circlePath = UIBezierPath(
+            arcCenter: CGPoint(x:halfSize,y:halfSize),
+            radius: CGFloat( halfSize - (desiredLineWidth/2) ),
+            startAngle: CGFloat(0),
+            endAngle:CGFloat(angle),
+            clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.lineWidth = desiredLineWidth
+        
+        layer.addSublayer(shapeLayer)
+    }
+    
+}
+
 class CourseDetailViewController: UIViewController {
 
     
@@ -79,6 +125,7 @@ class CourseDetailViewController: UIViewController {
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //TODO DO THESE TOO
@@ -100,14 +147,9 @@ class CourseDetailViewController: UIViewController {
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            debugPrint(nDaysAgo.startOfDay)
-            debugPrint(nDaysAgo.endOfDay)
-            debugPrint("============")
+        
             studyHours.append(0)
             for element in x {
-                debugPrint("*****")
-                debugPrint(element.date)
-                debugPrint("*****")
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
             
@@ -115,7 +157,7 @@ class CourseDetailViewController: UIViewController {
         }
         setChar(data: weekDays, values: studyHours )
         allTypesOfCharts.append((weekDays,studyHours))
-        debugPrint("----------MONTHLY ------------")
+        
         
         //monthly
         studyHours = [Double]()
@@ -123,19 +165,34 @@ class CourseDetailViewController: UIViewController {
             let calendar = Calendar.current
             let start = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
-            debugPrint(start.startOfDay)
-            debugPrint(end.startOfDay)
-            debugPrint("------------------")
+            
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
             
             studyHours.append(0)
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
-            debugPrint(studyHours)
+            
         }
         allTypesOfCharts.append((["1","2","3","4"],studyHours))
         
+        
+        
+        
+        //draw circle
+//        let circlePath = UIBezierPath(arcCenter: CGPoint(x: 200,y: 200), radius: CGFloat(85), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+//        
+//        let shapeLayer = CAShapeLayer()
+//        shapeLayer.path = circlePath.cgPath
+//        
+//        //change the fill color
+//        shapeLayer.fillColor = UIColor.clear.cgColor
+//        //you can change the stroke color
+//        shapeLayer.strokeColor = UIColor.red.cgColor
+//        //you can change the line width
+//        shapeLayer.lineWidth = 3.0
+//        
+//        view.layer.addSublayer(shapeLayer)
         
     }
     

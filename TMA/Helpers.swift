@@ -17,6 +17,22 @@ class Helpers{
             self.realm.add(obj)
         }
     }
+    
+    static func add_duration(events: Results<Event>) -> Float{
+        var sum: Float = 0
+        for x in events {
+            sum += x.duration
+        }
+        return sum
+    }
+    
+    static func add_duration(events: Results<Log>) -> Float{
+        var sum: Float = 0
+        for x in events {
+            sum += x.duration
+        }
+        return sum
+    }
 }
 
 
