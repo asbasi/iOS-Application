@@ -260,6 +260,7 @@
                     <connections>
                         <outlet property="barChartView" destination="ieI-0j-bdS" id="Hbo-Cc-dud"/>
                         <outlet property="circularProgressView" destination="JSe-j5-LdR" id="k5G-QB-sBa"/>
+                        <outlet property="percentageLabel" destination="WFd-YT-S0N" id="eRJ-MK-Jyv"/>
                         <outlet property="segmentController" destination="5mk-k3-rce" id="0mv-SY-lAO"/>
                     </connections>
                 </viewController>
@@ -305,7 +306,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aZw-ft-Tyt" id="HTg-ob-jfk">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkj-go-540">

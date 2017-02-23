@@ -60,6 +60,7 @@ class Ring:UIButton
 class CourseDetailViewController: UIViewController {
 
     
+    @IBOutlet weak var percentageLabel: UILabel!
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var barChartView: BarChartView!
 
@@ -119,8 +120,11 @@ class CourseDetailViewController: UIViewController {
         // The value of precentageText should to be the hours assigned for the day
         // and then the value of toAngle has to relate to that value
         
-        circularProgressView.animate(toAngle: 70, duration: 0.5, completion: nil)
-//        circularProgressView.value(forKey: "50%")
+        var percentage = Helpers.add_duration(events: self.realm.objects(Log.self))/Helpers.add_duration(events: self.realm.objects(Event.self))
+        var angle = 360 * percentage
+            
+        circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
+        percentageLabel.text = "\(Int(percentage * 100))%"
     }
     
     
