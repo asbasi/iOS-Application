@@ -12,7 +12,10 @@ import BEMCheckBox
 
 class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var course: UILabel!
+    @IBOutlet weak var time: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
+
     
     var buttonAction: ((_ sender: AnyObject) -> Void)?
     
@@ -140,8 +143,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
 
+        let date = self.events[indexPath.section][indexPath.row].date as Date
+        
         cell.title?.text = self.events[indexPath.section][indexPath.row].title
         cell.checkbox.on = self.events[indexPath.section][indexPath.row].checked
+        cell.course?.text = self.events[indexPath.section][indexPath.row].course.name
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        cell.time?.text = formatter.string(from: date)
         
         cell.buttonAction = { (_ sender: AnyObject) -> Void in
             try! self.realm.write {
@@ -152,9 +162,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             self.myTableView.reloadData()
         }
         
-        let date = self.events[indexPath.section][indexPath.row].date as Date
-        
-        if Calendar.current.isDateInToday(self.events[indexPath.section] [indexPath.row].date as Date) // Today.
+        if Calendar.current.isDateInToday(date) // Today.
         {
             cell.backgroundColor = UIColor(red: 239/255, green: 248/255, blue: 205/255, alpha: 1.0)
         }
