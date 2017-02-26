@@ -87,7 +87,9 @@ class CourseDetailViewController: UIViewController {
         barChartView.noDataText = "data needs to be provided for the chart."
         
         var dataEntries: [BarChartDataEntry] = []
-        let week = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
+        
+        // Setting the X-Axis of the weekly Chart to String
+        let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
         barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
         
         for i in 0..<data.count{
@@ -178,8 +180,6 @@ class CourseDetailViewController: UIViewController {
             
         }
         allTypesOfCharts.append((["1","2","3","4"],studyHours))
-        
-        
         
         
         //draw circle
