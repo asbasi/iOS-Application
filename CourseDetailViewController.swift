@@ -127,22 +127,19 @@ class CourseDetailViewController: UIViewController {
     }
     
     func setAngle() -> Void {
-        // The value of precentageText should to be the hours assigned for the day
-        // and then the value of toAngle has to relate to that value
-        
-        
-        // THIS BUG NEEDS TO BE FIXED, 
-        // IF planner is empty and you add a log
-        // the app will crash if you want to go the detailViewControler to see the charts
-        // the line below "Percentage calculation" has to be fixed (divition by events)
-        
-        var percentage = Helpers.add_duration(events: self.realm.objects(Log.self))/Helpers.add_duration(events: self.realm.objects(Event.self))
-//      var percentage = 0
 
-        var angle = 360 * percentage
+        var nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self)))
+        var denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self)))
+        var percentage = 100.0
+        
+        if denominator != 0{
+            percentage = Double(Int(nominator*10) / Int(denominator))
+        }
+
+        var angle = 360 * (percentage/10)
             
         circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
-        percentageLabel.text = "\(Int(percentage * 100))%"
+        percentageLabel.text = "\(Int(percentage * 10))%"
     }
     
     
