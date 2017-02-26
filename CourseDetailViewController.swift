@@ -74,7 +74,6 @@ class CourseDetailViewController: UIViewController {
     
     var allTypesOfCharts = [([String],[Double])]() //names,values
     
-    
     @IBAction func segmentChanged(_ sender: Any) {
         let (a,b) =  allTypesOfCharts[segmentController.selectedSegmentIndex]
         
@@ -88,6 +87,8 @@ class CourseDetailViewController: UIViewController {
         barChartView.noDataText = "data needs to be provided for the chart."
         
         var dataEntries: [BarChartDataEntry] = []
+        let week = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
         
         for i in 0..<data.count{
             let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
@@ -126,8 +127,6 @@ class CourseDetailViewController: UIViewController {
         circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
         percentageLabel.text = "\(Int(percentage * 100))%"
     }
-    
-    
     
     
     override func viewDidLoad() {
