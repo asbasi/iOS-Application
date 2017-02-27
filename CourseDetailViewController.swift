@@ -93,20 +93,24 @@ class CourseDetailViewController: UIViewController {
         if data.count == 7{
             let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
             barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
+            for i in 0..<data.count{
+                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
+                dataEntries.append(dataEntry)
+            }
         }
         else{
-            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: data)
-        }
-        
-        
-        for i in 0..<data.count{
-            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
-            //x: Double(i), yValues: values, label: data[i])
+            var months = [String](repeating: "", count: 30)
+            for i in 1..<months.count+1{
+                months[i-1] += String(i)
+            }
             
-            dataEntries.append(dataEntry)
-            
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
+            for i in 0..<months.count{
+                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
+                dataEntries.append(dataEntry)
+            }
         }
-        
+
         barChartView.chartDescription?.text = ""
         barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
         
@@ -154,7 +158,7 @@ class CourseDetailViewController: UIViewController {
         var components = DateComponents()
         components.second = -1
         var weekDays = [String]()
-        
+        var months = [String](repeating: "", count: 30)
 
         //weekly
         for offsetDay in [6,5,4,3,2,1,0]{
@@ -175,26 +179,35 @@ class CourseDetailViewController: UIViewController {
         
         
         //monthly
+
         studyHours = [Double]()
-        for offsetDay in [28,21,14,7]{
+        for offsetDay in [ 8, 7, 6, 5, 4, 3, 2, 1]{//[28,21,14,7]{
             let calendar = Calendar.current
             let start = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
             
-            studyHours.append(0)
+            for i in 1..<31{
+                studyHours.append(0)
+            }
+
+            //studyHours.append(0)
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
-            
         }
+
         
-        allTypesOfCharts.append((["1","2","3","4"],studyHours))
-        
-        
-    }
+        // x index for month graph from 1..30
+        for i in 1..<months.count+1{
+            months[i-1] += String(i)
+        }
+
+        allTypesOfCharts.append((months, studyHours))
     
+    }
+
     override func viewWillAppear(_ animated: Bool) {
 //        NoteContent.text = course.name
     }
