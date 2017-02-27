@@ -16,7 +16,6 @@ class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
 
-    
     var buttonAction: ((_ sender: AnyObject) -> Void)?
     
     @IBAction func checkboxToggled(_ sender: AnyObject) {

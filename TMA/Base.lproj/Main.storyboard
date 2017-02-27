@@ -377,6 +377,58 @@
             </objects>
             <point key="canvasLocation" x="1848.8" y="339.58020989505252"/>
         </scene>
+        <!--Calendar-->
+        <scene sceneID="U8L-sh-VxQ">
+            <objects>
+                <navigationController id="WzX-uN-jJ0" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Calendar" image="calendar" id="uGd-3U-gGM"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pjV-6D-1fD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="YNn-uE-NFc" kind="relationship" relationship="rootViewController" id="qOB-7o-9Jn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AdT-mp-uXS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928" y="1034"/>
+        </scene>
+        <!--Data Source-->
+        <scene sceneID="u0h-sR-HgB">
+            <objects>
+                <viewController id="YNn-uE-NFc" customClass="CalendarViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="92W-z3-zJb"/>
+                        <viewControllerLayoutGuide type="bottom" id="hmd-Yv-dFJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tcx-0h-1RK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3m1-ab-ziD" customClass="FSCalendar">
+                                <rect key="frame" x="16" y="64" width="351" height="235"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderType">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="YNn-uE-NFc" id="fEn-S2-EeS"/>
+                                    <outlet property="delegate" destination="YNn-uE-NFc" id="avN-8P-ggS"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Calendar" id="SUn-wB-Q76"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AnA-Eo-ZZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1848.8" y="1032.2338830584708"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -391,6 +443,7 @@
                         <segue destination="DUF-S6-hWR" kind="relationship" relationship="viewControllers" id="pp3-dv-TwS"/>
                         <segue destination="FYF-Le-yp6" kind="relationship" relationship="viewControllers" id="BQf-22-Z68"/>
                         <segue destination="i9N-kH-Hkd" kind="relationship" relationship="viewControllers" id="RcC-5b-O7i"/>
+                        <segue destination="WzX-uN-jJ0" kind="relationship" relationship="viewControllers" id="qj6-Xr-Usq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -704,13 +757,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="calendar" width="32" height="32"/>
         <image name="log" width="25" height="25"/>
         <image name="overview" width="25" height="22"/>
         <image name="planner" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="cXG-K0-ZeI"/>
         <segue reference="OeT-oK-jtn"/>
-        <segue reference="7cT-4E-fMU"/>
         <segue reference="S2a-N1-AAN"/>
     </inferredMetricsTieBreakers>
 </document>
