@@ -42,12 +42,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         
-        getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
+        self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
     }
 
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         
+        self.calendar.reloadData()
         self.myTableView.reloadData()
     }
     
@@ -58,13 +59,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     /******************************* Calendar Functions *******************************/
     
-    // How many events are scheduled for that day?
-    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        return 0
-    }
-    
-    
-    func getEventsForDate(_ date: Date) -> Void
+    func getEventsForDate(_ date: Date) -> Results<Event>
     {
         var components = DateComponents()
         components.day = 1
@@ -73,13 +68,25 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
     
     
-        self.events = self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
+        return self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
+    // How many events are scheduled for that day?
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        let numEvents = getEventsForDate(date).count
+        
+        if numEvents >= 1
+        {
+            // Put two dots if there's 3 or more events on that day
+            return numEvents >= 3 ? 2 : 1
+        }
+        return 0
+    }
+
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
 
         debugPrint("\(date)")
-        getEventsForDate(date)
+        self.events = getEventsForDate(date)
         
         self.myTableView.reloadData()
     }
