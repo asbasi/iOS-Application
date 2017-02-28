@@ -7,72 +7,117 @@
 //
 
 import UIKit
+import RealmSwift
 import FSCalendar
+import BEMCheckBox
 
-class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
-
-    fileprivate let gregorian = Calendar(identifier: .gregorian)
-    fileprivate let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
+class CalendarViewCell: UITableViewCell {
     
-    fileprivate weak var calendar: FSCalendar!
-    fileprivate weak var eventLabel: UILabel!
-
-    override func loadView() {
-        
-        let view = UIView(frame: UIScreen.main.bounds)
-        view.backgroundColor = UIColor.groupTableViewBackground
-        self.view = view
-        
-        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
-        let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: view.frame.size.width, height: height))
-        calendar.dataSource = self
-        calendar.delegate = self
-        calendar.allowsMultipleSelection = false
-        view.addSubview(calendar)
-        self.calendar = calendar
-        
-        calendar.calendarHeaderView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.1)
-        calendar.calendarWeekdayView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.1)
-        calendar.appearance.eventSelectionColor = UIColor.white
-        calendar.appearance.eventOffset = CGPoint(x: 0, y: -7)
-        calendar.today = Date()
-        
-        calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
-        
-        let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
-        calendar.addGestureRecognizer(scopeGesture)
-        
-        
-        let label = UILabel(frame: CGRect(x: 0, y: calendar.frame.maxY + 10, width: self.view.frame.size.width, height: 50))
-        label.textAlignment = .center
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        self.view.addSubview(label)
-        self.eventLabel = label
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var course: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var checkbox: BEMCheckBox!
+    
+    var buttonAction: ((_ sender: AnyObject) -> Void)?
+    
+    @IBAction func checkboxToggled(_ sender: AnyObject) {
+        self.buttonAction?(sender)
     }
+}
+
+class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource {
+
+    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var calendar: FSCalendar!
+    
+    let realm = try! Realm()
+    
+    var events: Results<Event>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        let currentDate: Date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        
+        getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
     }
 
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        
+        self.myTableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /******************************* Calendar Functions *******************************/
     
     // How many events are scheduled for that day?
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         return 0
     }
     
-    // MARK:- FSCalendarDelegate
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        self.calendar.frame.size.height = bounds.height
-        self.eventLabel.frame.origin.y = calendar.frame.maxY + 10
+    
+    func getEventsForDate(_ date: Date) -> Void
+    {
+        var components = DateComponents()
+        components.day = 1
+        components.second = -1
+        let dateBegin = date
+        let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+    
+    
+        self.events = self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+
+        debugPrint("\(date)")
+        getEventsForDate(date)
+        
+        self.myTableView.reloadData()
+    }
+    
+    func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
+        
+    }
+    
+    
+    /***************************** Table View Functions *****************************/
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.events.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarCell", for: indexPath) as! CalendarViewCell
+
+        cell.title?.text = self.events[indexPath.row].title
+        cell.checkbox.on = self.events[indexPath.row].checked
+        cell.course?.text = self.events[indexPath.row].course.name
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        let date = self.events[indexPath.row].date as Date
+        cell.time?.text = formatter.string(from: date)
+        
+        cell.buttonAction = { (_ sender: AnyObject) -> Void in
+            try! self.realm.write {
+                self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+            }
+        }
+        
+        return cell
+    }
+    
 }

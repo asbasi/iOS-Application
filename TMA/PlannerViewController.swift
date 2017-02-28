@@ -70,7 +70,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             {
                 var components = DateComponents()
                 components.day = 1
-                components.second = 1
+                components.second = -1
                 let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
                 
                 if(segment == 0) // Active

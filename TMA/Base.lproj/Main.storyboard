@@ -34,7 +34,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkz-WO-dGq">
-                                            <rect key="frame" x="279" y="0.0" width="65" height="21"/>
+                                            <rect key="frame" x="275" y="0.0" width="66" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -387,7 +387,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="YNn-uE-NFc" kind="relationship" relationship="rootViewController" id="qOB-7o-9Jn"/>
+                        <segue destination="2rF-ra-S7W" kind="relationship" relationship="rootViewController" id="ghn-jG-JcV"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AdT-mp-uXS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -395,37 +395,103 @@
             <point key="canvasLocation" x="928" y="1034"/>
         </scene>
         <!--Data Source-->
-        <scene sceneID="u0h-sR-HgB">
+        <scene sceneID="EDq-S7-ZEO">
             <objects>
-                <viewController id="YNn-uE-NFc" customClass="CalendarViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2rF-ra-S7W" customClass="CalendarViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="92W-z3-zJb"/>
-                        <viewControllerLayoutGuide type="bottom" id="hmd-Yv-dFJ"/>
+                        <viewControllerLayoutGuide type="top" id="oOm-wK-7Hi"/>
+                        <viewControllerLayoutGuide type="bottom" id="erI-mZ-dw4"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="tcx-0h-1RK">
+                    <view key="view" contentMode="scaleToFill" id="hCH-OY-boq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3m1-ab-ziD" customClass="FSCalendar">
-                                <rect key="frame" x="16" y="64" width="351" height="235"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MPA-gH-tWm" customClass="FSCalendar">
+                                <rect key="frame" x="16" y="72" width="343" height="238"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="placeholderType">
-                                        <integer key="value" value="0"/>
+                                        <integer key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="allowsMultipleSelection" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustsFontSizeToFitContentSize" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <outlet property="dataSource" destination="YNn-uE-NFc" id="fEn-S2-EeS"/>
-                                    <outlet property="delegate" destination="YNn-uE-NFc" id="avN-8P-ggS"/>
+                                    <outlet property="dataSource" destination="2rF-ra-S7W" id="Orz-Dz-neJ"/>
+                                    <outlet property="delegate" destination="2rF-ra-S7W" id="tVX-5w-g0G"/>
                                 </connections>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="m8o-pq-W87">
+                                <rect key="frame" x="16" y="318" width="343" height="292"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CalendarCell" id="S94-9h-RGR" customClass="CalendarViewCell" customModule="TMA" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S94-9h-RGR" id="LaL-Z5-ngE">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0NQ-VV-2Ej">
+                                                    <rect key="frame" x="54" y="-2" width="243" height="25"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFT-13-2hJ">
+                                                    <rect key="frame" x="255" y="22" width="93" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ch-ky-c97">
+                                                    <rect key="frame" x="54" y="22" width="106" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ttg-u4-xGd" customClass="BEMCheckBox">
+                                                    <rect key="frame" x="8" y="3" width="38" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.99948381819999998" green="1" blue="0.95454558379999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="on" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="checkboxToggled:" destination="S94-9h-RGR" eventType="valueChanged" id="0lQ-I4-DZx"/>
+                                                    </connections>
+                                                </view>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.99908326863305763" green="1" blue="0.96577190617706199" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="checkbox" destination="ttg-u4-xGd" id="vPV-oc-ABP"/>
+                                            <outlet property="course" destination="1ch-ky-c97" id="5eL-Wd-vM0"/>
+                                            <outlet property="time" destination="hFT-13-2hJ" id="eQb-M8-mc2"/>
+                                            <outlet property="title" destination="0NQ-VV-2Ej" id="D1f-1j-2U0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="2rF-ra-S7W" id="M13-Op-rYb"/>
+                                    <outlet property="delegate" destination="2rF-ra-S7W" id="t5l-vZ-jrH"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Calendar" id="SUn-wB-Q76"/>
+                    <navigationItem key="navigationItem" id="PF6-U8-Z1G"/>
+                    <connections>
+                        <outlet property="calendar" destination="MPA-gH-tWm" id="lny-2v-zcD"/>
+                        <outlet property="myTableView" destination="m8o-pq-W87" id="IPw-36-gHV"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AnA-Eo-ZZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3bf-yN-Psz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1848.8" y="1032.2338830584708"/>
         </scene>
@@ -474,7 +540,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHY-1z-WWF">
-                                            <rect key="frame" x="265" y="5" width="92" height="21"/>
+                                            <rect key="frame" x="257" y="5" width="95" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
