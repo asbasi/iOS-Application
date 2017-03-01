@@ -188,10 +188,9 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         return ""
     }
 
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if pickerView == quarterPicker{
-            self.quarterTextField.text = pickerData[component][row]
+            //self.quarterTextField.text = pickerData[component][row]
         }else if pickerView == colorPicker{
             self.colorTextField.text = pickerColor[component][row]
         }
@@ -199,7 +198,8 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     }
     
     func quarterDonePressed() {
-        quarterTextField.resignFirstResponder()
+        self.quarterTextField.resignFirstResponder()
+        self.quarterTextField.text = pickerData[0][self.quarterPicker.selectedRow(inComponent: 0)]
     }
     
 }

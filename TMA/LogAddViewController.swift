@@ -155,14 +155,8 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                     forComponent component: Int
         ) -> String? {
         
-        
         return self.courses[row].name
     }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.courseTextField.text = self.courses[row].name
-    }
-    
     
     func createDatePicker() {
         //toolbar
@@ -189,7 +183,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     func courseDonePressed() {
-        
+        courseTextField.text = courses[coursePicker.selectedRow(inComponent: 0)].name
         courseTextField.resignFirstResponder()
     }
 }

@@ -149,11 +149,6 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
         return self.courses[row].name
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.courseTextField.text = self.courses[row].name
-    }
-    
-    
     func createDatePicker() {
         //toolbar
         let toolbar = UIToolbar()
@@ -179,7 +174,7 @@ class PlannerAddViewController: UIViewController, UIPickerViewDelegate, UIPicker
     }
     
     func courseDonePressed() {
-        
+        courseTextField.text = courses[coursePicker.selectedRow(inComponent: 0)].name
         courseTextField.resignFirstResponder()
         
     }
