@@ -132,15 +132,15 @@ class CourseDetailViewController: UIViewController {
     
     func setAngle() -> Void {
 
-        var nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self)))
-        var denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self)))
+        let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self)))
+        let denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self)))
         var percentage = 100.0
         
         if denominator != 0{
             percentage = Double(Int(nominator*10) / Int(denominator))
         }
 
-        var angle = 360 * (percentage/10)
+        let angle = 360 * (percentage/10)
             
         circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
         percentageLabel.text = "\(Int(percentage * 10))%"
@@ -188,10 +188,10 @@ class CourseDetailViewController: UIViewController {
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
             
-            for i in 1..<31{
+            for _ in 1..<31 {
                 studyHours.append(0)
             }
-
+            
             //studyHours.append(0)
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)

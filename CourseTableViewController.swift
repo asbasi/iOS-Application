@@ -34,15 +34,6 @@ class CourseTableViewController: UITableViewController {
         super.viewDidLoad()
         
         debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        
-//        print(courses.count)
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,6 +54,8 @@ class CourseTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
+        
+        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         
         cell.course!.text = self.courses[indexPath.row].name
         cell.percentage!.text = "\(self.courses[indexPath.row].numberOfHoursLogged)" // / numberOfHoursAllocated

@@ -33,6 +33,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     let realm = try! Realm()
     
     var events: Results<Event>!
+    var eventToEdit: Event!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +86,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
 
-        debugPrint("\(date)")
         self.events = getEventsForDate(date)
         
         self.myTableView.reloadData()
@@ -127,4 +127,66 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return cell
     }
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let event = self.events[index.row]
+            
+            let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                try! self.realm.write {
+                    event.course.numberOfHoursAllocated -= event.duration
+                    self.realm.delete(event)
+                }
+                self.myTableView.reloadData()
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            })
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
+        }//end delete
+        delete.backgroundColor = .red
+        
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            
+            self.eventToEdit = self.events[index.row]
+            
+            self.performSegue(withIdentifier: "editEvent", sender: nil)
+        }
+        edit.backgroundColor = .blue
+        
+        return [delete, edit]
+    }
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        let eventAddViewController = segue.destination as! PlannerAddViewController
+        
+        if segue.identifier! == "addEvent" {
+            eventAddViewController.operation = "add"
+        }
+        else if segue.identifier! == "editEvent" {
+            eventAddViewController.operation = "edit"
+            eventAddViewController.event = eventToEdit!
+        }
+        else if segue.identifier! == "showEvent" {
+            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
+            
+            eventAddViewController.operation = "show"
+            eventAddViewController.event = events[selectedIndexPath!.row]
+        }
+    }
 }

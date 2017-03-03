@@ -60,36 +60,6 @@ class LogTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        debugPrint("view DID load ------------")
-//        let cal = Calendar(identifier: .gregorian)
-//        var logs = [[Log]]()
-//        
-//        let rawLogs = self.realm.objects(Log.self).sorted(byProperty: "date", ascending: false)
-//        
-//        var allDates = [Date]()
-//        for log in rawLogs {
-//            let date = cal.startOfDay(for: log.date as Date)
-//            if !allDates.contains(date)  {
-//                allDates.append(date)
-//                debugPrint("\(log.date)")
-//            }
-//        }
-//        
-//        
-//        for dateBegin in allDates {
-//            var components = DateComponents()
-//            components.day = 1
-//            components.second = -1
-//            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
-//            
-//            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byProperty: "date", ascending: false)))
-//            
-//        }
-//        self.logs = logs
-//        debugPrint("DONE view DID load ------------")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -108,7 +78,7 @@ class LogTableViewController: UITableViewController {
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
-        formatter.dateFormat = "EEEE, MMMM dd"
+        formatter.dateFormat = "EEEE, MMMM d"
         let date = self.logs[section][0].date! as Date
         let strDate = formatter.string(from: date)
         if Calendar.current.isDateInToday(date) {

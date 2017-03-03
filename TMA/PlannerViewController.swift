@@ -36,7 +36,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
     @IBAction func segmentChanged(_ sender: Any) {
-        debugPrint("segmentChanged \(segmentController.selectedSegmentIndex)")
         self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
         
         self.myTableView.reloadData()
@@ -47,12 +46,13 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let cal = Calendar(identifier: .gregorian)
         
         let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byKeyPath: "date", ascending: true)
-        
         let finishedEvents = self.realm.objects(Event.self).filter("checked = true").sorted(byKeyPath: "date", ascending: true)
-        
         let allEvents = self.realm.objects(Event.self).sorted(byKeyPath: "date", ascending: true)
-        
         let rawEvents = [activeEvents, finishedEvents, allEvents]
+        
+        self.segmentController.setTitle("Active (\(activeEvents.count))", forSegmentAt: 0)
+        self.segmentController.setTitle("Finished (\(finishedEvents.count))", forSegmentAt: 1)
+        self.segmentController.setTitle("All (\(allEvents.count))", forSegmentAt: 2)
         
         for segment in 0...2
         {
@@ -117,7 +117,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
-        formatter.dateFormat = "EEEE, MMMM dd"
+        formatter.dateFormat = "EEEE, MMMM d"
         let date = self.events[section][0].date! as Date
         let strDate = formatter.string(from: date)
         if Calendar.current.isDateInToday(date) {
