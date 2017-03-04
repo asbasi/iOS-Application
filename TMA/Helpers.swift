@@ -55,3 +55,12 @@ extension Date {
     }
 }
 
+func setGradientBackground(view: UIView, colorTop: UIColor, colorBottom: UIColor) {
+    
+    let gradientLayer = CAGradientLayer()
+    gradientLayer.colors = [ colorTop.cgColor, colorBottom.cgColor]
+    gradientLayer.locations = [ 0.0, 1.0]
+    gradientLayer.frame = view.bounds
+    
+    view.layer.insertSublayer(gradientLayer, at: 0)
+}

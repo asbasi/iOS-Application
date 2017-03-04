@@ -25,7 +25,7 @@ class CalendarViewCell: UITableViewCell {
     }
 }
 
-class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource {
+class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var calendar: FSCalendar!
@@ -35,15 +35,35 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     var events: Results<Event>!
     var eventToEdit: Event!
     
+    fileprivate lazy var scopeGesture: UIPanGestureRecognizer = {
+        [unowned self] in
+        let panGesture = UIPanGestureRecognizer(target: self.calendar, action: #selector(self.calendar.handleScopeGesture(_:)))
+        panGesture.delegate = self
+        panGesture.minimumNumberOfTouches = 1
+        panGesture.maximumNumberOfTouches = 2
+        return panGesture
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup the calendar.
+        self.calendar.appearance.borderRadius = 0 // Square Boxes for selected dates.
+        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.0; // Hide the extra subheadings.
+        //self.calendar.today = nil // Get rid of the today circle.
+        self.calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
+        let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
+        self.calendar.addGestureRecognizer(scopeGesture)
+            
         let currentDate: Date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
-        
         self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
+        
+        self.myTableView.frame.origin.y = self.calendar.frame.maxY + 6
+        
+        // setGradientBackground(view: self.view, colorTop: UIColor.blue, colorBottom: UIColor.lightGray)
     }
 
     override func viewWillAppear(_ animated: Bool){
@@ -67,8 +87,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         components.second = -1
         let dateBegin = date
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
-    
-    
+        
+        
         return self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
@@ -85,7 +105,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-
         self.events = getEventsForDate(date)
         
         self.myTableView.reloadData()
@@ -95,6 +114,20 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
     }
     
+    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        self.calendar.frame.size.height = bounds.height
+        self.myTableView.frame.origin.y = calendar.frame.maxY + 6
+    }
+    
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
+        //return monthPosition == .current
+        return true
+    }
+    
+    func calendar(_ calendar: FSCalendar, shouldDeselect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        //return monthPosition == .current
+        return true
+    }
     
     /***************************** Table View Functions *****************************/
     
