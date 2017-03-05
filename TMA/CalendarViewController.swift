@@ -62,6 +62,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
         
         self.myTableView.frame.origin.y = self.calendar.frame.maxY + 6
+        self.myTableView.tableFooterView = UIView()
         
         // setGradientBackground(view: self.view, colorTop: UIColor.blue, colorBottom: UIColor.lightGray)
     }
@@ -132,7 +133,25 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     /***************************** Table View Functions *****************************/
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if self.events.count > 0 {
+            self.myTableView.backgroundView = nil
+            self.myTableView.separatorStyle = .singleLine
+            return 1
+        }
+        
+        let rect = CGRect(x: 0,
+                          y: 0,
+                          width: self.myTableView.bounds.size.width,
+                          height: self.myTableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+
+        noDataLabel.text = "No events on selected day"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.myTableView.backgroundView = noDataLabel
+        self.myTableView.separatorStyle = .none
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

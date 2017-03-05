@@ -26,14 +26,14 @@ class CourseTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         self.courses = self.realm.objects(Course.self)
-        
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
+        self.courses = self.realm.objects(Course.self)
+        self.tableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,7 +44,25 @@ class CourseTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if self.courses.count > 0 {
+            self.tableView.backgroundView = nil
+            self.tableView.separatorStyle = .singleLine
+            return 1
+        }
+        
+        let rect = CGRect(x: 0,
+                          y: 0,
+                          width: self.tableView.bounds.size.width,
+                          height: self.tableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+        
+        noDataLabel.text = "No Courses"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.tableView.backgroundView = noDataLabel
+        self.tableView.separatorStyle = .none
+        
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,6 +100,10 @@ class CourseTableViewController: UITableViewController {
                 try! self.realm.write {
                     let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
                     self.realm.delete(logsToDelete)
+                    
+                    let eventsToDelete = self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")
+                    self.realm.delete(eventsToDelete)
+                    
                     self.realm.delete(course)
                 }
                 self.tableView.reloadData()

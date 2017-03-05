@@ -82,6 +82,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         self.courses = self.realm.objects(Course.self)
         
+        self.tableView.tableFooterView = UIView()
+        
         // Course picker setup
         self.coursePicker.showsSelectionIndicator = true
         self.coursePicker.delegate = self
@@ -195,7 +197,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        
         return 1
     }
     

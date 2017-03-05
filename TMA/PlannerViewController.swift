@@ -103,6 +103,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.myTableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -132,7 +134,25 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.events.count
+        if self.events.count > 0 {
+            self.myTableView.backgroundView = nil
+            self.myTableView.separatorStyle = .singleLine
+            return self.events.count
+        }
+        
+        let rect = CGRect(x: 0,
+                          y: 0,
+                          width: self.myTableView.bounds.size.width,
+                          height: self.myTableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+        
+        noDataLabel.text = "No Planned Events"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.myTableView.backgroundView = noDataLabel
+        self.myTableView.separatorStyle = .none
+        
+        return 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -26,7 +26,6 @@ class LogTableViewController: UITableViewController {
     {
         super.viewWillAppear(animated)
         
-        debugPrint("view WILL load ------------")
         let cal = Calendar(identifier: .gregorian)
         var logs = [[Log]]()
         
@@ -41,7 +40,6 @@ class LogTableViewController: UITableViewController {
             }
         }
         
-        
         for dateBegin in allDates {
             var components = DateComponents()
             components.day = 1
@@ -52,14 +50,14 @@ class LogTableViewController: UITableViewController {
             
         }
         self.logs = logs
-        debugPrint("DONE view WILL load ------------")
         
-        
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,7 +68,25 @@ class LogTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.logs.count
+        if self.logs.count > 0 {
+            self.tableView.backgroundView = nil
+            self.tableView.separatorStyle = .singleLine
+            return self.logs.count
+        }
+        
+        let rect = CGRect(x: 0,
+                          y: 0,
+                          width: self.tableView.bounds.size.width,
+                          height: self.tableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+        
+        noDataLabel.text = "No Logs"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.tableView.backgroundView = noDataLabel
+        self.tableView.separatorStyle = .none
+        
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -111,7 +127,6 @@ class LogTableViewController: UITableViewController {
  
         return cell
     }
-    
     
     // MARK: - Navigation
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
