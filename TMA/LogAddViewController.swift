@@ -30,7 +30,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var courses: Results<Course>!
     var coursePicker = UIPickerView()
     var datePicker = UIDatePicker()
-    var pickedDate = NSDate()
+    var pickedDate = Date()
     @IBAction func done(_ sender: Any) {
         
         if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (courseTextField.text?.isEmpty)!) {
@@ -173,7 +173,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     func dateDonePressed() {
-        pickedDate = datePicker.date as NSDate
+        pickedDate = datePicker.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short

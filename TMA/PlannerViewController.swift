@@ -233,8 +233,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
         let events = self.realm.objects(Event.self)
-        let eventAddViewController = segue.destination as! PlannerAddViewController
+        let eventAddViewController = segue.destination as! PlannerAddTableViewController
         
         if segue.identifier! == "addEvent" {
             eventAddViewController.operation = "add"

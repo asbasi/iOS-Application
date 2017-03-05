@@ -54,7 +54,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
         let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
         self.calendar.addGestureRecognizer(scopeGesture)
-            
+        
         let currentDate: Date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
@@ -206,7 +206,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        let eventAddViewController = segue.destination as! PlannerAddViewController
+        let eventAddViewController = segue.destination as! PlannerAddTableViewController
         
         if segue.identifier! == "addEvent" {
             eventAddViewController.operation = "add"
