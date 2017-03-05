@@ -10,5 +10,6 @@ target 'TMA' do
   pod 'BEMCheckBox'
   pod 'KDCircularProgress'
   pod 'FSCalendar'
+  pod 'PureLayout'
 
 end

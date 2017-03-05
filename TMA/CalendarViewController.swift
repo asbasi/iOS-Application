@@ -34,6 +34,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     var events: Results<Event>!
     var eventToEdit: Event!
+    var selectedDate: Date = Date()
     
     fileprivate lazy var scopeGesture: UIPanGestureRecognizer = {
         [unowned self] in
@@ -72,6 +73,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
+        selectedDate = currentDate
         
         self.myTableView.frame.origin.y = self.calendar.frame.maxY + 6
         self.myTableView.tableFooterView = UIView()
@@ -119,6 +121,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         self.events = getEventsForDate(date)
+        selectedDate = date
         
         self.myTableView.reloadData()
     }
@@ -151,6 +154,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             return 1
         }
         
+        /*
         let rect = CGRect(x: 0,
                           y: 0,
                           width: self.myTableView.bounds.size.width,
@@ -161,6 +165,17 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         noDataLabel.textColor = UIColor.gray
         noDataLabel.textAlignment = NSTextAlignment.center
         self.myTableView.backgroundView = noDataLabel
+        self.myTableView.separatorStyle = .none
+        */
+        
+        let image = UIImage(named: "happy")!
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM d"
+        let topMessage = formatter.string(from: selectedDate)
+        let bottomMessage = "No events scheduled for this date"
+        
+        self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
         
         return 0

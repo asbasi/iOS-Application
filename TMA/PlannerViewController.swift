@@ -152,6 +152,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             return self.events.count
         }
         
+        /*
         let rect = CGRect(x: 0,
                           y: 0,
                           width: self.myTableView.bounds.size.width,
@@ -162,6 +163,14 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         noDataLabel.textColor = UIColor.gray
         noDataLabel.textAlignment = NSTextAlignment.center
         self.myTableView.backgroundView = noDataLabel
+        self.myTableView.separatorStyle = .none
+        */
+        
+        let image = UIImage(named: "notebook")!
+        let topMessage = "Planner"
+        let bottomMessage = "You don't have any planned events. All your planned events will show up here."
+        
+        self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
         
         return 0

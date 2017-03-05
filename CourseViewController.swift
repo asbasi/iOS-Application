@@ -15,9 +15,11 @@ class CourseTableViewCell: UITableViewCell {
 }
 
 
-class CourseTableViewController: UITableViewController {
+class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
     let realm = try! Realm()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     var courseToEdit: Course!
     var courses: Results<Course>!
@@ -43,13 +45,14 @@ class CourseTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if self.courses.count > 0 {
             self.tableView.backgroundView = nil
             self.tableView.separatorStyle = .singleLine
             return 1
         }
         
+        /*
         let rect = CGRect(x: 0,
                           y: 0,
                           width: self.tableView.bounds.size.width,
@@ -61,16 +64,24 @@ class CourseTableViewController: UITableViewController {
         noDataLabel.textAlignment = NSTextAlignment.center
         self.tableView.backgroundView = noDataLabel
         self.tableView.separatorStyle = .none
+        */
+        
+        let image = UIImage(named: "bar-chart")!
+        let topMessage = "Courses"
+        let bottomMessage = "You haven't created any courses. All your courses will show up here."
+        
+        self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+        self.tableView.separatorStyle = .none
         
         return 0
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.courses.count
     }
 
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
@@ -86,7 +97,7 @@ class CourseTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
 
@@ -133,12 +144,9 @@ class CourseTableViewController: UITableViewController {
         return [delete, edit]
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-
-  
     
    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

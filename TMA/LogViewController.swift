@@ -15,12 +15,14 @@ class LogTableViewCell: UITableViewCell {
     @IBOutlet weak var course: UILabel!
 }
 
-class LogTableViewController: UITableViewController {
+class LogViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let realm = try! Realm()
     
     var logToEdit: Log!
     var logs = [[Log]]()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     @IBAction func addingLog(_ sender: Any) {
         if self.realm.objects(Course.self).count == 0 {
@@ -33,6 +35,7 @@ class LogTableViewController: UITableViewController {
             self.performSegue(withIdentifier: "addLog", sender: nil)
         }
     }
+    
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
@@ -78,13 +81,14 @@ class LogTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if self.logs.count > 0 {
             self.tableView.backgroundView = nil
             self.tableView.separatorStyle = .singleLine
             return self.logs.count
         }
         
+        /*
         let rect = CGRect(x: 0,
                           y: 0,
                           width: self.tableView.bounds.size.width,
@@ -96,11 +100,20 @@ class LogTableViewController: UITableViewController {
         noDataLabel.textAlignment = NSTextAlignment.center
         self.tableView.backgroundView = noDataLabel
         self.tableView.separatorStyle = .none
+        */
+        
+        
+        let image = UIImage(named: "woodlog")!
+        let topMessage = "Log"
+        let bottomMessage = "You haven't logged any events. All your logged events will show up here."
+        
+        self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+        self.tableView.separatorStyle = .none
         
         return 0
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        "Today (Monday, January 23rd)"
         
         let formatter = DateFormatter()
@@ -116,12 +129,12 @@ class LogTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.logs[section].count
     }
 
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LogsCell", for: indexPath) as! LogTableViewCell
         
         let log = self.logs[indexPath.section][indexPath.row]
@@ -130,17 +143,17 @@ class LogTableViewController: UITableViewController {
         cell.duration?.text = "\(log.duration) hours"
         cell.course?.text = log.course.name
         if Calendar.current.isDateInToday(log.date as Date) {
-            cell.backgroundColor = UIColor(red: 239/255, green: 248/255, blue: 205/255, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0, green: 128, blue: 0, alpha: 0.1)
         }
         else {
-            cell.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 0.91, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0, green: 0, blue: 128, alpha: 0.1)
         }
  
         return cell
     }
     
     // MARK: - Navigation
-    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
