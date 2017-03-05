@@ -41,6 +41,18 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.myTableView.reloadData()
     }
     
+    @IBAction func addingEvent(_ sender: Any) {
+        if self.realm.objects(Course.self).count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            self.performSegue(withIdentifier: "addEvent", sender: nil)
+        }
+    }
+    
     func populateSegments()
     {
         let cal = Calendar(identifier: .gregorian)
@@ -183,15 +195,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         if Calendar.current.isDateInToday(date) // Today.
         {
-            cell.backgroundColor = UIColor(red: 239/255, green: 248/255, blue: 205/255, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0, green: 128, blue: 0, alpha: 0.1)
         }
         else if NSDate().compare(date) == .orderedDescending // Before Today.
         {
-            cell.backgroundColor = UIColor(red: 255/255, green: 166/255, blue: 166/255, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 128, green: 0, blue: 0, alpha: 0.1)
         }
         else // After Today.
         {
-            cell.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 0.91, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0, green: 0, blue: 128, alpha: 0.1)
         }
         
         return cell

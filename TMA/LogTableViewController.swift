@@ -22,6 +22,17 @@ class LogTableViewController: UITableViewController {
     var logToEdit: Log!
     var logs = [[Log]]()
     
+    @IBAction func addingLog(_ sender: Any) {
+        if self.realm.objects(Course.self).count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create logs.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            self.performSegue(withIdentifier: "addLog", sender: nil)
+        }
+    }
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)

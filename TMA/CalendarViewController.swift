@@ -44,6 +44,18 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return panGesture
     }()
     
+    @IBAction func addingEvent(_ sender: Any) {
+        if self.realm.objects(Course.self).count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            self.performSegue(withIdentifier: "addEvent", sender: nil)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

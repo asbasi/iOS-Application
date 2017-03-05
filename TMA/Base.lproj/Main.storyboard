@@ -364,7 +364,7 @@
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="PWX-Zb-bfs">
                             <connections>
-                                <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="bBh-cp-3Ff"/>
+                                <action selector="addingEvent:" destination="qfy-AI-Ncu" id="O7B-tH-Yx2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -372,6 +372,7 @@
                         <outlet property="myTableView" destination="24c-Wd-ChE" id="ucx-bk-ARs"/>
                         <outlet property="segmentController" destination="Bwu-bi-czA" id="Rt3-oJ-EXZ"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="editEvent" id="SVf-2y-i4z"/>
+                        <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="B7a-yc-p6T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4g-B0-zRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -496,7 +497,7 @@
                     <navigationItem key="navigationItem" title="Calendar" id="PF6-U8-Z1G">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="UH2-i2-vLy">
                             <connections>
-                                <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="xMT-No-gp2"/>
+                                <action selector="addingEvent:" destination="2rF-ra-S7W" id="4du-yP-Wwa"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -504,6 +505,7 @@
                         <outlet property="calendar" destination="MPA-gH-tWm" id="lny-2v-zcD"/>
                         <outlet property="myTableView" destination="m8o-pq-W87" id="IPw-36-gHV"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="editEvent" id="wKh-gk-Xh7"/>
+                        <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="zU2-iX-C5i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3bf-yN-Psz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -587,12 +589,13 @@
                     <navigationItem key="navigationItem" title="Log" id="XPd-3A-90C">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="WrR-py-tNP">
                             <connections>
-                                <segue destination="Pm7-Va-Xbw" kind="show" identifier="addLog" id="DH5-Vh-7b9"/>
+                                <action selector="addingLog:" destination="cJ2-th-tNl" id="h67-vU-ZWE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="Pm7-Va-Xbw" kind="show" identifier="editLog" id="7cT-4E-fMU"/>
+                        <segue destination="Pm7-Va-Xbw" kind="show" identifier="addLog" id="Yuu-76-4ov"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cpb-5w-MaE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -938,8 +941,8 @@
         <image name="planner" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bBh-cp-3Ff"/>
         <segue reference="OeT-oK-jtn"/>
-        <segue reference="7cT-4E-fMU"/>
+        <segue reference="Yuu-76-4ov"/>
+        <segue reference="zU2-iX-C5i"/>
     </inferredMetricsTieBreakers>
 </document>

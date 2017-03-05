@@ -92,7 +92,7 @@ class CourseTableViewController: UITableViewController {
 
             let course = self.courses[index.row]
             
-            let optionMenu = UIAlertController(title: nil, message: "\"\(course.name!)\" will be deleted forever.", preferredStyle: .actionSheet)
+            let optionMenu = UIAlertController(title: nil, message: "\"\(course.name!)\" and all associated items will be deleted forever.", preferredStyle: .actionSheet)
             
             let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in

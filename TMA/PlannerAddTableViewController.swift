@@ -28,6 +28,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     var dateFormatter = DateFormatter()
     
+    var invalidInput: Bool = false
+    
     var operation: String = ""
     var event: Event?
     var courses: Results<Course>!
@@ -37,8 +39,16 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         //get the course
         let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
         
-        if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)!) {
-            return;
+        if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! ||
+            (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)!) {
+            invalidInput = true
+            self.tableView.reloadData()
+            
+            let alert = UIAlertController(title: "Whoops!", message: "One or more of the fields is missing or incomplete.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
         }
         
         if(self.operation == "add") {
@@ -138,6 +148,25 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         return super.tableView(self.tableView, heightForRowAt: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if invalidInput {
+            if(indexPath.section == 0 && indexPath.row == 0 && (titleTextField.text?.isEmpty)!) {
+                cell.backgroundColor = UIColor.init(red: 128, green: 0, blue: 0, alpha: 0.3)
+            }
+            else if(indexPath.section == 0 && indexPath.row == 1 && (courseLabel.text?.isEmpty)!) {
+                cell.backgroundColor = UIColor.init(red: 128, green: 0, blue: 0, alpha: 0.3)
+            }
+            else if(indexPath.section == 1 && indexPath.row == 0 && (dateLabel.text?.isEmpty)!) {
+                cell.backgroundColor = UIColor.init(red: 128, green: 0, blue: 0, alpha: 0.3)
+            }
+            else if(indexPath.section == 1 && indexPath.row == 2 && (durationTextField.text?.isEmpty)!) {
+                cell.backgroundColor = UIColor.init(red: 128, green: 0, blue: 0, alpha: 0.3)
+            }
+            else {
+                cell.backgroundColor = UIColor.clear
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
