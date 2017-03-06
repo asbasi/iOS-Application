@@ -63,7 +63,7 @@ class CourseDetailViewController: UIViewController {
     @IBOutlet weak var percentageLabel: UILabel!
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var barChartView: BarChartView!
-
+    let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
 
     @IBOutlet weak var circularProgressView: KDCircularProgress!
     
@@ -76,16 +76,18 @@ class CourseDetailViewController: UIViewController {
     
     @IBAction func segmentChanged(_ sender: Any) {
         let (a,b) =  allTypesOfCharts[segmentController.selectedSegmentIndex]
-        
-        setChar(data: a, values: b)
+        let c = 1.0
+        setChar(data: a, values: b, values1: [c])
     }
     
     var course: Course!
     
     // Setting the Chart Data here
-    func setChar(data: [String], values: [Double]){
+    func setChar(data: [String], values: [Double], values1: [Double]){
         barChartView.noDataText = "data needs to be provided for the chart."
         
+        var dataEntries1: [BarChartDataEntry] = []
+
         var dataEntries: [BarChartDataEntry] = []
         
         
@@ -96,6 +98,10 @@ class CourseDetailViewController: UIViewController {
             for i in 0..<data.count{
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
                 dataEntries.append(dataEntry)
+                
+                let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
+                dataEntries1.append(dataEntry1)
+                
             }
         }
         else{
@@ -108,6 +114,10 @@ class CourseDetailViewController: UIViewController {
             for i in 0..<months.count{
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
                 dataEntries.append(dataEntry)
+                
+                let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
+                dataEntries.append(dataEntry1)
+                
             }
         }
 
@@ -123,11 +133,49 @@ class CourseDetailViewController: UIViewController {
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Studyhours")
         chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
         
+        let chartDataSet1 = BarChartDataSet(values: dataEntries1, label: "Goal")
+        chartDataSet1.colors = [UIColor(red: 30/255, green: 126/255, blue: 220/255, alpha: 1)]
+        
         barChartView.xAxis.labelPosition = .bottom
-        let chartData = BarChartData()
+        
+        let dataSets: [BarChartDataSet] = [chartDataSet,chartDataSet1]
+        
+        let chartData = BarChartData(dataSets: dataSets)
+        
+        
+//        let chartData = BarChartData()
+        let groupSpace = 0.0
+        let barSpace = 0.05
+        let barWidth = 0.3
+        
+        let groupCount = self.week.count
+        let startYear = 0
+        
+        chartData.barWidth = barWidth
+        
+        barChartView.xAxis.axisMinimum = Double(startYear)
+        let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        print("Groupspace: \(gg)")
+        barChartView.xAxis.axisMaximum = Double(startYear) + gg * Double(groupCount)
+        
+        chartData.groupBars(fromX: Double(startYear), groupSpace: groupSpace, barSpace: barSpace)
+        
+        //chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        barChartView.notifyDataSetChanged()
+
         chartData.addDataSet(chartDataSet)
         barChartView.data = chartData
         
+        
+        
+
+//        barChartView.data = chartData
+        //background color
+        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+        
+        //chart animation
+        barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
+
     }
     
     func setAngle() -> Void {
@@ -151,6 +199,7 @@ class CourseDetailViewController: UIViewController {
 
         super.viewDidLoad()
         var studyHours = [Double]()
+        var goals = [Double]()
         
         circularProgressView.angle = 0
         setAngle()
@@ -166,15 +215,22 @@ class CourseDetailViewController: UIViewController {
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-        
+            let x1 = self.realm.objects(Event.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            
             studyHours.append(0)
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
-            
             weekDays.append(nDaysAgo.dayOfTheWeek()!)
+            
+            goals.append(0)
+            for element in x1 {
+                goals[goals.endIndex-1] += Double(element.duration)
+            }
+            
+//            goals.append(nDaysAgo.dayOfTheWeek()!)
         }
-        setChar(data: weekDays, values: studyHours )
+        setChar(data: weekDays, values: studyHours, values1: goals)
         allTypesOfCharts.append((weekDays,studyHours))
         
         
@@ -187,6 +243,7 @@ class CourseDetailViewController: UIViewController {
             let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
             
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
+            let x1 = self.realm.objects(Event.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
             
             for _ in 1..<31 {
                 studyHours.append(0)
@@ -195,6 +252,14 @@ class CourseDetailViewController: UIViewController {
             //studyHours.append(0)
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
+            }
+            
+            for _ in 1..<31 {
+                goals.append(0)
+            }
+
+            for element in x1 {
+                goals[goals.endIndex-1] += Double(element.duration)
             }
         }
 
