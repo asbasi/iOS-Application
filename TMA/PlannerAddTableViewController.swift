@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     let realm = try! Realm()
     
@@ -33,7 +33,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     var operation: String = ""
     var event: Event?
     var courses: Results<Course>!
-    
     
     @IBAction func save(_ sender: Any) {
         //get the course
@@ -94,6 +93,10 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         self.tableView.tableFooterView = UIView()
         
+        // Text field setup
+        self.titleTextField.delegate = self
+        self.durationTextField.delegate = self
+        
         // Course picker setup
         self.coursePicker.showsSelectionIndicator = true
         self.coursePicker.delegate = self
@@ -114,6 +117,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
             self.courseLabel.text = self.event!.course.name
         }
+        
+        // Ensure that the keyboard disappears when the user taps elsewhere.
+        self.hideKeyboardWhenTapped()
     }
 
     override func didReceiveMemoryWarning() {
@@ -239,5 +245,10 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         courseLabel.text = courses[row].name
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
     }
 }

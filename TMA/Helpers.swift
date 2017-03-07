@@ -64,3 +64,16 @@ func setGradientBackground(view: UIView, colorTop: UIColor, colorBottom: UIColor
     
     view.layer.insertSublayer(gradientLayer, at: 0)
 }
+
+extension UIViewController {
+    // Makes it so any keyboard/numpad currently active disappears when user clicks away.
+    func hideKeyboardWhenTapped() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+}
