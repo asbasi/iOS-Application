@@ -94,7 +94,7 @@ class CourseDetailViewController: UIViewController {
         // Setting the X-Axis of the weekly Chart to String
         if data.count == 7{
             let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
-            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
+//            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
             for i in 0..<data.count{
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
                 dataEntries.append(dataEntry)
@@ -144,34 +144,30 @@ class CourseDetailViewController: UIViewController {
         
         
 //        let chartData = BarChartData()
-        let groupSpace = 0.0
+        let groupSpace = -0.05
         let barSpace = 0.05
-        let barWidth = 0.3
+        let barWidth = 0.10
         
         let groupCount = self.week.count
-        let startYear = 0
+        let startWeek = 0
         
         chartData.barWidth = barWidth
         
-        barChartView.xAxis.axisMinimum = Double(startYear)
+        barChartView.xAxis.axisMinimum = Double(startWeek)
         let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
         print("Groupspace: \(gg)")
-        barChartView.xAxis.axisMaximum = Double(startYear) + gg * Double(groupCount)
+        barChartView.xAxis.axisMaximum = Double(startWeek) + gg * Double(groupCount)
         
-        chartData.groupBars(fromX: Double(startYear), groupSpace: groupSpace, barSpace: barSpace)
+        chartData.groupBars(fromX: Double(startWeek), groupSpace: groupSpace, barSpace: barSpace)
         
         //chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
         barChartView.notifyDataSetChanged()
 
-        chartData.addDataSet(chartDataSet)
+//        chartData.addDataSet(chartDataSet)
         barChartView.data = chartData
         
-        
-        
-
-//        barChartView.data = chartData
         //background color
-        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+//        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
         
         //chart animation
         barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
@@ -206,7 +202,7 @@ class CourseDetailViewController: UIViewController {
         
         var components = DateComponents()
         components.second = -1
-        var weekDays = [String]()
+//        var weekDays = [String]()
         var months = [String](repeating: "", count: 30)
 
         //weekly
@@ -221,7 +217,7 @@ class CourseDetailViewController: UIViewController {
             for element in x {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
-            weekDays.append(nDaysAgo.dayOfTheWeek()!)
+//            weekDays.append(nDaysAgo.dayOfTheWeek()!)
             
             goals.append(0)
             for element in x1 {
@@ -230,8 +226,8 @@ class CourseDetailViewController: UIViewController {
             
 //            goals.append(nDaysAgo.dayOfTheWeek()!)
         }
-        setChar(data: weekDays, values: studyHours, values1: goals)
-        allTypesOfCharts.append((weekDays,studyHours))
+        setChar(data: week, values: studyHours, values1: goals)
+        allTypesOfCharts.append((week,studyHours))
         
         
         //monthly
@@ -242,15 +238,15 @@ class CourseDetailViewController: UIViewController {
             let start = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
             
-            let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
-            let x1 = self.realm.objects(Event.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
+            let hoursLogged = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
+            let settedGoal = self.realm.objects(Event.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
             
             for _ in 1..<31 {
                 studyHours.append(0)
             }
             
             //studyHours.append(0)
-            for element in x {
+            for element in hoursLogged {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
             
@@ -258,7 +254,7 @@ class CourseDetailViewController: UIViewController {
                 goals.append(0)
             }
 
-            for element in x1 {
+            for element in settedGoal {
                 goals[goals.endIndex-1] += Double(element.duration)
             }
         }
