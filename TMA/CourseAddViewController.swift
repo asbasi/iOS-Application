@@ -26,6 +26,7 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         }
         
     }
+    
     @IBAction func courseChanged(_ sender: Any) {
         checkAllTextFields()
     }
@@ -121,16 +122,10 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
                 course!.courseColor = colorLabel.text!
             }
         }
-        
-        
-        
-        
+
         let _ = self.navigationController?.popViewController(animated: true)
         
     }
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +137,8 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         
         self.colorPicker.dataSource = self
         self.colorPicker.delegate = self
+        
+        self.tableView.tableFooterView = UIView()
         
         self.courses = self.realm.objects(Course.self)
         
@@ -234,8 +231,6 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         }
         
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 4 {
