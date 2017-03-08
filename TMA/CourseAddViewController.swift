@@ -9,15 +9,59 @@
 import UIKit
 import RealmSwift
 
-class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
-    let pickerData = [
+class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPickerViewDataSource {
+    let quarterPickerData = [
         ["Fall 2016","Winter 2017","Spring 2017"]
     ]
-    let pickerColor = [
+    let colorPickerData = [
         ["Red", "Green", "Blue"]  //for now
     ]
-    var quarterPicker = UIPickerView()
-    var colorPicker = UIPickerView()
+    
+    func checkAllTextFields() {
+        if unitTextField.text == "" || nameTextField.text == "" || instructorTextField.text == "" {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false;
+        }
+        else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true;
+        }
+        
+    }
+    @IBAction func courseChanged(_ sender: Any) {
+        checkAllTextFields()
+    }
+    
+    @IBAction func instructorChanged(_ sender: Any) {
+        checkAllTextFields()
+    }
+    @IBAction func unitsChanged(_ sender: Any) {
+        checkAllTextFields()
+    }
+    
+    
+    var dpShowQuarterVisible = false
+    var dpShowColorVisible = false
+    
+    private func toggleShowQuarterPicker () {
+        dpShowQuarterVisible = !dpShowQuarterVisible
+        if dpShowQuarterVisible && dpShowColorVisible {
+            dpShowColorVisible = false
+        }
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+    }
+    private func toggleShowColorPicker () {
+        dpShowColorVisible = !dpShowColorVisible
+        if dpShowQuarterVisible && dpShowColorVisible {
+            dpShowQuarterVisible = false
+        }
+        self.tableView.beginUpdates()
+        self.tableView.endUpdates()
+    }
+    
+    @IBOutlet weak var colorLabel: UILabel!
+    
+    @IBOutlet weak var quarterPicker: UIPickerView!
+    @IBOutlet weak var colorPicker: UIPickerView!
     
     let realm = try! Realm()
     
@@ -29,33 +73,32 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
+    
+    @IBOutlet weak var quarterLabel: UILabel!
+    
+    
     @IBOutlet weak var recommendedTextField: UITextField!
-    @IBOutlet weak var quarterTextField: UITextField!
-    @IBOutlet weak var colorTextField: UITextField!
-
     
     @IBAction func recommendedText(_ sender: Any) {
         if(!(unitTextField.text?.isEmpty)!)
         {
             let recommendedHoursPerUnit = 3
             
-            recommendedTextField!.text = "\(Int(unitTextField.text!)! * recommendedHoursPerUnit) hours/week recommended."
+            //            recommendedTextField!.text = "\(Int(unitTextField.text!)! * recommendedHoursPerUnit) hours/week recommended."
         }
     }
     
+    
     @IBAction func done(_ sender: Any) {
-        
-        if(editOrAdd=="add"){
+        if(editOrAdd=="add") {
             let results = self.courses.filter("name = '\(nameTextField.text!)'")
             if results.count != 0 {
+                let alert = UIAlertController(title: "Error", message: "Course Name Already Exists", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 return
             }
         }
-        
-        if((nameTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)! || (unitTextField.text?.isEmpty)!) {
-            return
-        }
-
         
         if(editOrAdd=="add"){
             self.course = Course()
@@ -63,8 +106,8 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             
             course!.instructor = instructorTextField.text!
             course!.units = Int(unitTextField.text!)!
-            course!.quarter = quarterTextField.text!
-            course!.courseColor = colorTextField.text!
+            course!.quarter = quarterLabel.text!
+            course!.courseColor = colorLabel.text!
             Helpers.DB_insert(obj: course!)
             
         }
@@ -74,8 +117,8 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
                 
                 course!.instructor = instructorTextField.text!
                 course!.units = Int(unitTextField.text!)!
-                course!.quarter = quarterTextField.text!
-                course!.courseColor = colorTextField.text!
+                course!.quarter = quarterLabel.text!
+                course!.courseColor = colorLabel.text!
             }
         }
         
@@ -83,7 +126,7 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         
         
         let _ = self.navigationController?.popViewController(animated: true)
-
+        
     }
     
     
@@ -93,25 +136,12 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         
         self.quarterPicker.showsSelectionIndicator = true
+        
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
-        
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(quarterDonePressed))
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        self.quarterTextField.inputView = quarterPicker
-        self.quarterTextField.inputAccessoryView = toolBar
         
         self.colorPicker.dataSource = self
         self.colorPicker.delegate = self
-        self.colorTextField.inputView = colorPicker
-        
-        self.quarterPicker.dataSource = self
-        self.quarterPicker.delegate = self
-        self.quarterTextField.inputView = quarterPicker
         
         self.courses = self.realm.objects(Course.self)
         
@@ -119,18 +149,26 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
             self.nameTextField.text = self.course!.name
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"
-            //let row = pickerData[0].index(of: self.course!.quarter)
-            //self.quarterPicker.selectRow(row!, inComponent: 0, animated: true)
-            self.quarterTextField.text = self.course!.quarter
-            self.colorTextField.text = self.course!.courseColor
+            
+            let quarterRow = quarterPickerData[0].index(of: self.course!.quarter)
+            self.quarterPicker.selectRow(quarterRow!, inComponent: 0, animated: true)
+            self.quarterLabel.text = self.course!.quarter
+            
+            let colorRow = colorPickerData[0].index(of: self.course!.courseColor)
+            self.colorPicker.selectRow(colorRow!, inComponent: 0, animated: true)
+            self.colorLabel.text = self.course!.courseColor
+            
             recommendedText(self)
         }
+        
+        checkAllTextFields()
         
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        NoteContent.text = course.name
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -148,30 +186,30 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
      // Pass the selected object to the new view controller.
      }
      */
-
-
+    
+    
     //MARK: - Picker View Data Sources and Delegates
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-
+        
         if pickerView == quarterPicker{
-            return pickerData.count
+            return quarterPickerData.count
         }
         else if pickerView == colorPicker{
-            return pickerColor.count
+            return colorPickerData.count
         }
         return 0
-
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == quarterPicker{
-            return pickerData[component].count
+            return quarterPickerData[component].count
         }else if pickerView == colorPicker{
-            return pickerColor[component].count
+            return colorPickerData[component].count
         }
         return 0
-
+        
     }
     
     func pickerView(_
@@ -180,26 +218,45 @@ class CourseAddViewController: UIViewController,UIPickerViewDelegate, UIPickerVi
                     forComponent component: Int
         ) -> String? {
         if pickerView == quarterPicker{
-            return pickerData[component][row]
+            return quarterPickerData[component][row]
         }
         else if pickerView == colorPicker{
-            return pickerColor[component][row]
+            return colorPickerData[component][row]
         }
         return ""
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if pickerView == quarterPicker{
-            //self.quarterTextField.text = pickerData[component][row]
+            self.quarterLabel.text = quarterPickerData[component][row]
         }else if pickerView == colorPicker{
-            self.colorTextField.text = pickerColor[component][row]
+            self.colorLabel.text = colorPickerData[component][row]
         }
         
     }
     
-    func quarterDonePressed() {
-        self.quarterTextField.resignFirstResponder()
-        self.quarterTextField.text = pickerData[0][self.quarterPicker.selectedRow(inComponent: 0)]
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 4 {
+            toggleShowQuarterPicker()
+        }
+        else if indexPath.row == 6 {
+            toggleShowColorPicker()
+        }
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if !dpShowQuarterVisible && indexPath.row == 5 {
+            return 0
+        }
+        else if !dpShowColorVisible && indexPath.row == 7 {
+            return 0
+        }
+        else {
+            return super.tableView(self.tableView, heightForRowAt: indexPath)
+        }
     }
     
 }

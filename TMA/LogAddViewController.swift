@@ -121,9 +121,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             
             
             // Time picker
-            var timeFormatter = DateFormatter()
+            let timeFormatter = DateFormatter()
             timeFormatter.dateFormat = "HH:mm"
-            var strTime = timeFormatter.string(from: timePicker.date)
+            let strTime = timeFormatter.string(from: timePicker.date)
             self.durationTextField.text = strTime
 //            pickedTime = Float(strTime)!
             // The app crashes if we have minutes in our time since the value of duration has been
@@ -213,7 +213,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         pickedTime = Float(timePicker.minuteInterval)
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
-        var strTime = timeFormatter.string(from: timePicker.date)
+        let strTime = timeFormatter.string(from: timePicker.date)
         timeFormatter.timeStyle = .short
         self.durationTextField.text = strTime
         
