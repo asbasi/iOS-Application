@@ -31,6 +31,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var coursePicker = UIPickerView()
     var datePicker = UIDatePicker()
     var pickedDate = Date()
+    var timePicker = UIDatePicker()
+    var pickedTime: Float = 0.0
+
     @IBAction func done(_ sender: Any) {
         
         if((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (courseTextField.text?.isEmpty)!) {
@@ -44,7 +47,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             let log = Log()
             
             log.title = titleTextField.text
-            log.duration = Float(durationTextField.text!)!
+            log.duration = pickedTime//Float(durationTextField.text!)!
             log.date = pickedDate
             log.course = course
             
@@ -59,7 +62,7 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             try! self.realm.write {
                 course.numberOfHoursLogged -= log!.duration
                 log!.title = titleTextField.text
-                log!.duration = Float(durationTextField.text!)!
+                log!.duration = pickedTime//Float(durationTextField.text!)!
                 log!.course = course
                 log!.date = pickedDate
                 course.numberOfHoursLogged += log!.duration
@@ -99,6 +102,9 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         self.courseTextField.inputView = coursePicker
+        
+        // Time picker
+        self.durationTextField.inputView = timePicker
         self.courseTextField.inputAccessoryView = toolBar
         
         //date picker setup
@@ -111,8 +117,20 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         else if (self.operation == "edit" || self.operation == "show") {
             self.pageTitleTextField.title = "Edit Log"
             self.titleTextField.text = self.log!.title
-            self.durationTextField.text = "\(self.log!.duration)"
+//            self.durationTextField.text = "\(self.log!.duration)"
+            
+            
+            // Time picker
+            var timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "HH:mm"
+            var strTime = timeFormatter.string(from: timePicker.date)
+            self.durationTextField.text = strTime
+//            pickedTime = Float(strTime)!
+            // The app crashes if we have minutes in our time since the value of duration has been
+            // set to Float as hours, THE HOURS NEEDS TO CHANGE TO MINUTES
+            
             self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+            
             //let courseRow = courseNames.index(of: self.log!.course.name)
             self.courseTextField.text = self.log!.course.name
             //self.coursePicker.selectRow(courseRow!, inComponent: 0, animated: true)
@@ -168,9 +186,18 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         toolbar.setItems([pickerDoneButton], animated: false)
         dateTextField.inputAccessoryView = toolbar
         
+        let timeToolbar = UIToolbar()
+        timeToolbar.sizeToFit()
+        //bar button item for time
+        let timePickerDoneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(timeDonePressed))
+        timeToolbar.setItems([timePickerDoneButton], animated: false)
+        durationTextField.inputAccessoryView = timeToolbar
+        
+        
         //assign date picker to text field
         dateTextField.inputView = datePicker
     }
+    
     
     func dateDonePressed() {
         pickedDate = datePicker.date
@@ -178,6 +205,17 @@ class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         self.dateTextField.text = dateFormatter.string(from: pickedDate as Date)
+        
+        self.view.endEditing(true)
+    }
+
+    func timeDonePressed() {
+        pickedTime = Float(timePicker.minuteInterval)
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm"
+        var strTime = timeFormatter.string(from: timePicker.date)
+        timeFormatter.timeStyle = .short
+        self.durationTextField.text = strTime
         
         self.view.endEditing(true)
     }
