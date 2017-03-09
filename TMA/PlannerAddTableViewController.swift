@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import UserNotifications
 
 class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
@@ -61,6 +62,10 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             try! self.realm.write {
                 course.numberOfHoursAllocated += event.duration
             }
+            
+            // Eventually need to assign each event it's own unique identifier for the reminders.
+            let delegate = UIApplication.shared.delegate as? AppDelegate
+            delegate?.scheduleNotifcation(at: event.date, title: event.title, body: "Reminder!", identifier: "\(event.title) \(event.date)")
             
             Helpers.DB_insert(obj: event)
             

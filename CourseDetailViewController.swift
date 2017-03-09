@@ -99,14 +99,14 @@ class CourseDetailViewController: UIViewController {
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
                 dataEntries.append(dataEntry)
                 
-                let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
-                dataEntries1.append(dataEntry1)
+                /*let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
+                dataEntries1.append(dataEntry1)*/
                 
             }
         }
         else{
             var months = [String](repeating: "", count: 30)
-            for i in 1..<months.count+1{
+            for i in 1..<months.count{
                 months[i-1] += String(i)
             }
             
@@ -115,8 +115,8 @@ class CourseDetailViewController: UIViewController {
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
                 dataEntries.append(dataEntry)
                 
-                let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
-                dataEntries.append(dataEntry1)
+            /*let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
+                dataEntries1.append(dataEntry1)*/
                 
             }
         }
@@ -155,7 +155,6 @@ class CourseDetailViewController: UIViewController {
         
         barChartView.xAxis.axisMinimum = Double(startWeek)
         let gg = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
-        print("Groupspace: \(gg)")
         barChartView.xAxis.axisMaximum = Double(startWeek) + gg * Double(groupCount)
         
         chartData.groupBars(fromX: Double(startWeek), groupSpace: groupSpace, barSpace: barSpace)

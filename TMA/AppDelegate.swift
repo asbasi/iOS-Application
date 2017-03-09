@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+            
+            if granted {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+            else
+            {
+                print("User denied notifications")
+            }
+        }
+
         return true
     }
 
@@ -40,7 +52,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func scheduleNotifcation(at date: Date, title: String, body: String, identifier: String)
+    {
+        let calendar = Calendar(identifier: .gregorian)
+        let components = calendar.dateComponents(in: .current, from: date)
+        let newComponents = DateComponents(calendar: calendar, timeZone: .current, month: components.month, day: components.day, hour: components.hour, minute: components.minute)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: newComponents, repeats: false)
+        
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = UNNotificationSound.default()
 
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
+        //UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().add(request) {(error) in
+            if let error = error {
+                print("Error: \(error)")
+            }
+        }
+    }
 }
 
