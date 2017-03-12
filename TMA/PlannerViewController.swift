@@ -35,10 +35,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
 
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
-    let segmentMessage: [String] = ["active", "finished", ""]
+    let segmentMessage: [String] = ["active", "finished", "scheduled"]
     let image = UIImage(named: "notebook")!
     let topMessage = "Planner"
-    var bottomMessage: String = "You don't have  any active events. All your active events will show up here."
+    var bottomMessage: String = "You don't have any active events. All your active events will show up here."
     
     @IBAction func segmentChanged(_ sender: Any) {
         self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
@@ -175,7 +175,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         if(self.segmentController.selectedSegmentIndex != 2) {
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
                 self.myTableView.beginUpdates()
-                if(self.events.count > 0 && self.events.count - 1 >= path.section && self.events[path.section].count > 1)
+                
+                if(self.events.count > 0 && self.events[path.section].count > 1)
                 {
                     self.myTableView.deleteRows(at: [path], with: UITableViewRowAnimation.fade)
                 }
@@ -183,6 +184,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 {
                     self.myTableView.deleteSections(IndexSet(integer: path.section), with: UITableViewRowAnimation.fade)
                 }
+                
                 self.myTableView.endUpdates()
             })
         }
@@ -269,7 +271,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.realm.delete(event)
                 }
                 
-                self.animatedRemove(at: index)
+                self.myTableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
             

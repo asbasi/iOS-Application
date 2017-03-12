@@ -570,7 +570,6 @@
                                             <outlet property="course" destination="1ch-ky-c97" id="5eL-Wd-vM0"/>
                                             <outlet property="time" destination="hFT-13-2hJ" id="eQb-M8-mc2"/>
                                             <outlet property="title" destination="0NQ-VV-2Ej" id="D1f-1j-2U0"/>
-                                            <segue destination="0SS-Rc-yLB" kind="show" identifier="showEvent" id="she-Fe-T4k"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -594,6 +593,7 @@
                         <outlet property="myTableView" destination="m8o-pq-W87" id="IPw-36-gHV"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="editEvent" id="wKh-gk-Xh7"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="zU2-iX-C5i"/>
+                        <segue destination="0SS-Rc-yLB" kind="show" identifier="showEvent" id="7XP-UM-StG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3bf-yN-Psz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1044,7 +1044,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="a3P-Mg-OMn"/>
-        <segue reference="zU2-iX-C5i"/>
+        <segue reference="7XP-UM-StG"/>
         <segue reference="nOa-zp-xw0"/>
     </inferredMetricsTieBreakers>
 </document>

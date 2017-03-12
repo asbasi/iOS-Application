@@ -136,12 +136,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
-        //return monthPosition == .current
         return true
     }
     
     func calendar(_ calendar: FSCalendar, shouldDeselect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        //return monthPosition == .current
         return true
     }
     
@@ -198,7 +196,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let event = self.events[index.row]
+            let event: Event = self.events[index.row]
             
             let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
             
@@ -235,6 +233,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return [delete, edit]
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.eventToEdit = self.events[indexPath.row]
+        self.performSegue(withIdentifier: "showEvent", sender: nil)
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -250,10 +253,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "showEvent" {
-            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
-            
             eventAddViewController.operation = "show"
-            eventAddViewController.event = events[selectedIndexPath!.row]
+            eventAddViewController.event = eventToEdit!
         }
     }
 }
