@@ -153,21 +153,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             self.myTableView.separatorStyle = .singleLine
             return 1
         }
-        
-        /*
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: self.myTableView.bounds.size.width,
-                          height: self.myTableView.bounds.size.height)
-        let noDataLabel: UILabel = UILabel(frame: rect)
 
-        noDataLabel.text = "No events on selected day"
-        noDataLabel.textColor = UIColor.gray
-        noDataLabel.textAlignment = NSTextAlignment.center
-        self.myTableView.backgroundView = noDataLabel
-        self.myTableView.separatorStyle = .none
-        */
-        
         let image = UIImage(named: "happy")!
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
@@ -197,6 +183,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let date = self.events[indexPath.row].date as Date
         cell.time?.text = formatter.string(from: date)
         
+        cell.checkbox.boxType = BEMBoxType.square
+        cell.checkbox.onAnimationType = BEMAnimationType.fill
         cell.buttonAction = { (_ sender: AnyObject) -> Void in
             try! self.realm.write {
                 self.events[indexPath.row].checked = !self.events[indexPath.row].checked

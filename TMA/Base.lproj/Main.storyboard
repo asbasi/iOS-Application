@@ -174,7 +174,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Course" id="2k2-FT-tv5">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="6Ge-kt-zHF">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="6Ge-kt-zHF">
                             <connections>
                                 <action selector="done:" destination="hfN-XV-0V0" id="Agg-LN-0gJ"/>
                             </connections>
@@ -437,8 +437,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="kam-Oo-VSG">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
-                            <rect key="frame" x="89" y="7.5" width="197" height="29"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
+                            <rect key="frame" x="89" y="8" width="197" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Active"/>
@@ -861,6 +861,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="eventTitleChanged:" destination="0SS-Rc-yLB" eventType="editingChanged" id="EDT-6R-OIa"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -881,6 +884,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="courseLabelChanged:" destination="0SS-Rc-yLB" eventType="editingChanged" id="Lo0-gt-zZc"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Course" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VeS-if-ufS">
                                                     <rect key="frame" x="8" y="10" width="55" height="21"/>
@@ -931,6 +937,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="dateLabelChanged:" destination="0SS-Rc-yLB" eventType="editingChanged" id="3Ir-Q0-qhh"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jh4-U5-eMD">
                                                     <rect key="frame" x="8" y="11" width="91" height="21"/>
@@ -980,6 +989,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <action selector="durationTitleChanged:" destination="0SS-Rc-yLB" eventType="editingChanged" id="Dcl-o7-j0Q"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mkh-0n-LYU">
                                                     <rect key="frame" x="8" y="11" width="66" height="21"/>
@@ -1021,7 +1033,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="apa-0J-EKE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2828" y="467"/>
+            <point key="canvasLocation" x="2828" y="466.41679160419795"/>
         </scene>
     </scenes>
     <resources>
@@ -1032,7 +1044,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="a3P-Mg-OMn"/>
+        <segue reference="zU2-iX-C5i"/>
         <segue reference="nOa-zp-xw0"/>
-        <segue reference="SVf-2y-i4z"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -35,7 +35,6 @@ class Helpers{
     }
 }
 
-
 extension Date {
     var startOfDay: Date {
         return Calendar.current.startOfDay(for: self)
@@ -55,16 +54,6 @@ extension Date {
     }
 }
 
-func setGradientBackground(view: UIView, colorTop: UIColor, colorBottom: UIColor) {
-    
-    let gradientLayer = CAGradientLayer()
-    gradientLayer.colors = [ colorTop.cgColor, colorBottom.cgColor]
-    gradientLayer.locations = [ 0.0, 1.0]
-    gradientLayer.frame = view.bounds
-    
-    view.layer.insertSublayer(gradientLayer, at: 0)
-}
-
 extension UIViewController {
     // Makes it so any keyboard/numpad currently active disappears when user clicks away.
     func hideKeyboardWhenTapped() {
@@ -75,5 +64,15 @@ extension UIViewController {
     
     func dismissKeyboard() {
         self.view.endEditing(true)
+    }
+    
+    func setGradientBackground(colorTop: UIColor, colorBottom: UIColor) {
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [ colorTop.cgColor, colorBottom.cgColor]
+        gradientLayer.locations = [ 0.0, 1.0]
+        gradientLayer.frame = view.bounds
+        
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
     }
 }

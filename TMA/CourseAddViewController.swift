@@ -76,19 +76,7 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
     @IBOutlet weak var unitTextField: UITextField!
     
     @IBOutlet weak var quarterLabel: UILabel!
-    
-    
-    @IBOutlet weak var recommendedTextField: UITextField!
-    
-    @IBAction func recommendedText(_ sender: Any) {
-        if(!(unitTextField.text?.isEmpty)!)
-        {
-            let recommendedHoursPerUnit = 3
-            
-            //            recommendedTextField!.text = "\(Int(unitTextField.text!)! * recommendedHoursPerUnit) hours/week recommended."
-        }
-    }
-    
+
     
     @IBAction func done(_ sender: Any) {
         if(editOrAdd=="add") {
@@ -154,8 +142,6 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
             let colorRow = colorPickerData[0].index(of: self.course!.courseColor)
             self.colorPicker.selectRow(colorRow!, inComponent: 0, animated: true)
             self.colorLabel.text = self.course!.courseColor
-            
-            recommendedText(self)
         }
         
         checkAllTextFields()
@@ -172,18 +158,7 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+
     
     //MARK: - Picker View Data Sources and Delegates
     

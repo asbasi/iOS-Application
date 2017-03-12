@@ -16,10 +16,10 @@ class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
 
-    var buttonAction: ((_ sender: AnyObject) -> Void)?
+    var buttonAction: ((_ sender: PlannerViewCell) -> Void)?
     
     @IBAction func checkboxToggled(_ sender: AnyObject) {
-        self.buttonAction?(sender)
+        self.buttonAction?(self)
     }
 }
 
@@ -35,15 +35,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
 
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
+    let segmentMessage: [String] = ["active", "finished", ""]
     let image = UIImage(named: "notebook")!
     let topMessage = "Planner"
-    var bottomMessage: String = ""
-    let segmentMessage: [String] = ["active", "finished", ""]
+    var bottomMessage: String = "You don't have  any active events. All your active events will show up here."
     
     @IBAction func segmentChanged(_ sender: Any) {
         self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
-        
-        bottomMessage = "You don't have \(segmentMessage[segmentController.selectedSegmentIndex]) events. All your \(segmentMessage[segmentController.selectedSegmentIndex]) events will show up here."
+        self.populateSegments()
+        bottomMessage = "You don't have any \(segmentMessage[segmentController.selectedSegmentIndex]) events. All your \(segmentMessage[segmentController.selectedSegmentIndex]) events will show up here."
         
         self.myTableView.reloadData()
     }
@@ -159,7 +159,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             return self.events.count
         }
         
-        
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
         
@@ -170,6 +169,27 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return self.events[section].count
     }
 
+    func animatedRemove(at path: IndexPath)
+    {
+        // The "all" segment doesn't need any special animations.
+        if(self.segmentController.selectedSegmentIndex != 2) {
+            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                self.myTableView.beginUpdates()
+                if(self.events.count > 0 && self.events.count - 1 >= path.section && self.events[path.section].count > 1)
+                {
+                    self.myTableView.deleteRows(at: [path], with: UITableViewRowAnimation.fade)
+                }
+                else
+                {
+                    self.myTableView.deleteSections(IndexSet(integer: path.section), with: UITableViewRowAnimation.fade)
+                }
+                self.myTableView.endUpdates()
+            })
+        }
+        
+        self.populateSegments()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
 
@@ -183,26 +203,35 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         formatter.dateFormat = "h:mm a"
         cell.time?.text = formatter.string(from: date)
         
-        cell.buttonAction = { (_ sender: AnyObject) -> Void in
+        cell.checkbox.boxType = BEMBoxType.square
+        cell.checkbox.onAnimationType = BEMAnimationType.fill
+        cell.buttonAction = { (_ sender: PlannerViewCell) -> Void in
+            
+            var path: IndexPath = self.myTableView.indexPath(for: sender)!
+            
             try! self.realm.write {
-                self.events[indexPath.section][indexPath.row].checked = !self.events[indexPath.section][indexPath.row].checked
-                
-                self.populateSegments()
+                self.events[path.section][path.row].checked = !self.events[path.section][path.row].checked
             }
-            self.myTableView.reloadData()
+            
+            self.events[path.section].remove(at: path.row)
+            if self.events[path.section].count == 0 {
+                self.events.remove(at: path.section)
+            }
+            
+            self.animatedRemove(at: path)
         }
         
         if Calendar.current.isDateInToday(date) // Today.
         {
-            cell.backgroundColor = UIColor(red: 0, green: 128, blue: 0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
         else if NSDate().compare(date) == .orderedDescending // Before Today.
         {
-            cell.backgroundColor = UIColor(red: 128, green: 0, blue: 0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
         }
         else // After Today.
         {
-            cell.backgroundColor = UIColor(red: 0, green: 0, blue: 128, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
         
         return cell
@@ -232,15 +261,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 try! self.realm.write {
                     self.events[index.section].remove(at: index.row)
-                    if self.events[index.section].count == 0
-                    {
+                    if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
                     }
                     
                     event.course.numberOfHoursAllocated -= event.duration
                     self.realm.delete(event)
                 }
-                self.myTableView.reloadData()
+                
+                self.animatedRemove(at: index)
             })
             optionMenu.addAction(deleteAction);
             
