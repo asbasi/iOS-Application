@@ -37,7 +37,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Course Identifier" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8RV-9P-oXJ" userLabel="Course">
-                                                    <rect key="frame" x="14" y="6" width="347" height="30"/>
+                                                    <rect key="frame" x="13" y="6" width="347" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -57,7 +57,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Instructor Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wjL-8u-daA" userLabel="Instructor">
-                                                    <rect key="frame" x="14" y="8" width="347" height="30"/>
+                                                    <rect key="frame" x="13" y="8" width="347" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -77,7 +77,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Units" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XK0-tT-RO7">
-                                                    <rect key="frame" x="14" y="7" width="347" height="30"/>
+                                                    <rect key="frame" x="13" y="7" width="347" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -121,7 +121,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PEP-l1-NvT">
-                                                    <rect key="frame" x="-8" y="-87" width="375" height="216"/>
+                                                    <rect key="frame" x="-9" y="-87" width="375" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                             </subviews>
@@ -159,7 +159,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aAV-wi-Pmx">
-                                                    <rect key="frame" x="0.0" y="-88" width="375" height="216"/>
+                                                    <rect key="frame" x="-1" y="-88" width="375" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                             </subviews>
@@ -424,7 +424,6 @@
                                             <outlet property="course" destination="IP0-tP-Ta2" id="HW7-yF-uCh"/>
                                             <outlet property="time" destination="cgV-J5-38Z" id="Q0x-Sc-LWK"/>
                                             <outlet property="title" destination="fkj-go-540" id="j7t-cb-yT6"/>
-                                            <segue destination="0SS-Rc-yLB" kind="show" identifier="showEvent" id="sOM-Ea-fPh"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -461,6 +460,7 @@
                         <outlet property="segmentController" destination="Bwu-bi-czA" id="Rt3-oJ-EXZ"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="editEvent" id="SVf-2y-i4z"/>
                         <segue destination="0SS-Rc-yLB" kind="show" identifier="addEvent" id="B7a-yc-p6T"/>
+                        <segue destination="0SS-Rc-yLB" kind="show" identifier="showEvent" id="0F9-CQ-Lue"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4g-B0-zRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -743,7 +743,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkz-WO-dGq">
-                                                    <rect key="frame" x="310" y="8" width="50" height="21"/>
+                                                    <rect key="frame" x="309" y="8" width="50" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>

@@ -35,8 +35,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
 
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
+    let image = UIImage(named: "notebook")!
+    let topMessage = "Planner"
+    var bottomMessage: String = ""
+    let segmentMessage: [String] = ["active", "finished", ""]
+    
     @IBAction func segmentChanged(_ sender: Any) {
         self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
+        
+        bottomMessage = "You don't have \(segmentMessage[segmentController.selectedSegmentIndex]) events. All your \(segmentMessage[segmentController.selectedSegmentIndex]) events will show up here."
         
         self.myTableView.reloadData()
     }
@@ -152,23 +159,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             return self.events.count
         }
         
-        /*
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: self.myTableView.bounds.size.width,
-                          height: self.myTableView.bounds.size.height)
-        let noDataLabel: UILabel = UILabel(frame: rect)
-        
-        noDataLabel.text = "No Planned Events"
-        noDataLabel.textColor = UIColor.gray
-        noDataLabel.textAlignment = NSTextAlignment.center
-        self.myTableView.backgroundView = noDataLabel
-        self.myTableView.separatorStyle = .none
-        */
-        
-        let image = UIImage(named: "notebook")!
-        let topMessage = "Planner"
-        let bottomMessage = "You don't have any planned events. All your planned events will show up here."
         
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
@@ -223,6 +213,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Return false if you do not want the specified item to be editable.
         return true
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.eventToEdit = self.events[indexPath.section][indexPath.row]
+        self.performSegue(withIdentifier: "showEvent", sender: nil)
+    }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
@@ -275,7 +270,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        let events = self.realm.objects(Event.self)
         let eventAddViewController = segue.destination as! PlannerAddTableViewController
         
         if segue.identifier! == "addEvent" {
@@ -286,10 +280,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "showEvent" {
-            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
-
             eventAddViewController.operation = "show"
-            eventAddViewController.event = events[selectedIndexPath!.row]
+            eventAddViewController.event = eventToEdit!
         }
     }
 }
