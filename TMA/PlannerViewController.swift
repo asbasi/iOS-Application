@@ -171,7 +171,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func animatedRemove(at path: IndexPath, type operation: String)
     {
-        // The if statement is required to properly "all" segment doesn't need any special animations.
+        // The if statement is required to properly handle the "all" segment.
         if(operation != "checkboxToggle" || self.segmentController.selectedSegmentIndex != 2) {
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
                 self.myTableView.beginUpdates()
