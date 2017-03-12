@@ -437,11 +437,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="kam-Oo-VSG">
                         <nil key="title"/>
-<<<<<<< HEAD
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
-=======
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
->>>>>>> origin/master
+
                             <rect key="frame" x="89" y="8" width="197" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <segments>
@@ -1097,14 +1094,9 @@
         <image name="planner" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-<<<<<<< HEAD
         <segue reference="CiB-df-f7D"/>
         <segue reference="wKh-gk-Xh7"/>
         <segue reference="a3P-Mg-OMn"/>
-=======
-        <segue reference="nOa-zp-xw0"/>
-        <segue reference="a3P-Mg-OMn"/>
         <segue reference="zU2-iX-C5i"/>
->>>>>>> origin/master
     </inferredMetricsTieBreakers>
 </document>
