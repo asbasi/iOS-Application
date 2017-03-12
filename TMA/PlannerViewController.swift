@@ -1,3 +1,4 @@
+
 //
 //  PlannerTableViewController.swift
 //  TMA
@@ -5,7 +6,6 @@
 //  Created by Arvinder Basi on 2/10/17.
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
-
 import UIKit
 import RealmSwift
 import BEMCheckBox
@@ -15,28 +15,35 @@ class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var course: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
-
-    var buttonAction: ((_ sender: AnyObject) -> Void)?
+    
+    var buttonAction: ((_ sender: PlannerViewCell) -> Void)?
     
     @IBAction func checkboxToggled(_ sender: AnyObject) {
-        self.buttonAction?(sender)
+        self.buttonAction?(self)
     }
 }
 
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var myTableView: UITableView!
-
+    
     let realm = try! Realm()
     
     var eventToEdit: Event!
     var events = [[Event]]()
-
+    
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
+    
+    let segmentMessage: [String] = ["active", "finished", "scheduled"]
+    let image = UIImage(named: "notebook")!
+    let topMessage = "Planner"
+    var bottomMessage: String = "You don't have any active events. All your active events will show up here."
     
     @IBAction func segmentChanged(_ sender: Any) {
         self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
+        self.populateSegments()
+        bottomMessage = "You don't have any \(segmentMessage[segmentController.selectedSegmentIndex]) events. All your \(segmentMessage[segmentController.selectedSegmentIndex]) events will show up here."
         
         self.myTableView.reloadData()
     }
@@ -118,12 +125,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.myTableView.tableFooterView = UIView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -152,37 +159,40 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             return self.events.count
         }
         
-        /*
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: self.myTableView.bounds.size.width,
-                          height: self.myTableView.bounds.size.height)
-        let noDataLabel: UILabel = UILabel(frame: rect)
-        
-        noDataLabel.text = "No Planned Events"
-        noDataLabel.textColor = UIColor.gray
-        noDataLabel.textAlignment = NSTextAlignment.center
-        self.myTableView.backgroundView = noDataLabel
-        self.myTableView.separatorStyle = .none
-        */
-        
-        let image = UIImage(named: "notebook")!
-        let topMessage = "Planner"
-        let bottomMessage = "You don't have any planned events. All your planned events will show up here."
-        
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
         
         return 0
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
     }
-
+    
+    func animatedRemove(at path: IndexPath, type operation: String)
+    {
+        // The if statement is required to properly handle the "all" segment.
+        if(operation != "checkboxToggle" || self.segmentController.selectedSegmentIndex != 2) {
+            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                self.myTableView.beginUpdates()
+                if(self.events.count > 0 && self.events.count - 1 >= path.section && self.myTableView.numberOfRows(inSection: path.section) > 1)
+                {
+                    self.myTableView.deleteRows(at: [path], with: UITableViewRowAnimation.fade)
+                }
+                else
+                {
+                    self.myTableView.deleteSections(IndexSet(integer: path.section), with: UITableViewRowAnimation.fade)
+                }
+                self.myTableView.endUpdates()
+            })
+        }
+        
+        self.populateSegments()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
-
+        
         let date = self.events[indexPath.section][indexPath.row].date as Date
         
         cell.title?.text = self.events[indexPath.section][indexPath.row].title
@@ -193,26 +203,35 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         formatter.dateFormat = "h:mm a"
         cell.time?.text = formatter.string(from: date)
         
-        cell.buttonAction = { (_ sender: AnyObject) -> Void in
+        cell.checkbox.boxType = BEMBoxType.square
+        cell.checkbox.onAnimationType = BEMAnimationType.fill
+        cell.buttonAction = { (_ sender: PlannerViewCell) -> Void in
+            
+            var path: IndexPath = self.myTableView.indexPath(for: sender)!
+            
             try! self.realm.write {
-                self.events[indexPath.section][indexPath.row].checked = !self.events[indexPath.section][indexPath.row].checked
-                
-                self.populateSegments()
+                self.events[path.section][path.row].checked = !self.events[path.section][path.row].checked
             }
-            self.myTableView.reloadData()
+            
+            self.events[path.section].remove(at: path.row)
+            if self.events[path.section].count == 0 {
+                self.events.remove(at: path.section)
+            }
+            
+            self.animatedRemove(at: path, type: "checkboxToggle")
         }
         
         if Calendar.current.isDateInToday(date) // Today.
         {
-            cell.backgroundColor = UIColor(red: 0, green: 128, blue: 0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
         else if NSDate().compare(date) == .orderedDescending // Before Today.
         {
-            cell.backgroundColor = UIColor(red: 128, green: 0, blue: 0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
         }
         else // After Today.
         {
-            cell.backgroundColor = UIColor(red: 0, green: 0, blue: 128, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
         
         return cell
@@ -223,7 +242,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Return false if you do not want the specified item to be editable.
         return true
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.eventToEdit = self.events[indexPath.section][indexPath.row]
+        self.performSegue(withIdentifier: "showEvent", sender: nil)
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
@@ -237,15 +261,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 try! self.realm.write {
                     self.events[index.section].remove(at: index.row)
-                    if self.events[index.section].count == 0
-                    {
+                    if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
                     }
                     
                     event.course.numberOfHoursAllocated -= event.duration
                     self.realm.delete(event)
                 }
-                self.myTableView.reloadData()
+                
+                self.animatedRemove(at: index, type: "delete")
             })
             optionMenu.addAction(deleteAction);
             
@@ -275,7 +299,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        let events = self.realm.objects(Event.self)
         let eventAddViewController = segue.destination as! PlannerAddTableViewController
         
         if segue.identifier! == "addEvent" {
@@ -286,10 +309,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "showEvent" {
-            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
-
             eventAddViewController.operation = "show"
-            eventAddViewController.event = events[selectedIndexPath!.row]
+            eventAddViewController.event = eventToEdit!
         }
     }
 }

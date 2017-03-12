@@ -198,24 +198,25 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
         return [delete, edit]
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.logToEdit = self.logs[indexPath.section][indexPath.row]
+        self.performSegue(withIdentifier: "showLog", sender: nil)
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let logs = self.realm.objects(Log.self)
+        let logAddViewController = segue.destination as! LogAddViewController
+        
         if segue.identifier! == "addLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
             logAddViewController.operation = "add"
         }
         else if segue.identifier! == "editLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
-            
             logAddViewController.operation = "edit"
             logAddViewController.log = logToEdit!
         }
         else if segue.identifier! == "showLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
-            
             logAddViewController.operation = "show"
-            logAddViewController.log = logs[tableView.indexPathForSelectedRow!.row]
+            logAddViewController.log = logToEdit!
         }
     }
 }

@@ -10,5 +10,6 @@ import Foundation
 import RealmSwift
 
 class Event: Item {
-    dynamic var checked = false
+    dynamic var checked: Bool = false
+    dynamic var id: String = UUID().uuidString
 }

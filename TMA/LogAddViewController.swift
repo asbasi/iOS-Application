@@ -14,8 +14,6 @@ import UIKit
 import RealmSwift
 
 class LogAddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-    //test for coursePickerData
-    
     let realm = try! Realm()
     
     @IBOutlet weak var titleTextField: UITextField!

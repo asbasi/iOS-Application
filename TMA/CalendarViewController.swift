@@ -11,7 +11,7 @@ import RealmSwift
 import FSCalendar
 import BEMCheckBox
 
-class CalendarViewCell: UITableViewCell {
+class CalendarViewPlannerCell: UITableViewCell {
     
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var course: UILabel!
@@ -25,6 +25,14 @@ class CalendarViewCell: UITableViewCell {
     }
 }
 
+class CalendarViewLogCell: UITableViewCell {
+    
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var course: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var checkbox: BEMCheckBox!
+}
+
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var myTableView: UITableView!
@@ -32,9 +40,14 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     let realm = try! Realm()
     
-    var events: Results<Event>!
-    var eventToEdit: Event!
-    var selectedDate: Date = Date()
+    let EVENTS = 0
+    let LOGS = 1
+    
+    fileprivate var events: Results<Event>!
+    fileprivate var logs: Results<Log>!
+    fileprivate var eventToEdit: Event!
+    fileprivate var logToEdit: Log!
+    fileprivate var selectedDate: Date = Date()
     
     fileprivate lazy var scopeGesture: UIPanGestureRecognizer = {
         [unowned self] in
@@ -73,6 +86,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
+        self.logs = getLogsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
         selectedDate = currentDate
         
         self.myTableView.frame.origin.y = self.calendar.frame.maxY + 6
@@ -107,9 +121,21 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
+    func getLogsForDate(_ date: Date) -> Results<Log>
+    {
+        var components = DateComponents()
+        components.day = 1
+        components.second = -1
+        let dateBegin = date
+        let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+        
+        
+        return self.realm.objects(Log.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
+    }
+    
     // How many events are scheduled for that day?
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let numEvents = getEventsForDate(date).count
+        let numEvents = getEventsForDate(date).count + getLogsForDate(date).count
         
         if numEvents >= 1
         {
@@ -119,15 +145,15 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return 0
     }
 
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition){
         self.events = getEventsForDate(date)
+        self.logs = getLogsForDate(date)
         selectedDate = date
         
         self.myTableView.reloadData()
     }
     
     func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
-        
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -136,44 +162,48 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
-        //return monthPosition == .current
         return true
     }
     
     func calendar(_ calendar: FSCalendar, shouldDeselect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        //return monthPosition == .current
         return true
     }
     
     /***************************** Table View Functions *****************************/
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if self.events.count > 0 {
-            self.myTableView.backgroundView = nil
-            self.myTableView.separatorStyle = .singleLine
-            return 1
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if(section == self.EVENTS) {
+            return "Events"
+        }
+        else if(section == self.LOGS) {
+            return "Logs"
         }
         
-        /*
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: self.myTableView.bounds.size.width,
-                          height: self.myTableView.bounds.size.height)
-        let noDataLabel: UILabel = UILabel(frame: rect)
-
-        noDataLabel.text = "No events on selected day"
-        noDataLabel.textColor = UIColor.gray
-        noDataLabel.textAlignment = NSTextAlignment.center
-        self.myTableView.backgroundView = noDataLabel
-        self.myTableView.separatorStyle = .none
-        */
+        return ""
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         
+        var numSections: Int = 0
+        if self.events.count > 0 {
+            numSections = 1
+        }
+        if self.logs.count > 0 {
+            numSections = 2
+        }
+        
+        if numSections > 0 {
+            self.myTableView.backgroundView = nil
+            self.myTableView.separatorStyle = .singleLine
+            return numSections
+        }
+
         let image = UIImage(named: "happy")!
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"
         let topMessage = formatter.string(from: selectedDate)
-        let bottomMessage = "No events scheduled for this date"
+        let bottomMessage = "No items for this date"
         
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
@@ -182,44 +212,103 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.events.count
+        if(section == self.EVENTS) {
+            return self.events.count
+        }
+        else if(section == self.LOGS) {
+            return self.logs.count
+        }
+        return 0
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+        footerView.backgroundColor = UIColor.clear
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarCell", for: indexPath) as! CalendarViewCell
+        
+        if(indexPath.section == self.EVENTS) {
+            let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarPlannerCell", for: indexPath) as! CalendarViewPlannerCell
 
-        cell.title?.text = self.events[indexPath.row].title
-        cell.checkbox.on = self.events[indexPath.row].checked
-        cell.course?.text = self.events[indexPath.row].course.name
+            cell.title?.text = self.events[indexPath.row].title
+            cell.checkbox.on = self.events[indexPath.row].checked
+            cell.course?.text = self.events[indexPath.row].course.name
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        let date = self.events[indexPath.row].date as Date
-        cell.time?.text = formatter.string(from: date)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            let date = self.events[indexPath.row].date as Date
+            cell.time?.text = formatter.string(from: date)
         
-        cell.buttonAction = { (_ sender: AnyObject) -> Void in
-            try! self.realm.write {
-                self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+            cell.checkbox.boxType = BEMBoxType.square
+            cell.checkbox.onAnimationType = BEMAnimationType.fill
+            cell.buttonAction = { (_ sender: AnyObject) -> Void in
+                try! self.realm.write {
+                    self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+                }
             }
+            return cell
+        }
+        else if(indexPath.section == self.LOGS)
+        {
+            let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarLogCell", for: indexPath) as! CalendarViewLogCell
+            
+            cell.title?.text = self.logs[indexPath.row].title
+            cell.course?.text = self.logs[indexPath.row].course.name
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            let date = self.logs[indexPath.row].date as Date
+            cell.time?.text = formatter.string(from: date)
+            
+            cell.checkbox.boxType = BEMBoxType.square
+            cell.checkbox.on = true
+            cell.checkbox.onFillColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+            cell.checkbox.onTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+            cell.checkbox.onCheckColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+            
+            return cell
         }
         
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let event = self.events[index.row]
+            var item: Item
             
-            let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
+            if(index.section == self.EVENTS){
+                item = self.events[index.row]
+            }
+            else {
+                item = self.logs[index.row]
+            }
+            
+            let optionMenu = UIAlertController(title: nil, message: "\"\(item.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
             
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
                 try! self.realm.write {
-                    event.course.numberOfHoursAllocated -= event.duration
-                    self.realm.delete(event)
+                    if(index.section == self.EVENTS) {
+                        let event: Event = self.events[index.row]
+                        event.course.numberOfHoursAllocated -= event.duration
+                        self.realm.delete(event)
+                    }
+                    else
+                    {
+                        let log: Log = self.logs[index.row]
+                        log.course.numberOfHoursLogged -= log.duration
+                        self.realm.delete(log)
+                    }
                 }
                 self.myTableView.reloadData()
             })
@@ -238,13 +327,32 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             
-            self.eventToEdit = self.events[index.row]
-            
-            self.performSegue(withIdentifier: "editEvent", sender: nil)
+            if(index.section == self.EVENTS)
+            {
+                self.eventToEdit = self.events[index.row]
+                self.performSegue(withIdentifier: "editEvent", sender: nil)
+            }
+            else if(index.section == self.LOGS)
+            {
+                self.logToEdit = self.logs[index.row]
+                self.performSegue(withIdentifier: "editLog", sender: nil)
+            }
         }
         edit.backgroundColor = .blue
         
         return [delete, edit]
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(indexPath.section == EVENTS) { // Events
+            self.eventToEdit = self.events[indexPath.row]
+            self.performSegue(withIdentifier: "showEvent", sender: nil)
+        }
+        else if(indexPath.section == LOGS) { // Logs
+            self.logToEdit = self.logs[indexPath.row]
+            // self.performSegue(withIdentifier: "showLog", sender: nil)
+            self.performSegue(withIdentifier: "editLog", sender: nil)
+        }
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -252,20 +360,35 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        let eventAddViewController = segue.destination as! PlannerAddTableViewController
-        
         if segue.identifier! == "addEvent" {
+            let eventAddViewController = segue.destination as! PlannerAddTableViewController
             eventAddViewController.operation = "add"
         }
         else if segue.identifier! == "editEvent" {
+            let eventAddViewController = segue.destination as! PlannerAddTableViewController
             eventAddViewController.operation = "edit"
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "showEvent" {
-            var selectedIndexPath = self.myTableView.indexPathForSelectedRow
-            
+            let eventAddViewController = segue.destination as! PlannerAddTableViewController
             eventAddViewController.operation = "show"
-            eventAddViewController.event = events[selectedIndexPath!.row]
+            eventAddViewController.event = eventToEdit!
+        }
+        else if segue.identifier! == "addLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+            logAddViewController.operation = "add"
+        }
+        else if segue.identifier! == "editLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+            
+            logAddViewController.operation = "edit"
+            logAddViewController.log = logToEdit!
+        }
+        else if segue.identifier! == "showLog" {
+            let logAddViewController = segue.destination as! LogAddViewController
+            
+            logAddViewController.operation = "show"
+            logAddViewController.log = logToEdit
         }
     }
 }
