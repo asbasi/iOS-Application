@@ -11,6 +11,8 @@ import Charts
 import RealmSwift
 import KDCircularProgress
 
+@objc(BarChartFormatter)
+
 
 class Ring:UIButton
 {
@@ -58,82 +60,81 @@ class Ring:UIButton
 }
 
 class CourseDetailViewController: UIViewController {
-
+    
     
     @IBOutlet weak var percentageLabel: UILabel!
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var barChartView: BarChartView!
-    let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
-
+    
     @IBOutlet weak var circularProgressView: KDCircularProgress!
     
     @IBOutlet weak var precentageText: UILabel!
-   
+    
     let maxCount = 100
     let realm = try! Realm()
     
-    var allTypesOfCharts = [([String],[Double])]() //names,values
+    var allTypesOfCharts = [([String],[Double],[Double])]() //[([names],[log],[goals])]
     
     @IBAction func segmentChanged(_ sender: Any) {
-        let (a,b) =  allTypesOfCharts[segmentController.selectedSegmentIndex]
-        let c = 1.0
-        setChar(data: a, values: b, values1: [c])
+        let (names,logHours,goalHours) =  allTypesOfCharts[segmentController.selectedSegmentIndex]
+        
+        setChar(data: names, values: logHours, golValues: goalHours)
     }
     
     var course: Course!
     
     // Setting the Chart Data here
-    func setChar(data: [String], values: [Double], values1: [Double]){
+    func setChar(data: [String], values: [Double], golValues: [Double]){
         barChartView.noDataText = "data needs to be provided for the chart."
+        print("we are in setChar")
+        print(data)
         
-        var dataEntries1: [BarChartDataEntry] = []
-
-        var dataEntries: [BarChartDataEntry] = []
+        var golaDataEntries: [BarChartDataEntry] = []
+        var studyHoursDataEntries: [BarChartDataEntry] = []
         
         
         // Setting the X-Axis of the weekly Chart to String
         if data.count == 7{
-            let week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
-//            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: week)
+            
             for i in 0..<data.count{
+                print(data[i])
                 let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
-                dataEntries.append(dataEntry)
+                studyHoursDataEntries.append(dataEntry)
                 
-                /*let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
-                dataEntries1.append(dataEntry1)*/
+                
+                let dataEntry1 = BarChartDataEntry(x: Double(i), y: golValues[i], data: data[i] as AnyObject?)
+                golaDataEntries.append(dataEntry1)
                 
             }
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: data)
+            
         }
         else{
-            var months = [String](repeating: "", count: 30)
-            for i in 1..<months.count{
-                months[i-1] += String(i)
-            }
-            
-            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
-            for i in 0..<months.count{
-                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
-                dataEntries.append(dataEntry)
+            barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: data)
+            for i in 0..<data.count{
                 
-            /*let dataEntry1 = BarChartDataEntry(x: Double(i), y: values1[i], data: data[i] as AnyObject?)
-                dataEntries1.append(dataEntry1)*/
+                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i], data: data[i] as AnyObject?)
+                studyHoursDataEntries.append(dataEntry)
+                
+                let dataEntry1 = BarChartDataEntry(x: Double(i), y: golValues[i], data: data[i] as AnyObject?)
+                golaDataEntries.append(dataEntry1)
                 
             }
         }
-
+        
         barChartView.chartDescription?.text = ""
-        barChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        barChartView.animate(xAxisDuration: 0.1, yAxisDuration: 0.1)
         
-//        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
-//        chartDataSet.colors = ChartColorTemplates.colorful()
+        //        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+        //        chartDataSet.colors = ChartColorTemplates.colorful()
         
-        let ll = ChartLimitLine(limit: 10.0, label: "Target")
-        barChartView.rightAxis.addLimitLine(ll)
+        // let ll = ChartLimitLine(limit: 10.0, label: "Target")
+        // barChartView.rightAxis.addLimitLine(ll)
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Studyhours")
+        let chartDataSet = BarChartDataSet(values: studyHoursDataEntries, label: "Studyhours")
         chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
         
-        let chartDataSet1 = BarChartDataSet(values: dataEntries1, label: "Goal")
+        let chartDataSet1 = BarChartDataSet(values: golaDataEntries, label: "Goal")
         chartDataSet1.colors = [UIColor(red: 30/255, green: 126/255, blue: 220/255, alpha: 1)]
         
         barChartView.xAxis.labelPosition = .bottom
@@ -143,13 +144,13 @@ class CourseDetailViewController: UIViewController {
         let chartData = BarChartData(dataSets: dataSets)
         
         
-//        let chartData = BarChartData()
-        let groupSpace = -0.05
-        let barSpace = 0.05
-        let barWidth = 0.10
+
+        let groupSpace = 0.3        // space between each days data
+        let barSpace = 0.05             // space between goals and logs
+        let barWidth = 0.3
         
-        let groupCount = self.week.count
-        let startWeek = 0
+        let groupCount = data.count
+        let startWeek = -0.5
         
         chartData.barWidth = barWidth
         
@@ -159,51 +160,52 @@ class CourseDetailViewController: UIViewController {
         
         chartData.groupBars(fromX: Double(startWeek), groupSpace: groupSpace, barSpace: barSpace)
         
-        //chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
+        chartData.setDrawValues(false)
         barChartView.notifyDataSetChanged()
-
-//        chartData.addDataSet(chartDataSet)
+        
+        //        chartData.addDataSet(chartDataSet)
         barChartView.data = chartData
         
         //background color
-//        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
+        //        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
         
         //chart animation
-        barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
-
+//        barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
+        
     }
     
     func setAngle() -> Void {
-
+        
         let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self)))
         let denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self)))
         var percentage = 100.0
-        
         if denominator != 0{
-            percentage = Double(Int(nominator*10) / Int(denominator))
+            percentage = Double(nominator / denominator)
         }
-
-        let angle = 360 * (percentage/10)
-            
+        
+        let angle = 360 * (percentage)
+        
         circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
-        percentageLabel.text = "\(Int(percentage * 10))%"
+        percentageLabel.text = "\(Int(round(percentage*100)))%"
     }
     
     
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
+        var logHours = [Double]()
         var studyHours = [Double]()
-        var goals = [Double]()
         
         circularProgressView.angle = 0
         setAngle()
         
         var components = DateComponents()
         components.second = -1
-//        var weekDays = [String]()
-        var months = [String](repeating: "", count: 30)
-
+        var weekDays = [String]()
+        var monthDays = [String]()
+        
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //weekly
         for offsetDay in [6,5,4,3,2,1,0]{
             let calendar = Calendar.current
@@ -212,70 +214,58 @@ class CourseDetailViewController: UIViewController {
             let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             let x1 = self.realm.objects(Event.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             
-            studyHours.append(0)
+            logHours.append(0)
             for element in x {
-                studyHours[studyHours.endIndex-1] += Double(element.duration)
+                logHours[logHours.endIndex-1] += Double(element.duration)
             }
-//            weekDays.append(nDaysAgo.dayOfTheWeek()!)
+            weekDays.append(nDaysAgo.dayOfTheWeek()!)
             
-            goals.append(0)
+            studyHours.append(0)
             for element in x1 {
-                goals[goals.endIndex-1] += Double(element.duration)
-            }
-            
-//            goals.append(nDaysAgo.dayOfTheWeek()!)
-        }
-        setChar(data: week, values: studyHours, values1: goals)
-        allTypesOfCharts.append((week,studyHours))
-        
-        
-        //monthly
-
-        studyHours = [Double]()
-        for offsetDay in [ 8, 7, 6, 5, 4, 3, 2, 1]{//[28,21,14,7]{
-            let calendar = Calendar.current
-            let start = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
-            let end = calendar.date(byAdding: .day, value: (offsetDay - 8 ) * -1, to: Date())!
-            
-            let hoursLogged = self.realm.objects(Log.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
-            let settedGoal = self.realm.objects(Event.self).filter("date BETWEEN %@", [start.startOfDay,end.startOfDay])
-            
-            for _ in 1..<31 {
-                studyHours.append(0)
-            }
-            
-            //studyHours.append(0)
-            for element in hoursLogged {
                 studyHours[studyHours.endIndex-1] += Double(element.duration)
             }
             
-            for _ in 1..<31 {
-                goals.append(0)
-            }
-
-            for element in settedGoal {
-                goals[goals.endIndex-1] += Double(element.duration)
-            }
         }
-
+        setChar(data: weekDays, values: logHours, golValues: studyHours)
+        allTypesOfCharts.append((weekDays,logHours, studyHours))
         
-        // x index for month graph from 1..30
-        for i in 1..<months.count+1{
-            months[i-1] += String(i)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //monthly
+        
+        logHours = [Double]()
+        studyHours = [Double]()
+        for offsetDay in [30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0] {
+            let calendar = Calendar.current
+            let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
+            
+            let hoursLogged = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let setGoals = self.realm.objects(Event.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            
+            logHours.append(0)
+            for element in hoursLogged {
+                logHours[logHours.endIndex-1] += Double(element.duration)
+            }
+            
+            studyHours.append(0)
+            for element in setGoals {
+                studyHours[studyHours.endIndex-1] += Double(element.duration)
+            }
+            
+            monthDays.append(nDaysAgo.dayOfTheMonth()!) // want a number
         }
-
-        allTypesOfCharts.append((months, studyHours))
+        
+        allTypesOfCharts.append((monthDays,logHours, studyHours))
+        
+    }
     
-    }
-
     override func viewWillAppear(_ animated: Bool) {
-//        NoteContent.text = course.name
+        //        NoteContent.text = course.name
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
 }

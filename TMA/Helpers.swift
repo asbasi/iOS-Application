@@ -50,7 +50,13 @@ extension Date {
     
     func dayOfTheWeek() -> String? {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
+        dateFormatter.dateFormat = "E"
+        return dateFormatter.string(from: self)
+    }
+    
+    func dayOfTheMonth() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
         return dateFormatter.string(from: self)
     }
 }
