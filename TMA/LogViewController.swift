@@ -88,21 +88,6 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return self.logs.count
         }
         
-        /*
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: self.tableView.bounds.size.width,
-                          height: self.tableView.bounds.size.height)
-        let noDataLabel: UILabel = UILabel(frame: rect)
-        
-        noDataLabel.text = "No Logs"
-        noDataLabel.textColor = UIColor.gray
-        noDataLabel.textAlignment = NSTextAlignment.center
-        self.tableView.backgroundView = noDataLabel
-        self.tableView.separatorStyle = .none
-        */
-        
-        
         let image = UIImage(named: "woodlog")!
         let topMessage = "Log"
         let bottomMessage = "You haven't logged any events. All your logged events will show up here."
@@ -111,6 +96,17 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
         self.tableView.separatorStyle = .none
         
         return 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+        footerView.backgroundColor = UIColor.clear
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

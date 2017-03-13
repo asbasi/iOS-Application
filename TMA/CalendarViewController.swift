@@ -40,8 +40,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     let realm = try! Realm()
     
-    let EVENTS = 0
-    let LOGS = 1
+    var EVENTS = 0
+    var LOGS = 1
     
     fileprivate var events: Results<Event>!
     fileprivate var logs: Results<Log>!
@@ -187,9 +187,22 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         var numSections: Int = 0
         if self.events.count > 0 {
             numSections = 1
+            EVENTS = 0
         }
+        else {
+            EVENTS = -1
+        }
+        
         if self.logs.count > 0 {
             numSections = 2
+            
+            if(EVENTS == -1) {
+                LOGS = 0
+            }
+            else
+            {
+                LOGS = 1
+            }
         }
         
         if numSections > 0 {
@@ -310,6 +323,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                         self.realm.delete(log)
                     }
                 }
+                
+                self.calendar.reloadData()
                 self.myTableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
