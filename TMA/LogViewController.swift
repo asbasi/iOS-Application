@@ -205,7 +205,7 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let logAddViewController = segue.destination as! LogAddViewController
+        let logAddViewController = segue.destination as! LogAddTableViewController
         
         if segue.identifier! == "addLog" {
             logAddViewController.operation = "add"

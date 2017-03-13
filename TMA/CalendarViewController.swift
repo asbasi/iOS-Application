@@ -375,17 +375,17 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             eventAddViewController.event = eventToEdit!
         }
         else if segue.identifier! == "addLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
+            let logAddViewController = segue.destination as! LogAddTableViewController
             logAddViewController.operation = "add"
         }
         else if segue.identifier! == "editLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
+            let logAddViewController = segue.destination as! LogAddTableViewController
             
             logAddViewController.operation = "edit"
             logAddViewController.log = logToEdit!
         }
         else if segue.identifier! == "showLog" {
-            let logAddViewController = segue.destination as! LogAddViewController
+            let logAddViewController = segue.destination as! LogAddTableViewController
             
             logAddViewController.operation = "show"
             logAddViewController.log = logToEdit
