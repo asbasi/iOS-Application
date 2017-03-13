@@ -331,7 +331,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
                 (alert: UIAlertAction!) -> Void in
-                
             })
             optionMenu.addAction(cancelAction)
             
