@@ -91,13 +91,13 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         var percentage: Float = 0.0
         if self.courses[indexPath.row].numberOfHoursAllocated > 0 {
-            percentage = self.courses[indexPath.row].numberOfHoursLogged / self.courses[indexPath.row].numberOfHoursAllocated * 100.0
+            percentage = self.courses[indexPath.row].numberOfHoursLogged / self.courses[indexPath.row].numberOfHoursAllocated
         }
         else {
-            percentage = 100.0
+            percentage = self.courses[indexPath.row].numberOfHoursLogged
         }
         
-        cell.percentage!.text = "\(Int(round(percentage)))%"
+        cell.percentage!.text = "\(Int(round(percentage * 100)))%"
         
         return cell
     }

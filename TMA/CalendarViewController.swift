@@ -66,7 +66,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
         else
         {
-            self.performSegue(withIdentifier: "addEvent", sender: nil)
+            let alert = UIAlertController(title: "Adding Item", message: "What would you like to add?", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Add Event", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "addEvent", sender: nil)}))
+            alert.addAction(UIAlertAction(title: "Add Log", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "addLog", sender: nil)}))
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.destructive, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     

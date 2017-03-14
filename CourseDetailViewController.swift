@@ -130,10 +130,10 @@ class CourseDetailViewController: UIViewController {
         // let ll = ChartLimitLine(limit: 10.0, label: "Target")
         // barChartView.rightAxis.addLimitLine(ll)
         
-        let chartDataSet = BarChartDataSet(values: studyHoursDataEntries, label: "Studyhours")
+        let chartDataSet = BarChartDataSet(values: studyHoursDataEntries, label: "Study Hours")
         chartDataSet.colors = [UIColor(red: 230/255, green: 126/255, blue: 34/255, alpha: 1)]
         
-        let chartDataSet1 = BarChartDataSet(values: golaDataEntries, label: "Goal")
+        let chartDataSet1 = BarChartDataSet(values: golaDataEntries, label: "Planned Hours")
         chartDataSet1.colors = [UIColor(red: 30/255, green: 126/255, blue: 220/255, alpha: 1)]
         
         barChartView.xAxis.labelPosition = .bottom
@@ -174,11 +174,10 @@ class CourseDetailViewController: UIViewController {
     func setAngle() -> Void {
         
         let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")))
-        let denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")))
+        let denominator = Float(Helpers.add_duration(events: self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")))
         var percentage = 100.0
-        if denominator != 0{
-            percentage = Double(nominator / denominator)
-        }
+        
+        percentage = denominator != 0.0 ? Double(nominator / denominator) : Double(nominator)
         
         let angle = percentage > 1 ? 360 : 360 * percentage
         
@@ -201,7 +200,7 @@ class CourseDetailViewController: UIViewController {
         var weekDays = [String]()
         var monthDays = [String]()
         
-        
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //weekly
         for offsetDay in [6,5,4,3,2,1,0]{
