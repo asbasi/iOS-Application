@@ -13,7 +13,6 @@ import KDCircularProgress
 
 @objc(BarChartFormatter)
 
-
 class Ring:UIButton
 {
     let realm = try! Realm()
@@ -143,8 +142,6 @@ class CourseDetailViewController: UIViewController {
         
         let chartData = BarChartData(dataSets: dataSets)
         
-        
-        
         let groupSpace = 0.3        // space between each days data
         let barSpace = 0.05             // space between goals and logs
         let barWidth = 0.3
@@ -183,16 +180,16 @@ class CourseDetailViewController: UIViewController {
             percentage = Double(nominator / denominator)
         }
         
-        let angle = 360 * (percentage)
+        let angle = percentage > 1 ? 360 : 360 * percentage
         
         circularProgressView.animate(toAngle: Double(angle), duration: 0.5, completion: nil)
         percentageLabel.text = "\(Int(round(percentage*100)))%"
     }
     
-    
-    override func viewDidLoad() {
+    func populateGraphs()
+    {
+        allTypesOfCharts = [([String],[Double],[Double])]()
         
-        super.viewDidLoad()
         var logHours = [Double]()
         var studyHours = [Double]()
         
@@ -255,16 +252,20 @@ class CourseDetailViewController: UIViewController {
         }
         
         allTypesOfCharts.append((monthDays,logHours, studyHours))
+    }
+    
+    override func viewDidLoad() {
         
+        super.viewDidLoad()
+        populateGraphs()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //        NoteContent.text = course.name
+        populateGraphs()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     

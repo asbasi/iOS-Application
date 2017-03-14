@@ -87,9 +87,17 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-        
         cell.course!.text = self.courses[indexPath.row].name
-        cell.percentage!.text = "\(self.courses[indexPath.row].numberOfHoursLogged)" // / numberOfHoursAllocated
+        
+        var percentage: Float = 0.0
+        if self.courses[indexPath.row].numberOfHoursAllocated > 0 {
+            percentage = self.courses[indexPath.row].numberOfHoursLogged / self.courses[indexPath.row].numberOfHoursAllocated * 100.0
+        }
+        else {
+            percentage = 100.0
+        }
+        
+        cell.percentage!.text = "\(Int(round(percentage)))%"
         
         return cell
     }
