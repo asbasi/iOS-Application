@@ -144,7 +144,7 @@ class CourseDetailViewController: UIViewController {
         let chartData = BarChartData(dataSets: dataSets)
         
         
-
+        
         let groupSpace = 0.3        // space between each days data
         let barSpace = 0.05             // space between goals and logs
         let barWidth = 0.3
@@ -170,7 +170,7 @@ class CourseDetailViewController: UIViewController {
         //        barChartView.backgroundColor = UIColor(red: 189/255, green: 195/255, blue: 199/255, alpha: 1)
         
         //chart animation
-//        barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
+        //        barChartView.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .linear)
         
     }
     
@@ -211,8 +211,8 @@ class CourseDetailViewController: UIViewController {
             let calendar = Calendar.current
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
-            let x = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            let x1 = self.realm.objects(Event.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let x = self.realm.objects(Log.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let x1 = self.realm.objects(Event.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             
             logHours.append(0)
             for element in x {
@@ -238,8 +238,8 @@ class CourseDetailViewController: UIViewController {
             let calendar = Calendar.current
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
-            let hoursLogged = self.realm.objects(Log.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            let setGoals = self.realm.objects(Event.self).filter("date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let hoursLogged = self.realm.objects(Log.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let setGoals = self.realm.objects(Event.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             
             logHours.append(0)
             for element in hoursLogged {
