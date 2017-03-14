@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import BEMCheckBox
+import UserNotifications
 
 class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
@@ -220,6 +221,18 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             
             var path: IndexPath = self.myTableView.indexPath(for: sender)!
             
+            let event = self.events[path.section][path.row]
+            
+            if !event.checked {
+                // About to check off the event so remove any pending notifications.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
+            }
+            else {
+                // Event is getting unchecked so schedule another notification.
+                let delegate = UIApplication.shared.delegate as? AppDelegate
+                delegate?.scheduleNotifcation(at: event.date, title: event.title, body: "Reminder!", identifier: event.id)
+            }
+            
             try! self.realm.write {
                 self.events[path.section][path.row].checked = !self.events[path.section][path.row].checked
             }
@@ -269,6 +282,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
+                
+                // Remove any pending notifications for the event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
                 
                 try! self.realm.write {
                     self.events[index.section].remove(at: index.row)

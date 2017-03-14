@@ -74,7 +74,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 course.numberOfHoursAllocated += event.duration
             }
             
-            // Eventually need to assign each event it's own unique identifier for the reminders.
             let delegate = UIApplication.shared.delegate as? AppDelegate
             delegate?.scheduleNotifcation(at: event.date, title: event.title, body: "Reminder!", identifier: event.id)
             

@@ -176,8 +176,8 @@ class CourseDetailViewController: UIViewController {
     
     func setAngle() -> Void {
         
-        let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self)))
-        let denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self)))
+        let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")))
+        let denominator  = Float(Helpers.add_duration(events: self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")))
         var percentage = 100.0
         if denominator != 0{
             percentage = Double(nominator / denominator)
