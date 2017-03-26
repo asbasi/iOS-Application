@@ -166,7 +166,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return 0
     }
     
-    /*
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
         footerView.backgroundColor = UIColor.clear
@@ -177,7 +176,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
         return 20.0
     }
-    */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
@@ -230,9 +228,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
             }
             else {
-                // Event is getting unchecked so schedule another notification.
-                let delegate = UIApplication.shared.delegate as? AppDelegate
-                delegate?.scheduleNotifcation(at: event.date, title: event.title, body: "Reminder!", identifier: event.id)
+                if let date = event.reminderDate {
+                    // Event is getting unchecked so schedule another notification.
+                    let delegate = UIApplication.shared.delegate as? AppDelegate
+                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.id)
+                }
             }
             
             try! self.realm.write {

@@ -27,6 +27,39 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         dateLabel.text = dateFormatter.string(from: datePicker.date)
     }
     
+
+   @IBOutlet weak var reminderSwitch: UISwitch!
+    @IBOutlet weak var reminderLabel: UILabel!
+    @IBOutlet weak var reminderPicker: UIDatePicker!
+    @IBAction func toggleReminderPicker(_ sender: Any) {
+        reminderSwitch.isOn = !reminderSwitch.isOn
+        
+        if !reminderSwitch.isOn { // Turned Off
+            reminderPicker.isHidden = true
+            reminderLabel.textColor = UIColor.black
+            reminderLabel.text = "Reminder"
+        }
+        else // Turned On
+        {
+            reminderPicker.isHidden = false
+            reminderPicker.minimumDate = Date()
+            reminderLabel.textColor = UIColor.blue
+            setReminder(reminderPicker)
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        })
+    }
+
+    @IBAction func setReminder(_ sender: UIDatePicker) {
+        if !reminderPicker.isHidden {
+            reminderLabel.text = dateFormatter.string(from: reminderPicker.date)
+        }
+    }
+    
+    
     func checkAllTextFields() {
         if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! ||
             (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)!) {
@@ -79,8 +112,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 course.numberOfHoursAllocated += event.duration
             }
             
-            let delegate = UIApplication.shared.delegate as? AppDelegate
-            delegate?.scheduleNotifcation(at: event.date, title: event.title, body: "Reminder!", identifier: event.id)
+            if reminderSwitch.isOn {
+                // Remove any existing notifications for this event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
+                
+                // Schedule a notification.
+                event.reminderDate = reminderPicker.date
+                let delegate = UIApplication.shared.delegate as? AppDelegate
+                delegate?.scheduleNotifcation(at: event.reminderDate!, title: event.title, body: "Reminder!", identifier: event.id)
+            }
+            else
+            {
+                event.reminderDate = nil
+            }
             
             Helpers.DB_insert(obj: event)
             
@@ -92,8 +136,22 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 event!.duration = Float(durationTextField.text!)!
                 event!.course = course
                 event!.date = dateFormatter.date(from: dateLabel.text!)
-                
+            
                 course.numberOfHoursAllocated += event!.duration
+                
+                if reminderSwitch.isOn {
+                    // Remove any existing notifications for this event.
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.id])
+                    
+                    // Schedule a notification.
+                    event!.reminderDate = reminderPicker.date
+                    let delegate = UIApplication.shared.delegate as? AppDelegate
+                    delegate?.scheduleNotifcation(at: event!.reminderDate!, title: event!.title, body: "Reminder!", identifier: event!.id)
+                }
+                else
+                {
+                    event!.reminderDate = nil
+                }
             }
         }
         
@@ -127,6 +185,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         // Date picker setup
         self.datePicker.isHidden = true
 
+        // Reminder setup
+        self.reminderLabel.text = "Reminder"
+        self.reminderSwitch.isOn = false
+        self.reminderPicker.isHidden = true
+        
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
             self.pageTitleTextField.title = "Add Event"
@@ -137,6 +200,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.durationTextField.text = "\(self.event!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
             self.courseLabel.text = self.event!.course.name
+            
+            if let date = self.event!.reminderDate {
+                self.reminderSwitch.isOn = true
+                self.reminderLabel.textColor = UIColor.blue
+                self.reminderLabel.text = dateFormatter.string(from: date)
+            }
         }
         
         // Ensure that the keyboard disappears when the user taps elsewhere.
@@ -154,11 +223,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return (section == 0 || section == 1) ? 3 : 2
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -175,6 +244,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             return height
         }
         
+        if(indexPath.section == 2 && indexPath.row == 1)
+        {
+            let height: CGFloat = reminderPicker.isHidden ? 0.0 : 216
+            return height
+        }
         return super.tableView(self.tableView, heightForRowAt: indexPath)
     }
 
@@ -185,9 +259,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         let courseIndexPath = IndexPath(row: 1, section: 0)
         let dateIndexPath = IndexPath(row: 0, section: 1)
+        let reminderIndexPath = IndexPath(row: 0, section: 2)
         
         if courseIndexPath == indexPath {
-            
             coursePicker.isHidden = !coursePicker.isHidden
             
             if (courseLabel.text?.isEmpty)! {
@@ -196,45 +270,29 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     courseLabel.text = courses[0].name
                 }
             }
-            
-            datePicker.isHidden = true
-            
-            UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                self.tableView.beginUpdates()
-                self.tableView.deselectRow(at: indexPath, animated: true)
-                self.tableView.endUpdates()
-            })
         }
         else if dateIndexPath == indexPath {
             
             datePicker.isHidden = !datePicker.isHidden
             
             if (dateLabel.text?.isEmpty)! {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = .short
-                dateFormatter.timeStyle = .short
-                
                 dateLabel.text = dateFormatter.string(from: Date())
             }
-            
-            coursePicker.isHidden = true
-            
-            UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                self.tableView.beginUpdates()
-                self.tableView.deselectRow(at: indexPath, animated: true)
-                self.tableView.endUpdates()
-            })
         }
-        else
-        {
-            coursePicker.isHidden = true
-            datePicker.isHidden = true
-            
-            UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
-            })
+        else if reminderIndexPath == indexPath {
+            if !reminderSwitch.isOn {
+                toggleReminderPicker(self)
+            }
+            else {
+                reminderPicker.isHidden = !reminderPicker.isHidden
+            }
         }
+            
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.tableView.beginUpdates()
+            self.tableView.deselectRow(at: indexPath, animated: true)
+            self.tableView.endUpdates()
+        })
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

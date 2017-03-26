@@ -12,4 +12,5 @@ import RealmSwift
 class Event: Item {
     dynamic var checked: Bool = false
     dynamic var id: String = UUID().uuidString
+    dynamic var reminderDate: Date? = nil
 }

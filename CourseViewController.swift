@@ -47,6 +47,17 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     // MARK: - Table view data source
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+        footerView.backgroundColor = UIColor.clear
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Current Quarter"
