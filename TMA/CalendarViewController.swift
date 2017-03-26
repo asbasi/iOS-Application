@@ -93,7 +93,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.logs = getLogsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
         selectedDate = currentDate
         
-        self.myTableView.frame.origin.y = self.calendar.frame.maxY + 6
+        self.myTableView.frame.origin.y = self.calendar.frame.maxY
         self.myTableView.tableFooterView = UIView()
         
         // setGradientBackground(view: self.view, colorTop: UIColor.blue, colorBottom: UIColor.lightGray)
@@ -162,7 +162,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         self.calendar.frame.size.height = bounds.height
-        self.myTableView.frame.origin.y = calendar.frame.maxY + 6
+        self.myTableView.frame.origin.y = calendar.frame.maxY
+        
+        self.myTableView.frame = CGRect(x: self.myTableView.frame.origin.x, y: self.myTableView.frame.origin.y, width: self.view.frame.width, height: self.view.frame.maxY - calendar.frame.maxY)
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
@@ -238,6 +240,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return 0
     }
 
+    /*
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
         footerView.backgroundColor = UIColor.clear
@@ -248,6 +251,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 20.0
     }
+    */
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -368,7 +372,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
         else if(indexPath.section == LOGS) { // Logs
             self.logToEdit = self.logs[indexPath.row]
-            // self.performSegue(withIdentifier: "showLog", sender: nil)
             self.performSegue(withIdentifier: "editLog", sender: nil)
         }
     }
@@ -378,35 +381,40 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier! == "addEvent" {
-            let eventAddViewController = segue.destination as! PlannerAddTableViewController
-            eventAddViewController.operation = "add"
+        let navigation: UINavigationController = segue.destination as! UINavigationController
+        
+        if(segue.identifier! == "addEvent" || segue.identifier! == "editEvent" || segue.identifier == "showEvent") {
+            var eventAddViewController = PlannerAddTableViewController.init()
+            eventAddViewController = navigation.viewControllers[0] as! PlannerAddTableViewController
+        
+            if segue.identifier! == "addEvent" {
+                eventAddViewController.operation = "add"
+            }
+            else if segue.identifier! == "editEvent" {
+                eventAddViewController.operation = "edit"
+                eventAddViewController.event = eventToEdit!
+            }
+            else if segue.identifier! == "showEvent" {
+                eventAddViewController.operation = "show"
+                eventAddViewController.event = eventToEdit!
+            }
         }
-        else if segue.identifier! == "editEvent" {
-            let eventAddViewController = segue.destination as! PlannerAddTableViewController
-            eventAddViewController.operation = "edit"
-            eventAddViewController.event = eventToEdit!
-        }
-        else if segue.identifier! == "showEvent" {
-            let eventAddViewController = segue.destination as! PlannerAddTableViewController
-            eventAddViewController.operation = "show"
-            eventAddViewController.event = eventToEdit!
-        }
-        else if segue.identifier! == "addLog" {
-            let logAddViewController = segue.destination as! LogAddTableViewController
-            logAddViewController.operation = "add"
-        }
-        else if segue.identifier! == "editLog" {
-            let logAddViewController = segue.destination as! LogAddTableViewController
+        else if (segue.identifier! == "addLog" || segue.identifier! == "editLog" || segue.identifier! == "showLog") {
             
-            logAddViewController.operation = "edit"
-            logAddViewController.log = logToEdit!
-        }
-        else if segue.identifier! == "showLog" {
-            let logAddViewController = segue.destination as! LogAddTableViewController
+            var logAddViewController = LogAddTableViewController.init()
+            logAddViewController = navigation.viewControllers[0] as! LogAddTableViewController
             
-            logAddViewController.operation = "show"
-            logAddViewController.log = logToEdit
+            if segue.identifier! == "addLog" {
+                logAddViewController.operation = "add"
+            }
+            else if segue.identifier! == "editLog" {
+                logAddViewController.operation = "edit"
+                logAddViewController.log = logToEdit!
+            }
+            else if segue.identifier! == "showLog" {
+                logAddViewController.operation = "show"
+                logAddViewController.log = logToEdit
+            }
         }
     }
 }

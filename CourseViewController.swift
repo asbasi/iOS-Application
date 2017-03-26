@@ -47,6 +47,14 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     // MARK: - Table view data source
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Current Quarter"
+        }
+        
+        return ""
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.courses.count > 0 {
             self.tableView.backgroundView = nil

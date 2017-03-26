@@ -58,6 +58,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     var courses: Results<Course>!
     var dateFormatter = DateFormatter()
     
+    @IBAction func cancel(_ sender: Any) {
+        self.dismissKeyboard()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func save(_ sender: Any) {
         //get the course
         let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
@@ -92,7 +97,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
         }
         
-        let _ = self.navigationController?.popViewController(animated: true)
+        self.dismissKeyboard()
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

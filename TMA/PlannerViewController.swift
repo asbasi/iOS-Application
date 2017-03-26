@@ -166,6 +166,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return 0
     }
     
+    /*
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
         footerView.backgroundColor = UIColor.clear
@@ -176,6 +177,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
         return 20.0
     }
+    */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
@@ -326,7 +328,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        let eventAddViewController = segue.destination as! PlannerAddTableViewController
+        let navigation: UINavigationController = segue.destination as! UINavigationController
+        
+        var eventAddViewController = PlannerAddTableViewController.init()
+        eventAddViewController = navigation.viewControllers[0] as! PlannerAddTableViewController
         
         if segue.identifier! == "addEvent" {
             eventAddViewController.operation = "add"
