@@ -14,6 +14,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     let realm = try! Realm()
     
+    @IBOutlet weak var segmentController: UISegmentedControl!
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
     @IBOutlet weak var durationTextField: UITextField!
@@ -28,7 +30,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
 
-   @IBOutlet weak var reminderSwitch: UISwitch!
+    @IBOutlet weak var reminderSwitch: UISwitch!
     @IBOutlet weak var reminderLabel: UILabel!
     @IBOutlet weak var reminderPicker: UIDatePicker!
     @IBAction func toggleReminderPicker(_ sender: Any) {
@@ -107,15 +109,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             event.duration = Float(durationTextField.text!)!
             event.date = datePicker.date
             event.course = course
+            event.type = segmentController.selectedSegmentIndex
+            event.id = UUID().uuidString
             
             try! self.realm.write {
                 course.numberOfHoursAllocated += event.duration
             }
             
-            if reminderSwitch.isOn {
-                // Remove any existing notifications for this event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
-                
+            if reminderSwitch.isOn {                
                 // Schedule a notification.
                 event.reminderDate = reminderPicker.date
                 let delegate = UIApplication.shared.delegate as? AppDelegate
@@ -136,13 +137,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 event!.duration = Float(durationTextField.text!)!
                 event!.course = course
                 event!.date = dateFormatter.date(from: dateLabel.text!)
-            
+                event!.type = segmentController.selectedSegmentIndex
+                
                 course.numberOfHoursAllocated += event!.duration
                 
+                // Remove any existing notifications for this event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.id])
+                
                 if reminderSwitch.isOn {
-                    // Remove any existing notifications for this event.
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.id])
-                    
                     // Schedule a notification.
                     event!.reminderDate = reminderPicker.date
                     let delegate = UIApplication.shared.delegate as? AppDelegate
@@ -200,6 +202,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.durationTextField.text = "\(self.event!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
             self.courseLabel.text = self.event!.course.name
+            self.segmentController.selectedSegmentIndex = self.event!.type
             
             if let date = self.event!.reminderDate {
                 self.reminderSwitch.isOn = true
@@ -222,17 +225,39 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
 
     // MARK: - Table view data source
 
+    /*
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        return super.tableView(tableView, viewForFooterInSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
+
+        return super.tableView(tableView, heightForFooterInSection: section)
+    }
+    */
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (section == 0 || section == 1) ? 3 : 2
+        if section == 0 {
+            return 4
+        }
+        else if section == 1 {
+            return 3
+        }
+        else if section == 2 {
+            return 2
+        }
+        
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if(indexPath.section == 0 && indexPath.row == 2)
+        if(indexPath.section == 0 && indexPath.row == 3)
         {
             let height: CGFloat = coursePicker.isHidden ? 0.0 : 217
             return height
@@ -257,7 +282,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let courseIndexPath = IndexPath(row: 1, section: 0)
+        let courseIndexPath = IndexPath(row: 2, section: 0)
         let dateIndexPath = IndexPath(row: 0, section: 1)
         let reminderIndexPath = IndexPath(row: 0, section: 2)
         

@@ -11,6 +11,7 @@ import RealmSwift
 
 class Course: Object {
     dynamic var name: String!
+    dynamic var identifier: String!
     dynamic var instructor: String!
     dynamic var units: Int = 0
     dynamic var quarter: String!

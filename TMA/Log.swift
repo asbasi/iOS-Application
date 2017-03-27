@@ -10,4 +10,5 @@ import Foundation
 import RealmSwift
 
 class Log: Item {
+    dynamic var type: Int = OTHER_EVENT
 }

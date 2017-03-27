@@ -3,7 +3,7 @@
 //  TMA
 //
 //  Created by Abdulrahman Sahmoud on 2/5/17.
-//  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
+//  Copyright © 2017 Abdul/Users/arvinderbasi/Programs/iOS/Alpha-Build/TMA/PlannerAddTableViewController.swiftrahman Sahmoud. All rights reserved.
 //
 
 import UIKit
