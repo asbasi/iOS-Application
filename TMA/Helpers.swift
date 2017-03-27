@@ -9,6 +9,9 @@
 import Foundation
 import RealmSwift
 
+
+let colorMappings: [String: UIColor] = ["Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue]
+
 class Helpers{
     static let realm = try! Realm()
     
@@ -82,3 +85,4 @@ extension UIViewController {
         self.view.layer.insertSublayer(gradientLayer, at: 0)
     }
 }
+    

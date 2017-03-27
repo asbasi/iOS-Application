@@ -16,6 +16,7 @@ class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var course: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var checkbox: BEMCheckBox!
+    @IBOutlet weak var color: UIImageView!
     
     var buttonAction: ((_ sender: PlannerViewCell) -> Void)?
     
@@ -205,11 +206,16 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
         
-        let date = self.events[indexPath.section][indexPath.row].date as Date
+        let event = self.events[indexPath.section][indexPath.row]
+        let date = event.date as Date
         
-        cell.title?.text = self.events[indexPath.section][indexPath.row].title
-        cell.checkbox.on = self.events[indexPath.section][indexPath.row].checked
-        cell.course?.text = self.events[indexPath.section][indexPath.row].course.name
+        cell.title?.text = event.title
+        cell.checkbox.on = event.checked
+        cell.course?.text = event.course.name
+        
+        cell.color.backgroundColor = colorMappings[event.course.color]
+        cell.color.layer.cornerRadius = 4.0
+        cell.color.clipsToBounds = true
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"

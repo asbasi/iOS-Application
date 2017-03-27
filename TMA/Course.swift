@@ -15,9 +15,9 @@ class Course: Object {
     dynamic var instructor: String!
     dynamic var units: Int = 0
     dynamic var quarter: String!
-    dynamic var courseColor: String!
     dynamic var numberOfHoursLogged : Float = 0
     dynamic var numberOfHoursAllocated : Float = 0
+    dynamic var color: String!
     
 //    override class func primaryKey() -> String? {
 //        return "name"
@@ -31,6 +31,7 @@ class Course: Object {
         return numberOfHoursAllocated
     }
     
+    /*
     func get_number_of_hours_logged(from: NSDate, to: NSDate) -> Float{
         return 10
     }
@@ -38,7 +39,7 @@ class Course: Object {
     func get_number_of_hours_allocated(from: NSDate, to: NSDate) -> Float{
         return 10
     }
-    
+    */
     
     // Specify properties to ignore (Realm won't persist these)
     override static func ignoredProperties() -> [String] {

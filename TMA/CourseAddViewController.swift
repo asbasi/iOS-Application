@@ -10,12 +10,9 @@ import UIKit
 import RealmSwift
 
 class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPickerViewDataSource {
-    let quarterPickerData = [
-        ["Fall 2016","Winter 2017","Spring 2017"]
-    ]
-    let colorPickerData = [
-        ["Red", "Green", "Blue"]  //for now
-    ]
+    
+    let quarterPickerData = [["Fall 2016","Winter 2017","Spring 2017"]]
+    let colorPickerData = [["Red", "Green", "Blue"]]
     
     func checkAllTextFields() {
         if unitTextField.text == "" || nameTextField.text == "" || instructorTextField.text == "" {
@@ -96,7 +93,7 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
             course!.instructor = instructorTextField.text!
             course!.units = Int(unitTextField.text!)!
             course!.quarter = quarterLabel.text!
-            course!.courseColor = colorLabel.text!
+            course!.color = colorLabel.text!
             Helpers.DB_insert(obj: course!)
             
         }
@@ -107,7 +104,7 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
                 course!.instructor = instructorTextField.text!
                 course!.units = Int(unitTextField.text!)!
                 course!.quarter = quarterLabel.text!
-                course!.courseColor = colorLabel.text!
+                course!.color = colorLabel.text!
             }
         }
 
@@ -139,9 +136,9 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
             self.quarterPicker.selectRow(quarterRow!, inComponent: 0, animated: true)
             self.quarterLabel.text = self.course!.quarter
             
-            let colorRow = colorPickerData[0].index(of: self.course!.courseColor)
+            let colorRow = colorPickerData[0].index(of: self.course!.color)
             self.colorPicker.selectRow(colorRow!, inComponent: 0, animated: true)
-            self.colorLabel.text = self.course!.courseColor
+            self.colorLabel.text = self.course!.color
         }
         
         checkAllTextFields()

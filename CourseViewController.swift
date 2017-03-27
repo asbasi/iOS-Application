@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 
 class CourseTableViewCell: UITableViewCell {
+    @IBOutlet weak var color: UIImageView!
     @IBOutlet weak var course: UILabel!
     @IBOutlet weak var percentage: UILabel!
 }
@@ -105,7 +106,11 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
-        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+        cell.color.backgroundColor = colorMappings[self.courses[indexPath.row].color]
+        cell.color.layer.cornerRadius = 4.0
+        cell.color.clipsToBounds = true
+        
+        //cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         cell.course!.text = self.courses[indexPath.row].name
         
         var percentage: Float = 0.0
