@@ -25,6 +25,10 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var courseToEdit: Course!
     var courses: Results<Course>!
 
+    @IBAction func add(_ sender: Any) {
+        self.performSegue(withIdentifier: "addCourse", sender: nil)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -38,7 +42,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
         
         self.courses = self.realm.objects(Course.self)
-        self.tableView.tableFooterView = UIView()
+        //self.tableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,6 +52,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     // MARK: - Table view data source
 
+    /*
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
         footerView.backgroundColor = UIColor.clear
@@ -57,7 +62,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
         return 20.0
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
@@ -186,25 +191,30 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let courses = self.realm.objects(Course.self)
-        if segue.identifier! == "addCourse" {
-            let courseAddViewController = segue.destination as! CourseAddViewController
+        
+        if segue.identifier! == "showCourse" {
             
-            courseAddViewController.editOrAdd = "add"
-        }
-        else if segue.identifier! == "editCourse" {
-            let courseAddViewController = segue.destination as! CourseAddViewController
-            
-            courseAddViewController.editOrAdd = "edit"
-            courseAddViewController.course = courseToEdit!
-        }
-        else if segue.identifier! == "showCourse" {
             let courseDetailViewController = segue.destination as! CourseDetailViewController
+            
             var selectedIndexPath = tableView.indexPathForSelectedRow
-
+            
+            let courses = self.realm.objects(Course.self)
             courseDetailViewController.course = courses[selectedIndexPath!.row]
         }
+        else {
+            let navigation: UINavigationController = segue.destination as! UINavigationController
+            var courseAddViewController = CourseAddViewController.init()
+            courseAddViewController = navigation.viewControllers[0] as! CourseAddViewController
+
+            
+            if segue.identifier! == "addCourse" {
+                courseAddViewController.editOrAdd = "add"
+            }
+            else if segue.identifier! == "editCourse" {
+                courseAddViewController.editOrAdd = "edit"
+                courseAddViewController.course = courseToEdit!
+            }
+        }
+
     }
-
-
 }

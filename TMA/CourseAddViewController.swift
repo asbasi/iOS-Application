@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPickerViewDataSource {
+class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let quarterPickerData = [["Fall 2016","Winter 2017","Spring 2017"]]
     let colorPickerData = [["Red", "Green", "Blue"]]
@@ -35,30 +35,27 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         checkAllTextFields()
     }
     
-    
-    var dpShowQuarterVisible = false
-    var dpShowColorVisible = false
-    
     private func toggleShowQuarterPicker () {
-        dpShowQuarterVisible = !dpShowQuarterVisible
-        if dpShowQuarterVisible && dpShowColorVisible {
-            dpShowColorVisible = false
+        quarterPicker.isHidden = !quarterPicker.isHidden
+        if !quarterPicker.isHidden && !colorPicker.isHidden {
+            colorPicker.isHidden = true
         }
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
     private func toggleShowColorPicker () {
-        dpShowColorVisible = !dpShowColorVisible
-        if dpShowQuarterVisible && dpShowColorVisible {
-            dpShowQuarterVisible = false
+        colorPicker.isHidden = !colorPicker.isHidden
+        if !quarterPicker.isHidden && !colorPicker.isHidden {
+            quarterPicker.isHidden = true
         }
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
     
-    @IBOutlet weak var colorLabel: UILabel!
-    
     @IBOutlet weak var quarterPicker: UIPickerView!
+    @IBOutlet weak var quarterLabel: UILabel!
+    
+    @IBOutlet weak var colorLabel: UILabel!
     @IBOutlet weak var colorPicker: UIPickerView!
     
     let realm = try! Realm()
@@ -71,9 +68,11 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
-    
-    @IBOutlet weak var quarterLabel: UILabel!
 
+    @IBAction func cancel(_ sender: Any) {
+        self.dismissKeyboard()
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func done(_ sender: Any) {
         if(editOrAdd=="add") {
@@ -108,20 +107,21 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
             }
         }
 
-        let _ = self.navigationController?.popViewController(animated: true)
-        
+        self.dismissKeyboard()
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.quarterPicker.showsSelectionIndicator = true
-        
         self.quarterPicker.dataSource = self
         self.quarterPicker.delegate = self
+        self.quarterPicker.isHidden = true
         
         self.colorPicker.dataSource = self
         self.colorPicker.delegate = self
+        self.colorPicker.isHidden = true
         
         self.tableView.tableFooterView = UIView()
         
@@ -141,6 +141,8 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
             self.colorLabel.text = self.course!.color
         }
         
+        self.hideKeyboardWhenTapped()
+        
         checkAllTextFields()
         
         // Do any additional setup after loading the view.
@@ -156,7 +158,6 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
         // Dispose of any resources that can be recreated.
     }
 
-    
     //MARK: - Picker View Data Sources and Delegates
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -205,25 +206,24 @@ class CourseAddViewController: UITableViewController,UIPickerViewDelegate, UIPic
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 4 {
+        if indexPath.section == 1 && indexPath.row == 0 {
             toggleShowQuarterPicker()
         }
-        else if indexPath.row == 6 {
+        else if indexPath.section == 1 && indexPath.row == 2 {
             toggleShowColorPicker()
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !dpShowQuarterVisible && indexPath.row == 5 {
+        if quarterPicker.isHidden && indexPath.section == 1 && indexPath.row == 1 {
             return 0
         }
-        else if !dpShowColorVisible && indexPath.row == 7 {
+        else if colorPicker.isHidden && indexPath.section == 1 && indexPath.row == 3 {
             return 0
         }
         else {
             return super.tableView(self.tableView, heightForRowAt: indexPath)
         }
     }
-    
 }
