@@ -13,7 +13,7 @@ class Course: Object {
     dynamic var name: String!
     dynamic var identifier: String!
     dynamic var instructor: String!
-    dynamic var units: Int = 0
+    dynamic var units: Float = 0
     dynamic var quarter: String!
     dynamic var numberOfHoursLogged : Float = 0
     dynamic var numberOfHoursAllocated : Float = 0

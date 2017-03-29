@@ -3,7 +3,7 @@
 //  TMA
 //
 //  Created by Abdulrahman Sahmoud on 2/5/17.
-//  Copyright © 2017 Abdul/Users/arvinderbasi/Programs/iOS/Alpha-Build/TMA/PlannerAddTableViewController.swiftrahman Sahmoud. All rights reserved.
+//  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
 import UIKit
@@ -12,16 +12,15 @@ import RealmSwift
 class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let quarterPickerData = [["Fall 2016","Winter 2017","Spring 2017"]]
-    let colorPickerData = [["Red", "Green", "Blue"]]
+    let colorPickerData = [["None", "Red", "Green", "Blue"]]
     
     func checkAllTextFields() {
-        if unitTextField.text == "" || nameTextField.text == "" || instructorTextField.text == "" {
+        if unitTextField.text == "" || courseTitleTextField.text == "" || instructorTextField.text == "" || identifierTextField.text == "" {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
         }
         else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true;
         }
-        
     }
     
     @IBAction func courseChanged(_ sender: Any) {
@@ -65,9 +64,11 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     var editOrAdd: String = "" // "edit" or "add"
     var courses: Results<Course>!
     
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var identifierTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
+    @IBOutlet weak var courseTitleTextField: UITextField!
+    
 
     @IBAction func cancel(_ sender: Any) {
         self.dismissKeyboard()
@@ -76,7 +77,8 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     
     @IBAction func done(_ sender: Any) {
         if(editOrAdd=="add") {
-            let results = self.courses.filter("name = '\(nameTextField.text!)'")
+            // Will eventually need to change this to allow the same course in different quarters.
+            let results = self.courses.filter("identifier = '\(identifierTextField.text!)'")
             if results.count != 0 {
                 let alert = UIAlertController(title: "Error", message: "Course Name Already Exists", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -87,10 +89,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
         if(editOrAdd=="add"){
             self.course = Course()
-            course!.name = nameTextField.text!
-            
+            course!.name = courseTitleTextField.text!
+            course!.identifier = identifierTextField.text!
             course!.instructor = instructorTextField.text!
-            course!.units = Int(unitTextField.text!)!
+            course!.units = Float(unitTextField.text!)!
             course!.quarter = quarterLabel.text!
             course!.color = colorLabel.text!
             Helpers.DB_insert(obj: course!)
@@ -98,10 +100,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
         if(editOrAdd=="edit"){
             try! self.realm.write {
-                course!.name = nameTextField.text!
-                
+                course!.name = courseTitleTextField.text!
+                course!.identifier = identifierTextField.text!
                 course!.instructor = instructorTextField.text!
-                course!.units = Int(unitTextField.text!)!
+                course!.units = Float(unitTextField.text!)!
                 course!.quarter = quarterLabel.text!
                 course!.color = colorLabel.text!
             }
@@ -128,7 +130,8 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.courses = self.realm.objects(Course.self)
         
         if self.editOrAdd == "edit" {
-            self.nameTextField.text = self.course!.name
+            self.courseTitleTextField.text = self.course!.name
+            self.identifierTextField.text = self.course!.identifier
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"
             
@@ -182,11 +185,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
     }
     
-    func pickerView(_
-        pickerView: UIPickerView,
-                    titleForRow row: Int,
-                    forComponent component: Int
-        ) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == quarterPicker{
             return quarterPickerData[component][row]
         }

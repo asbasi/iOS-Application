@@ -67,7 +67,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
 
     @IBAction func save(_ sender: Any) {
         //get the course
-        let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
+        let course = self.courses.filter("identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
         
         if(self.operation == "add") {
             let log = Log()
@@ -136,7 +136,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
             self.titleTextField.text = self.log!.title
             self.durationTextField.text = "\(self.log!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.log!.date)
-            self.courseLabel.text = self.log!.course.name
+            self.courseLabel.text = self.log!.course.identifier
         }
         
         // Ensure that the keyboard disappears when the user taps elsewhere.
@@ -193,7 +193,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
             if (courseLabel.text?.isEmpty)! {
                 if courses.count != 0 {
                     self.coursePicker.selectRow(0, inComponent: 0, animated: false)
-                    courseLabel.text = courses[0].name
+                    courseLabel.text = courses[0].identifier
                 }
             }
             
@@ -246,11 +246,11 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component:Int ) -> String? {
-        return self.courses[row].name
+        return self.courses[row].identifier
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        courseLabel.text = courses[row].name
+        courseLabel.text = courses[row].identifier
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

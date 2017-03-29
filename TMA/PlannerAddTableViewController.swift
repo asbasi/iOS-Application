@@ -100,7 +100,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     @IBAction func save(_ sender: Any) {
         //get the course
-        let course = self.courses.filter("name = '\(courses[coursePicker.selectedRow(inComponent: 0)].name!)'")[0]
+        let course = self.courses.filter("identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
         
         if(self.operation == "add") {
             let event = Event()
@@ -201,7 +201,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.titleTextField.text = self.event!.title
             self.durationTextField.text = "\(self.event!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
-            self.courseLabel.text = self.event!.course.name
+            self.courseLabel.text = self.event!.course.identifier
             self.segmentController.selectedSegmentIndex = self.event!.type
             
             if let date = self.event!.reminderDate {
@@ -292,8 +292,13 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             if (courseLabel.text?.isEmpty)! {
                 if courses.count != 0 {
                     self.coursePicker.selectRow(0, inComponent: 0, animated: false)
-                    courseLabel.text = courses[0].name
+                    courseLabel.text = courses[0].identifier
                 }
+            }
+            
+            if !coursePicker.isHidden {
+                datePicker.isHidden = true
+                reminderPicker.isHidden = true
             }
         }
         else if dateIndexPath == indexPath {
@@ -303,6 +308,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             if (dateLabel.text?.isEmpty)! {
                 dateLabel.text = dateFormatter.string(from: Date())
             }
+            
+            if !datePicker.isHidden {
+                coursePicker.isHidden = true
+                reminderPicker.isHidden = true
+            }
         }
         else if reminderIndexPath == indexPath {
             if !reminderSwitch.isOn {
@@ -310,6 +320,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
             else {
                 reminderPicker.isHidden = !reminderPicker.isHidden
+            }
+            
+            if !reminderPicker.isHidden {
+                coursePicker.isHidden = true
+                datePicker.isHidden = true
             }
         }
             
@@ -329,11 +344,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component:Int ) -> String? {
-        return self.courses[row].name
+        return self.courses[row].identifier
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        courseLabel.text = courses[row].name
+        courseLabel.text = courses[row].identifier
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

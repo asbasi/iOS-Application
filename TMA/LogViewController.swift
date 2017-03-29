@@ -135,7 +135,7 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         cell.title?.text = log.title
         cell.duration?.text = "\(log.duration) hours"
-        cell.course?.text = log.course.name
+        cell.course?.text = log.course.identifier
         if Calendar.current.isDateInToday(log.date as Date) {
             cell.backgroundColor = UIColor(red: 0, green: 128, blue: 0, alpha: 0.1)
         }

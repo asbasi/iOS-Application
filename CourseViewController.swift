@@ -11,8 +11,12 @@ import RealmSwift
 
 class CourseTableViewCell: UITableViewCell {
     @IBOutlet weak var color: UIImageView!
-    @IBOutlet weak var course: UILabel!
     @IBOutlet weak var percentage: UILabel!
+    
+    @IBOutlet weak var courseIdentifer: UILabel!
+    @IBOutlet weak var courseTitle: UILabel!
+    @IBOutlet weak var instructor: UILabel!
+    @IBOutlet weak var units: UILabel!
 }
 
 
@@ -115,8 +119,11 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.color.layer.cornerRadius = 4.0
         cell.color.clipsToBounds = true
         
-        //cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-        cell.course!.text = self.courses[indexPath.row].name
+        
+        cell.courseTitle!.text = self.courses[indexPath.row].name
+        cell.courseIdentifer!.text = self.courses[indexPath.row].identifier
+        cell.instructor!.text = self.courses[indexPath.row].instructor
+        cell.units!.text = "\(self.courses[indexPath.row].units) units"
         
         var percentage: Float = 0.0
         if self.courses[indexPath.row].numberOfHoursAllocated > 0 {
@@ -126,7 +133,19 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             percentage = self.courses[indexPath.row].numberOfHoursLogged
         }
         
-        cell.percentage!.text = "\(Int(round(percentage * 100)))%"
+        
+        let overallPercentage: Int = Int(round(percentage * 100))
+        cell.percentage!.text = "\(overallPercentage)%"
+        
+        if(overallPercentage <= 50) {
+            cell.percentage!.textColor = UIColor.red
+        }
+        else if(overallPercentage <= 75) {
+            cell.percentage!.textColor = UIColor.yellow
+        }
+        else {
+            cell.percentage!.textColor = UIColor.green
+        }
         
         return cell
     }
