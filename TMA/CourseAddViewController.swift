@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     let quarterPickerData = [["Fall 2016","Winter 2017","Spring 2017"]]
     let colorPickerData = [["None", "Red", "Green", "Blue"]]
@@ -115,6 +115,11 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.identifierTextField.delegate = self
+        self.instructorTextField.delegate = self
+        self.unitTextField.delegate = self
+        self.courseTitleTextField.delegate = self
         
         self.quarterPicker.showsSelectionIndicator = true
         self.quarterPicker.dataSource = self
@@ -224,5 +229,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         else {
             return super.tableView(self.tableView, heightForRowAt: indexPath)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

@@ -211,7 +211,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         cell.title?.text = event.title
         cell.checkbox.on = event.checked
-        cell.course?.text = event.course.name
+        cell.course?.text = event.course.identifier
         
         cell.color.backgroundColor = colorMappings[event.course.color]
         cell.color.layer.cornerRadius = 4.0

@@ -254,7 +254,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
+        textField.resignFirstResponder()
         return true
     }
 }

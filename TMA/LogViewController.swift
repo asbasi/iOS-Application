@@ -50,7 +50,6 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
             let date = cal.startOfDay(for: log.date as Date)
             if !allDates.contains(date)  {
                 allDates.append(date)
-                debugPrint("\(log.date)")
             }
         }
         

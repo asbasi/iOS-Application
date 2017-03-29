@@ -120,8 +120,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         components.second = -1
         let dateBegin = date
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
-        
-        
+
         return self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
