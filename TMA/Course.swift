@@ -14,7 +14,7 @@ class Course: Object {
     dynamic var identifier: String!
     dynamic var instructor: String!
     dynamic var units: Float = 0
-    dynamic var quarter: String!
+    dynamic var quarter: Quarter!
     dynamic var color: String!
     
     // Specify properties to ignore (Realm won't persist these)

@@ -26,10 +26,14 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     
+    var quarter: Quarter!
     var courseToEdit: Course!
     var courses: Results<Course>!
 
     @IBAction func add(_ sender: Any) {
+        
+        // TODO: Add a check here to make sure there's at least one quarter.
+        
         self.performSegue(withIdentifier: "addCourse", sender: nil)
     }
     
@@ -194,7 +198,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
             let courses = self.realm.objects(Course.self)
             self.courseToEdit = courses[index.row]
-            
             
             self.performSegue(withIdentifier: "editCourse", sender: nil)
         }

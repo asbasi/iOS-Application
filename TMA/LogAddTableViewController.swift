@@ -93,6 +93,12 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
         self.dismiss(animated: true, completion: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.courses = self.realm.objects(Course.self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

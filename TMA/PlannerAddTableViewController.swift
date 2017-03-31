@@ -62,7 +62,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     
-    func checkAllTextFields() {
+    private func checkAllTextFields() {
         if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! ||
             (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
@@ -152,6 +152,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.courses = self.realm.objects(Course.self)
     }
     
     override func viewDidLoad() {

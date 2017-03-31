@@ -32,13 +32,13 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.quarters = self.realm.objects(Quarter.self)
+        self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.quarters = self.realm.objects(Quarter.self)
+        self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
         self.tableView.reloadData()
     }
 
@@ -56,14 +56,19 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "listCourses" {
-            
+            let courseViewController = segue.destination as! CourseViewController
+            courseViewController.quarter = quarterToEdit
         }
         else {
+            let navigation: UINavigationController = segue.destination as! UINavigationController
+            let quartersAddViewController = navigation.viewControllers[0] as! QuarterAddTableViewController
+            
             if segue.identifier == "addQuarter" {
-                
+                quartersAddViewController.operation = "add"
             }
             else if segue.identifier == "editQuarter" {
-                
+                quartersAddViewController.operation = "edit"
+                quartersAddViewController.quarter = quarterToEdit
             }
         }
     }
@@ -90,18 +95,80 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
-        formatter.dateFormat = "d/M/yy"
+        formatter.dateFormat = "M/d/yy"
+        
+        print("\(formatter.string(from: quarter.startDate))")
         cell.dates!.text = "\(formatter.string(from: quarter.startDate)) to \(formatter.string(from: quarter.endDate))"
         
         
-        let count = self.realm.objects(Course.self).filter("quarter = '\(quarter.title)'").count
+        let count = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title)'").count
         cell.numCourses!.text = "\(count) courses"
         
-        
-        cell.current.backgroundColor = quarter.current ? UIColor.green : UIColor.clear
+        cell.current.backgroundColor = quarter.current ? UIColor.green : UIColor.gray
         cell.current.layer.cornerRadius = cell.current.frame.size.width / 2
         cell.current.clipsToBounds = true
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let quarter = self.quarters[index.row]
+            
+            let optionMenu = UIAlertController(title: nil, message: "\"\(quarter.title!)\" and all associated items will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                try! self.realm.write {
+                    let courses = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title)'")
+                    
+                    for course in courses {
+                        let logsToDelete = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
+                        self.realm.delete(logsToDelete)
+                    
+                        let eventsToDelete = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
+                        self.realm.delete(eventsToDelete)
+                    
+                        self.realm.delete(course)
+                    }
+                    
+                    self.realm.delete(quarter)
+                }
+                self.tableView.reloadData()
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            })
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
+        }//end delete
+        delete.backgroundColor = .red
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            
+            let quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
+            self.quarterToEdit = quarters[index.row]
+            
+            self.performSegue(withIdentifier: "editQuarter", sender: nil)
+        }
+        edit.backgroundColor = .blue
+        
+        return [delete, edit]
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.quarterToEdit = self.quarters[indexPath.row]
+        self.performSegue(withIdentifier: "listCourses", sender: nil)
     }
 }
