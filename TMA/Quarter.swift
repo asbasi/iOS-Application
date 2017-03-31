@@ -13,5 +13,6 @@ class Quarter: Object {
     dynamic var title: String!
     dynamic var startDate: Date!
     dynamic var endDate: Date!
+    dynamic var current: Bool = false
 }
 

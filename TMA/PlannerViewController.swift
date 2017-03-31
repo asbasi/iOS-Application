@@ -299,8 +299,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
                     }
-                    
-                    event.course.numberOfHoursAllocated -= event.duration
+
                     self.realm.delete(event)
                 }
                 

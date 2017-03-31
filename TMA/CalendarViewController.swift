@@ -320,13 +320,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 try! self.realm.write {
                     if(index.section == self.EVENTS) {
                         let event: Event = self.events[index.row]
-                        event.course.numberOfHoursAllocated -= event.duration
                         self.realm.delete(event)
                     }
                     else
                     {
                         let log: Log = self.logs[index.row]
-                        log.course.numberOfHoursLogged -= log.duration
                         self.realm.delete(log)
                     }
                 }

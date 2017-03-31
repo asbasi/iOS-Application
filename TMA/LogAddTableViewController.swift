@@ -76,24 +76,16 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
             log.duration = Float(durationTextField.text!)!
             log.date = datePicker.date
             log.course = course
-            
-            try! self.realm.write {
-                course.numberOfHoursLogged += log.duration
-            }
-            
-            
+    
             Helpers.DB_insert(obj: log)
             
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
-                course.numberOfHoursLogged -= log!.duration
                 log!.title = titleTextField.text
                 log!.duration = Float(durationTextField.text!)!
                 log!.course = course
                 log!.date = dateFormatter.date(from: dateLabel.text!)
-                
-                course.numberOfHoursLogged += log!.duration
             }
         }
         

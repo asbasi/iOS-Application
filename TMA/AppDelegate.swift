@@ -26,7 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User denied notifications")
             }
         }
-
+        
+        // Sets up the theme of the app.
+        UINavigationBar.appearance().barTintColor = UIColor(red: 46.0/255.0, green: 14.0/255.0, blue: 74.0/255.0, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        UINavigationBar.appearance().tintColor = UIColor.white
+ 
+        UITabBar.appearance().barTintColor = UIColor(red: 46.0/255.0, green: 14.0/255.0, blue: 74.0/255.0, alpha: 1.0)
+        UITabBar.appearance().tintColor = UIColor.white
+        
         return true
     }
 

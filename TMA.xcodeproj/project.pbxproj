@@ -26,6 +26,7 @@
 		60822B8C1E6B9A58009670EC /* PlannerAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */; };
 		609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */; };
 		60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B325BA1E8AE59F00CE6164 /* Quarter.swift */; };
+		60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerAddTableViewController.swift; sourceTree = "<group>"; };
 		609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		60B325BA1E8AE59F00CE6164 /* Quarter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quarter.swift; sourceTree = "<group>"; };
+		60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartersViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */,
+				60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */,
 				602BFBD91E641A58006FED32 /* CalendarViewController.swift */,
 				00AA39051E47EA0800D819DD /* Models */,
 				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
@@ -292,6 +295,7 @@
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
+				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

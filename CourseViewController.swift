@@ -69,10 +69,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }*/
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Current Quarter"
-        }
-        
         return ""
     }
     
@@ -115,26 +111,31 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
-        cell.color.backgroundColor = colorMappings[self.courses[indexPath.row].color]
+        let course = self.courses[indexPath.row]
+        cell.color.backgroundColor = colorMappings[course.color]
         cell.color.layer.cornerRadius = 4.0
         cell.color.clipsToBounds = true
         
         
-        cell.courseTitle!.text = self.courses[indexPath.row].name
-        cell.courseIdentifer!.text = self.courses[indexPath.row].identifier
-        cell.instructor!.text = self.courses[indexPath.row].instructor
-        cell.units!.text = "\(self.courses[indexPath.row].units) units"
+        cell.courseTitle!.text = course.name
+        cell.courseIdentifer!.text = course.identifier
+        cell.instructor!.text = course.instructor
+        cell.units!.text = "\(course.units) units"
         
-        var percentage: Float = 0.0
-        if self.courses[indexPath.row].numberOfHoursAllocated > 0 {
-            percentage = self.courses[indexPath.row].numberOfHoursLogged / self.courses[indexPath.row].numberOfHoursAllocated
+        let all_logs = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
+        let all_planner = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
+        
+        let numerator = Helpers.add_duration(events: all_logs)
+        let denominator = Helpers.add_duration(events: all_planner)
+        
+        let overallPercentage: Int
+        if denominator == 0 {
+            overallPercentage = Int(round(100 * numerator))
         }
         else {
-            percentage = self.courses[indexPath.row].numberOfHoursLogged
+            overallPercentage = Int(round(100 * numerator / denominator))
         }
         
-        
-        let overallPercentage: Int = Int(round(percentage * 100))
         cell.percentage!.text = "\(overallPercentage)%"
         
         if(overallPercentage <= 50) {
@@ -167,10 +168,10 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 (alert: UIAlertAction!) -> Void in
 
                 try! self.realm.write {
-                    let logsToDelete = self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")
+                    let logsToDelete = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
                     self.realm.delete(logsToDelete)
                     
-                    let eventsToDelete = self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")
+                    let eventsToDelete = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
                     self.realm.delete(eventsToDelete)
                     
                     self.realm.delete(course)

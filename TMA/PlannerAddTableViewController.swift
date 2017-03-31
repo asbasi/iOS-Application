@@ -111,11 +111,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             event.course = course
             event.type = segmentController.selectedSegmentIndex
             event.id = UUID().uuidString
-            
-            try! self.realm.write {
-                course.numberOfHoursAllocated += event.duration
-            }
-            
+
             if reminderSwitch.isOn {                
                 // Schedule a notification.
                 event.reminderDate = reminderPicker.date
@@ -132,14 +128,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         }
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
-                course.numberOfHoursAllocated -= event!.duration
                 event!.title = titleTextField.text
                 event!.duration = Float(durationTextField.text!)!
                 event!.course = course
                 event!.date = dateFormatter.date(from: dateLabel.text!)
                 event!.type = segmentController.selectedSegmentIndex
-                
-                course.numberOfHoursAllocated += event!.duration
                 
                 // Remove any existing notifications for this event.
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.id])

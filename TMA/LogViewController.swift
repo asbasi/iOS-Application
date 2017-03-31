@@ -162,7 +162,7 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
                     if self.logs[index.section].count == 0 {
                         self.logs.remove(at: index.section)
                     }
-                    log.course.numberOfHoursLogged -= log.duration
+
                     self.realm.delete(log)
                 }
                 

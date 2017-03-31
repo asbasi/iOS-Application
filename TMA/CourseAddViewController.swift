@@ -80,7 +80,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             // Will eventually need to change this to allow the same course in different quarters.
             let results = self.courses.filter("identifier = '\(identifierTextField.text!)'")
             if results.count != 0 {
-                let alert = UIAlertController(title: "Error", message: "Course Name Already Exists", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
