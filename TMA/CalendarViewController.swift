@@ -59,8 +59,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }()
     
     @IBAction func addingEvent(_ sender: Any) {
-        if self.realm.objects(Course.self).count == 0 {
-            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+        if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -121,7 +121,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let dateBegin = date
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
 
-        return self.realm.objects(Event.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
+        return self.realm.objects(Event.self).filter("course.quarter.current = true AND date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
     func getLogsForDate(_ date: Date) -> Results<Log>
@@ -133,7 +133,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
         
         
-        return self.realm.objects(Log.self).filter("date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
+        return self.realm.objects(Log.self).filter("course.quarter.current = true AND date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
     }
     
     // How many events are scheduled for that day?
@@ -259,7 +259,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
             cell.title?.text = self.events[indexPath.row].title
             cell.checkbox.on = self.events[indexPath.row].checked
-            cell.course?.text = self.events[indexPath.row].course.name
+            cell.course?.text = self.events[indexPath.row].course.identifier
         
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"

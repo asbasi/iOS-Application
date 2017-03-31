@@ -31,16 +31,13 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var courses: Results<Course>!
 
     @IBAction func add(_ sender: Any) {
-        
-        // TODO: Add a check here to make sure there's at least one quarter.
-        
         self.performSegue(withIdentifier: "addCourse", sender: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.courses = self.realm.objects(Course.self)
+        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
         self.tableView.reloadData()
     }
     
@@ -49,7 +46,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
         
-        self.courses = self.realm.objects(Course.self)
+        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
         //self.tableView.tableFooterView = UIView()
     }
 
@@ -126,8 +123,8 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.instructor!.text = course.instructor
         cell.units!.text = "\(course.units) units"
         
-        let all_logs = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
-        let all_planner = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
+        let all_logs = self.realm.objects(Log.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
+        let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
         
         let numerator = Helpers.add_duration(events: all_logs)
         let denominator = Helpers.add_duration(events: all_planner)
@@ -196,7 +193,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
 
-            let courses = self.realm.objects(Course.self)
+            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
             self.courseToEdit = courses[index.row]
             
             self.performSegue(withIdentifier: "editCourse", sender: nil)
@@ -221,7 +218,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             var selectedIndexPath = tableView.indexPathForSelectedRow
             
-            let courses = self.realm.objects(Course.self)
+            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
             courseDetailViewController.course = courses[selectedIndexPath!.row]
         }
         else {
@@ -229,6 +226,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             var courseAddViewController = CourseAddViewController.init()
             courseAddViewController = navigation.viewControllers[0] as! CourseAddViewController
 
+            courseAddViewController.quarter = self.quarter
             
             if segue.identifier! == "addCourse" {
                 courseAddViewController.editOrAdd = "add"
@@ -238,6 +236,5 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 courseAddViewController.course = courseToEdit!
             }
         }
-
     }
 }

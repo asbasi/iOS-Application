@@ -33,25 +33,12 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         checkAllTextFields()
     }
     
-    private func toggleShowQuarterPicker () {
-        quarterPicker.isHidden = !quarterPicker.isHidden
-        if !quarterPicker.isHidden && !colorPicker.isHidden {
-            colorPicker.isHidden = true
-        }
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
-    }
     private func toggleShowColorPicker () {
         colorPicker.isHidden = !colorPicker.isHidden
-        if !quarterPicker.isHidden && !colorPicker.isHidden {
-            quarterPicker.isHidden = true
-        }
+
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
-    
-    @IBOutlet weak var quarterPicker: UIPickerView!
-    @IBOutlet weak var quarterLabel: UITextField!
     
     @IBOutlet weak var colorLabel: UITextField!
     @IBOutlet weak var colorPicker: UIPickerView!
@@ -62,7 +49,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     var editOrAdd: String = "" // "edit" or "add"
     
     var quarter: Quarter!
-    var quarters: Results<Quarter>!
     
     var course: Course?
     var courses: Results<Course>!
@@ -78,18 +64,22 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.dismiss(animated: true, completion: nil)
     }
     
+    private func isDuplicate() -> Bool {
+        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)'")
+        if results.count != 0 {
+            let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return true
+        }
+        return false
+    }
+    
     @IBAction func done(_ sender: Any) {
-        
-        let quarter = self.quarters.filter("title = '\(self.quarterLabel.text!)'")[0]
-        
+    
         print ("\(quarter.title)")
         if(editOrAdd=="add"){
-            // Will eventually need to change this to allow the same course in different quarters.
-            let results = self.courses.filter("identifier = '\(identifierTextField.text!)'")
-            if results.count != 0 {
-                let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+            if isDuplicate() {
                 return
             }
             
@@ -105,7 +95,16 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
         if(editOrAdd=="edit"){
             try! self.realm.write {
-                course!.name = courseTitleTextField.text!
+                
+                if course!.name != courseTitleTextField.text! {
+                    if isDuplicate() {
+                        return
+                    }
+                    else {
+                        course!.name = courseTitleTextField.text!
+                    }
+                }
+
                 course!.identifier = identifierTextField.text!
                 course!.instructor = instructorTextField.text!
                 course!.units = Float(unitTextField.text!)!
@@ -129,11 +128,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.unitTextField.delegate = self
         self.courseTitleTextField.delegate = self
         
-        self.quarterPicker.showsSelectionIndicator = true
-        self.quarterPicker.dataSource = self
-        self.quarterPicker.delegate = self
-        self.quarterPicker.isHidden = true
-        
         self.colorPicker.dataSource = self
         self.colorPicker.delegate = self
         self.colorPicker.isHidden = true
@@ -141,9 +135,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.tableView.tableFooterView = UIView()
         
         self.courses = self.realm.objects(Course.self)
-        self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
 
-        self.quarterLabel.text = quarters[0].title // Eventually need to change this to be the current quarter.
         self.colorLabel.text = "None"
         
         if self.editOrAdd == "edit" {
@@ -151,10 +143,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             self.identifierTextField.text = self.course!.identifier
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"
-            
-            print("\(self.course!.quarter.title)")
-            
-            self.quarterLabel.text = self.course!.quarter.title
             
             let colorRow = colorPickerData[0].index(of: self.course!.color)
             self.colorPicker.selectRow(colorRow!, inComponent: 0, animated: true)
@@ -172,7 +160,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         super.viewWillAppear(animated)
         
         self.courses = self.realm.objects(Course.self)
-        self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
         
         self.tableView.reloadData()
     }
@@ -190,49 +177,26 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView == quarterPicker{
-            return quarters.count
-        }else if pickerView == colorPicker{
-            return colorPickerData[component].count
-        }
-        return 0
-        
+        return colorPickerData[component].count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView == quarterPicker{
-            return quarters[row].title
-        }
-        else if pickerView == colorPicker{
-            return colorPickerData[component][row]
-        }
-        return ""
+        return colorPickerData[component][row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        if pickerView == quarterPicker{
-            self.quarterLabel.text = quarters[row].title
-        }else if pickerView == colorPicker{
-            self.colorLabel.text = colorPickerData[component][row]
-        }
-        
+        self.colorLabel.text = colorPickerData[component][row]
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && indexPath.row == 0 {
-            toggleShowQuarterPicker()
-        }
-        else if indexPath.section == 1 && indexPath.row == 2 {
             toggleShowColorPicker()
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if quarterPicker.isHidden && indexPath.section == 1 && indexPath.row == 1 {
-            return 0
-        }
-        else if colorPicker.isHidden && indexPath.section == 1 && indexPath.row == 3 {
+        if colorPicker.isHidden && indexPath.section == 1 && indexPath.row == 1 {
             return 0
         }
         else {

@@ -13,6 +13,7 @@ import KDCircularProgress
 
 @objc(BarChartFormatter)
 
+
 class Ring:UIButton
 {
     let realm = try! Realm()
@@ -55,7 +56,6 @@ class Ring:UIButton
         
         layer.addSublayer(shapeLayer)
     }
-    
 }
 
 class CourseDetailViewController: UIViewController {
@@ -173,11 +173,11 @@ class CourseDetailViewController: UIViewController {
     
     func setAngle() -> Void {
         
-        let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self).filter("course.name = '\(course.name!)'")))
-        let denominator = Float(Helpers.add_duration(events: self.realm.objects(Event.self).filter("course.name = '\(course.name!)'")))
+        let nominator = Float(Helpers.add_duration(events: self.realm.objects(Log.self).filter("course.quarter.title = '\(course.quarter.title!)' AND course.identifier = '\(course.identifier!)'")))
+        let denominator = Float(Helpers.add_duration(events: self.realm.objects(Event.self).filter("course.quarter.title = '\(course.quarter.title!)' AND course.identifier = '\(course.identifier!)'")))
         var percentage = 100.0
         
-        percentage = denominator != 0.0 ? Double(nominator / denominator) : Double(nominator)
+        percentage = (denominator != 0.0) ? Double(nominator / denominator) : Double(nominator)
         
         let angle = percentage > 1 ? 360 : 360 * percentage
         
@@ -207,8 +207,8 @@ class CourseDetailViewController: UIViewController {
             let calendar = Calendar.current
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
-            let x = self.realm.objects(Log.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            let x1 = self.realm.objects(Event.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let x = self.realm.objects(Log.self).filter("course.quarter.title = '\(course.quarter.title!)' AND course.identifier = '\(course.identifier!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let x1 = self.realm.objects(Event.self).filter("course.quarter.title = '\(course.quarter.title!)' AND course.identifier = '\(course.identifier!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             
             logHours.append(0)
             for element in x {
@@ -234,8 +234,8 @@ class CourseDetailViewController: UIViewController {
             let calendar = Calendar.current
             let nDaysAgo = calendar.date(byAdding: .day, value: offsetDay * -1, to: Date())!
             
-            let hoursLogged = self.realm.objects(Log.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
-            let setGoals = self.realm.objects(Event.self).filter("course.name = '\(course.name!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let hoursLogged = self.realm.objects(Log.self).filter("course.quarter.title = '\(course.quarter.title!)' AND course.identifier = '\(course.identifier!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
+            let setGoals = self.realm.objects(Event.self).filter("course.quarter.title = '\(course.quarter.title!)'  AND course.identifier = '\(course.identifier!)' AND date BETWEEN %@", [nDaysAgo.startOfDay,nDaysAgo.endOfDay])
             
             logHours.append(0)
             for element in hoursLogged {

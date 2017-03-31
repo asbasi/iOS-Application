@@ -51,8 +51,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     @IBAction func addingEvent(_ sender: Any) {
-        if self.realm.objects(Course.self).count == 0 {
-            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+        if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -66,9 +66,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     {
         let cal = Calendar(identifier: .gregorian)
         
-        let activeEvents = self.realm.objects(Event.self).filter("checked = false").sorted(byKeyPath: "date", ascending: true)
-        let finishedEvents = self.realm.objects(Event.self).filter("checked = true").sorted(byKeyPath: "date", ascending: true)
-        let allEvents = self.realm.objects(Event.self).sorted(byKeyPath: "date", ascending: true)
+        let activeEvents = self.realm.objects(Event.self).filter("checked = false AND course.quarter.current = true").sorted(byKeyPath: "date", ascending: true)
+        let finishedEvents = self.realm.objects(Event.self).filter("checked = true AND course.quarter.current = true").sorted(byKeyPath: "date", ascending: true)
+        let allEvents = self.realm.objects(Event.self).filter("course.quarter.current = true").sorted(byKeyPath: "date", ascending: true)
         let rawEvents = [activeEvents, finishedEvents, allEvents]
         
         self.segmentController.setTitle("Active (\(activeEvents.count))", forSegmentAt: 0)
@@ -96,15 +96,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 if(segment == 0) // Active
                 {
-                    events.append(Array(self.realm.objects(Event.self).filter("checked = false AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                    events.append(Array(self.realm.objects(Event.self).filter("checked = false AND course.quarter.current = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
                 }
                 else if(segment == 1) // Finished
                 {
-                    events.append(Array(self.realm.objects(Event.self).filter("checked = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                    events.append(Array(self.realm.objects(Event.self).filter("checked = true AND course.quarter.current = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
                 }
                 else if(segment == 2) // All
                 {
-                    events.append(Array(self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                    events.append(Array(self.realm.objects(Event.self).filter("course.quarter.current = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
                 }
             }
             

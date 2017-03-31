@@ -25,8 +25,8 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func addingLog(_ sender: Any) {
-        if self.realm.objects(Course.self).count == 0 {
-            let alert = UIAlertController(title: "No Courses", message: "You must add a course before you can create logs.", preferredStyle: UIAlertControllerStyle.alert)
+        if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create logs.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -43,7 +43,7 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let cal = Calendar(identifier: .gregorian)
         var logs = [[Log]]()
         
-        let rawLogs = self.realm.objects(Log.self).sorted(byKeyPath: "date", ascending: false)
+        let rawLogs = self.realm.objects(Log.self).filter("course.quarter.current = true").sorted(byKeyPath: "date", ascending: false)
         
         var allDates = [Date]()
         for log in rawLogs {
@@ -59,7 +59,7 @@ class LogViewController: UIViewController, UITableViewDataSource, UITableViewDel
             components.second = -1
             let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
             
-            logs.append(Array(self.realm.objects(Log.self).filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: false)))
+            logs.append(Array(self.realm.objects(Log.self).filter("course.quarter.current = true AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: false)))
             
         }
         self.logs = logs

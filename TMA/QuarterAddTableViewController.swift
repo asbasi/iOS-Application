@@ -67,15 +67,23 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         self.dismiss(animated: true, completion: nil)
     }
 
+    // Checks if the quarter title is a duplicate. Returns false if it is.
+    private func isDuplicate() -> Bool {
+        // Check to make sure that this course has a different title than all others.
+        let quarters = self.realm.objects(Quarter.self).filter("title = '\(quarterTitle.text!)'")
+        if quarters.count != 0 {
+            let alert = UIAlertController(title: "Error", message: "Quarter with this title already Exists", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return true
+        }
+        return false
+    }
+    
     @IBAction func save(_ sender: Any) {
         
         if operation == "add" {
-            // Check to make sure that this course has a different title than all others.
-            let quarters = self.realm.objects(Quarter.self).filter("title = '\(quarterTitle.text!)'")
-            if quarters.count != 0 {
-                let alert = UIAlertController(title: "Error", message: "Quarter with this title already Exists", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+            if isDuplicate() {
                 return
             }
             
@@ -95,19 +103,37 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
             else {
                 var components = DateComponents()
                 components.setValue(2, for: .month)
-                quarter!.endDate = Calendar.current.date(byAdding: components, to: Date())
+                quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
             }
             
-            quarter!.current = false
+            quarter!.current = currentSwitch.isOn
+            
+            // Make sure no other quarter is set to current.
+            if(currentSwitch.isOn) {
+                try! self.realm.write {
+                    let currQuarter = self.realm.objects(Quarter.self).filter("current = true")
+                    
+                    // Another 'current' quarter exists.
+                    if(currQuarter.count == 1) {
+                        currQuarter[0].current = false
+                    }
+                }
+            }
 
             Helpers.DB_insert(obj: quarter!)
         }
         else if operation == "edit" {
             try! self.realm.write {
                 
-                // TODO: Add a check to make sure this title doesn't already exist for some other course.
-                
-                quarter!.title = quarterTitle.text!
+                if quarter!.title != quarterTitle.text!
+                {
+                    if isDuplicate() {
+                        return
+                    }
+                    else {
+                        quarter!.title = quarterTitle.text!
+                    }
+                }
                 
                 if startDate.text != "" {
                     quarter!.startDate = dateFormatter.date(from: startDate.text!)
@@ -122,10 +148,19 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 else {
                     var components = DateComponents()
                     components.setValue(2, for: .month)
-                    quarter!.endDate = Calendar.current.date(byAdding: components, to: Date())
+                    quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
                 }
                 
-                quarter!.current = false
+                // Make sure no other quarter is set to current.
+                if(currentSwitch.isOn) {
+                    let quarters = self.realm.objects(Quarter.self)
+                    
+                    for quarter in quarters {
+                        quarter.current = false
+                    }
+                }
+                
+                quarter!.current = currentSwitch.isOn
             }
         }
         
@@ -156,6 +191,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         self.endDatePicker.dataSource = self
         self.endDatePicker.isHidden = true
         self.endDatePicker.today = nil
+        
+        self.currentSwitch.isOn = false
         
         self.tableView.tableFooterView = UIView()
         

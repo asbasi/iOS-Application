@@ -67,7 +67,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
 
     @IBAction func save(_ sender: Any) {
         //get the course
-        let course = self.courses.filter("identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
+        let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
         
         if(self.operation == "add") {
             let log = Log()
@@ -96,7 +96,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.courses = self.realm.objects(Course.self)
+        self.courses = self.realm.objects(Course.self).filter("quarter.current = true")
     }
     
     override func viewDidLoad() {
@@ -108,7 +108,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
         self.courseLabel.isEnabled = false
         self.dateLabel.isEnabled = false
         
-        self.courses = self.realm.objects(Course.self)
+        self.courses = self.realm.objects(Course.self).filter("quarter.current = true")
         
         self.tableView.tableFooterView = UIView()
         

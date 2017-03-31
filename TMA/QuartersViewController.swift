@@ -72,14 +72,26 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
- 
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return ""
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if self.quarters.count > 0 {
+            self.tableView.backgroundView = nil
+            self.tableView.separatorStyle = .singleLine
+            return 1
+        }
+
+        let image = UIImage(named: "bar-chart")!
+        let topMessage = "Quarters"
+        let bottomMessage = "You haven't created any quarters. All your quarters will show up here."
+        
+        self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+        self.tableView.separatorStyle = .none
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,11 +109,10 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "M/d/yy"
         
-        print("\(formatter.string(from: quarter.startDate))")
         cell.dates!.text = "\(formatter.string(from: quarter.startDate)) to \(formatter.string(from: quarter.endDate))"
         
         
-        let count = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title)'").count
+        let count = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'").count
         cell.numCourses!.text = "\(count) courses"
         
         cell.current.backgroundColor = quarter.current ? UIColor.green : UIColor.gray
@@ -123,7 +134,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
                 (alert: UIAlertAction!) -> Void in
                 
                 try! self.realm.write {
-                    let courses = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title)'")
+                    let courses = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
                     
                     for course in courses {
                         let logsToDelete = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
