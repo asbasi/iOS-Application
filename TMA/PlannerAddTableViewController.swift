@@ -223,36 +223,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
 
     // MARK: - Table view data source
-
-    /*
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        return super.tableView(tableView, viewForFooterInSection: section)
-    }
-    
-    override func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
-
-        return super.tableView(tableView, heightForFooterInSection: section)
-    }
-    */
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 4
-        }
-        else if section == 1 {
-            return 3
-        }
-        else if section == 2 {
-            return 2
-        }
-        
-        return 0
-    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         

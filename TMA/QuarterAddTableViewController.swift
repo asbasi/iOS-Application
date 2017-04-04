@@ -212,14 +212,6 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
 
     /******************************* Table View Functions *******************************/
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 4
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && indexPath.row == 0 {
             toggleStartDatePicker()

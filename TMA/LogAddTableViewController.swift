@@ -156,14 +156,6 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     
     // MARK: - Table view data source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if(indexPath.section == 0 && indexPath.row == 3)
