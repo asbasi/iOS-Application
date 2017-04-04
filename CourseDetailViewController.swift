@@ -39,7 +39,7 @@ class Ring:UIButton
         let halfSize:CGFloat = min( bounds.size.width/2, bounds.size.height/2)
         let desiredLineWidth:CGFloat = 3    // your desired value
         
-        let angle = (Double(percentage) / 100) * M_PI * 2
+        let angle = (Double(percentage) / 100) * .pi * 2
         let circlePath = UIBezierPath(
             arcCenter: CGPoint(x:halfSize,y:halfSize),
             radius: CGFloat( halfSize - (desiredLineWidth/2) ),

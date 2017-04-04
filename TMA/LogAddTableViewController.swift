@@ -15,6 +15,8 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     
     let realm = try! Realm()
     
+    @IBOutlet weak var segmentController: UISegmentedControl!
+    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
     @IBOutlet weak var durationTextField: UITextField!
@@ -76,6 +78,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
             log.duration = Float(durationTextField.text!)!
             log.date = datePicker.date
             log.course = course
+            log.type = segmentController.selectedSegmentIndex
     
             Helpers.DB_insert(obj: log)
             
@@ -86,6 +89,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
                 log!.duration = Float(durationTextField.text!)!
                 log!.course = course
                 log!.date = dateFormatter.date(from: dateLabel.text!)
+                log!.type = segmentController.selectedSegmentIndex
             }
         }
         
@@ -135,6 +139,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
             self.durationTextField.text = "\(self.log!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.log!.date)
             self.courseLabel.text = self.log!.course.identifier
+            self.segmentController.selectedSegmentIndex = self.log!.type
         }
         
         // Ensure that the keyboard disappears when the user taps elsewhere.
@@ -161,7 +166,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if(indexPath.section == 0 && indexPath.row == 2)
+        if(indexPath.section == 0 && indexPath.row == 3)
         {
             let height: CGFloat = coursePicker.isHidden ? 0.0 : 217
             return height
@@ -181,7 +186,7 @@ class LogAddTableViewController: UITableViewController, UIPickerViewDataSource, 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let courseIndexPath = IndexPath(row: 1, section: 0)
+        let courseIndexPath = IndexPath(row: 2, section: 0)
         let dateIndexPath = IndexPath(row: 0, section: 1)
         
         if courseIndexPath == indexPath {
