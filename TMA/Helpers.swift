@@ -84,5 +84,14 @@ extension UIViewController {
         
         self.view.layer.insertSublayer(gradientLayer, at: 0)
     }
-}
     
+    func setTheme(theme: Theme) {
+        self.navigationController!.navigationBar.barTintColor = theme.barColor
+        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: theme.tintColor]
+        self.navigationController!.navigationBar.tintColor = theme.tintColor
+        
+        self.tabBarController!.tabBar.barTintColor = theme.barColor
+        self.tabBarController!.tabBar.tintColor = theme.tintColor
+    }
+}
+
