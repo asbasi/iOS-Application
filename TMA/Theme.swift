@@ -12,8 +12,6 @@ import UIKit
 // NOTE: UCD Blue - UIColor(red: 0.0/255.0, green: 40.0/255.0, blue: 85.0/255.0, alpha: 1.0)
 // NOTE: UCD Gold - UIColor(red: 218.0/255.0, green: 170.0/255.0, blue: 0.0/255.0, alpha: 1.0)
 
-let selectedThemeKey = "SelectedTheme"
-
 enum Theme: Int {
     case Default = 0, UCDavis = 1
     

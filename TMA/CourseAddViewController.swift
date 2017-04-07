@@ -8,8 +8,11 @@
 
 import UIKit
 import RealmSwift
+import EventKit
 
 class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+    
+    let eventStore = EKEventStore();
     
     let colorPickerData = [["None", "Red", "Green", "Blue"]]
     
@@ -77,7 +80,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     
     @IBAction func done(_ sender: Any) {
     
-        print ("\(quarter.title)")
         if(editOrAdd=="add"){
             if isDuplicate() {
                 return
@@ -90,9 +92,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             course!.units = Float(unitTextField.text!)!
             course!.quarter = quarter
             course!.color = colorLabel.text!
-            Helpers.DB_insert(obj: course!)
             
+            Helpers.DB_insert(obj: course!)
         }
+        
         if(editOrAdd=="edit"){
             try! self.realm.write {
                 

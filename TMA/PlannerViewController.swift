@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import BEMCheckBox
 import UserNotifications
+import EventKit
 
 class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
@@ -26,6 +27,8 @@ class PlannerViewCell: UITableViewCell {
 }
 
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    let eventStore = EKEventStore()
     
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var myTableView: UITableView!
@@ -60,6 +63,73 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         {
             self.performSegue(withIdentifier: "addEvent", sender: nil)
         }
+    }
+    
+    func checkCalendarAuthorizationStatus() {
+        let status = EKEventStore.authorizationStatus(for: .event)
+        
+        // TODO: If the user initially denies access and then later authorizes make sure the calendar gets created.
+        
+        switch(status) {
+        case EKAuthorizationStatus.notDetermined:
+            requestAccessToCalendar()
+        case EKAuthorizationStatus.authorized:
+            print("Access Granted")
+        case EKAuthorizationStatus.denied:
+            print("Access Denied")
+        default:
+            print("Case Default")
+        }
+    }
+    
+    func requestAccessToCalendar() {
+        self.eventStore.requestAccess(to: .event, completion:
+            { (granted, error) in
+                if granted {
+                    print("Access to calendar store granted")
+                    
+                    // Create a local calendar.
+                    let newCalendar = EKCalendar(for: .event, eventStore: self.eventStore)
+                    
+                    newCalendar.title = "Back On Track Application"
+                    
+                    let sourcesInEventStore = self.eventStore.sources
+                    
+                    var foundSource: Bool = false
+                    
+                    // If iCloud is configured use that as the source.
+                    for source in sourcesInEventStore {
+                        if(source.sourceType == EKSourceType.calDAV && source.title == "iCloud") {
+                            newCalendar.source = source
+                            foundSource = true
+                        }
+                    }
+                    
+                    // Otherwise use the local source.
+                    if(!foundSource) {
+                        for source in sourcesInEventStore {
+                            if(source.sourceType == EKSourceType.local) {
+                                newCalendar.source = source
+                            }
+                        }
+                    }
+                    
+                    do {
+                        try self.eventStore.saveCalendar(newCalendar, commit: true)
+                        UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: calendarKey);
+                    }
+                    catch {
+                        let alert = UIAlertController(title: "Calendar could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                        alert.addAction(OKAction)
+                        
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    print("Access to calendar store not granted")
+                }
+            })
     }
     
     func populateSegments()
@@ -118,6 +188,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewWillAppear(animated)
         
         populateSegments()
+        checkCalendarAuthorizationStatus()
         
         self.myTableView.reloadData()
     }
@@ -231,13 +302,13 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             
             if !event.checked {
                 // About to check off the event so remove any pending notifications.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
             }
             else {
                 if let date = event.reminderDate {
                     // Event is getting unchecked so schedule another notification.
                     let delegate = UIApplication.shared.delegate as? AppDelegate
-                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.id)
+                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
             }
             
@@ -292,7 +363,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 (alert: UIAlertAction!) -> Void in
                 
                 // Remove any pending notifications for the event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.id])
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
+                self.deleteEventFromCalendar(withID: event.calEventID)
                 
                 try! self.realm.write {
                     self.events[index.section].remove(at: index.row)
@@ -326,6 +398,21 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         edit.backgroundColor = .blue
         
         return [delete, edit]
+    }
+    
+    func deleteEventFromCalendar(withID eventID: String) {
+        if let calEvent = eventStore.event(withIdentifier: eventID) {
+            do {
+                try eventStore.remove(calEvent, span: .thisEvent, commit: true)
+            }
+            catch {
+                let alert = UIAlertController(title: "Event could not be deleted from calendar", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(OKAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation

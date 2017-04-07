@@ -12,6 +12,7 @@ import RealmSwift
 
 class Event: Item {
     dynamic var checked: Bool = false
-    dynamic var id: String!
+    dynamic var reminderID: String!
     dynamic var reminderDate: Date? = nil
+    dynamic var calEventID: String!
 }

@@ -9,10 +9,12 @@
 import UIKit
 import RealmSwift
 import UserNotifications
+import EventKit
 
 class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     let realm = try! Realm()
+    let eventStore = EKEventStore();
     
     @IBOutlet weak var segmentController: UISegmentedControl!
     
@@ -110,17 +112,22 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             event.date = datePicker.date
             event.course = course
             event.type = segmentController.selectedSegmentIndex
-            event.id = UUID().uuidString
+            event.reminderID = UUID().uuidString
 
             if reminderSwitch.isOn {                
                 // Schedule a notification.
                 event.reminderDate = reminderPicker.date
                 let delegate = UIApplication.shared.delegate as? AppDelegate
-                delegate?.scheduleNotifcation(at: event.reminderDate!, title: event.title, body: "Reminder!", identifier: event.id)
+                delegate?.scheduleNotifcation(at: event.reminderDate!, title: event.title, body: "Reminder!", identifier: event.reminderID)
             }
             else
             {
                 event.reminderDate = nil
+            }
+            
+            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                
+                event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier as! String)
             }
             
             Helpers.DB_insert(obj: event)
@@ -135,23 +142,90 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 event!.type = segmentController.selectedSegmentIndex
                 
                 // Remove any existing notifications for this event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.id])
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
                 
                 if reminderSwitch.isOn {
                     // Schedule a notification.
                     event!.reminderDate = reminderPicker.date
                     let delegate = UIApplication.shared.delegate as? AppDelegate
-                    delegate?.scheduleNotifcation(at: event!.reminderDate!, title: event!.title, body: "Reminder!", identifier: event!.id)
+                    delegate?.scheduleNotifcation(at: event!.reminderDate!, title: event!.title, body: "Reminder!", identifier: event!.reminderID)
                 }
                 else
                 {
                     event!.reminderDate = nil
                 }
             }
+            
+            // Edit Calendar Entry.
+            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                
+                editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+            }
         }
         
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
+        if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
+            
+            // Create the calendar event.
+            let newEvent = EKEvent(eventStore: self.eventStore)
+            
+            newEvent.calendar = calendarForEvent
+            newEvent.title = "\(event.title!) (\(event.course.name!))"
+            newEvent.startDate = event.date
+            
+            var components = DateComponents()
+            components.setValue(Int(event.duration), for: .hour)
+            components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
+            newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
+            
+            // Save the event in the calendar.
+            do {
+                try self.eventStore.save(newEvent, span: .thisEvent, commit: true)
+                
+                return newEvent.eventIdentifier
+            }
+            catch {
+                let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(OKAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        return nil
+    }
+    
+    func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
+        if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
+            calEvent.title = "\(event.title!) (\(event.course.name!))"
+            calEvent.startDate = event.date
+            
+            var components = DateComponents()
+            components.setValue(Int(event.duration), for: .hour)
+            components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
+            calEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
+            
+            do {
+                try self.eventStore.save(calEvent, span: .thisEvent, commit: true)
+            }
+            catch {
+                let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(OKAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        else {
+            // Event with identifier doesn't exist so make it.
+            try! self.realm.write {
+               event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
