@@ -192,6 +192,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         checkCalendarAuthorizationStatus()
         
         self.myTableView.reloadData()
+        
+        // Scrolls down to the current date.
+        var section: Int = 0
+        for event in self.events {
+            if Calendar.current.isDateInToday(event[0].date!) {
+                self.myTableView.scrollToRow(at: IndexPath(row: 0, section: section), at: UITableViewScrollPosition.top, animated: true)
+            }
+            section += 1
+        }
     }
     
     override func viewDidLoad() {
@@ -414,10 +423,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.present(alert, animated: true, completion: nil)
             }
         }
-    
-        
-        //for event in self.events
-        //self.myTableView.scrollToRow(at: <#T##IndexPath#>, at: UITableViewScrollPosition.top, animated: true)
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
