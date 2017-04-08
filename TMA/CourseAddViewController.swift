@@ -68,7 +68,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     private func isDuplicate() -> Bool {
-        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)'")
+        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND name = '\(courseTitleTextField.text!)'")
         if results.count != 0 {
             let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
