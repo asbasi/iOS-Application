@@ -280,7 +280,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarLogCell", for: indexPath) as! CalendarViewLogCell
             
             cell.title?.text = self.logs[indexPath.row].title
-            cell.course?.text = self.logs[indexPath.row].course.name
+            cell.course?.text = self.logs[indexPath.row].course.identifier
             
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"

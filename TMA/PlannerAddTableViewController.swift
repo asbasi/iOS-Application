@@ -144,6 +144,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 // Remove any existing notifications for this event.
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
                 
+                
+                
+                self.coursePicker.selectedRow(inComponent: )
                 if reminderSwitch.isOn {
                     // Schedule a notification.
                     event!.reminderDate = reminderPicker.date
@@ -277,6 +280,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.courseLabel.text = self.event!.course.identifier
             self.segmentController.selectedSegmentIndex = self.event!.type
             
+            //self.coursePicker.selectedRow(inComponent: self.coursePicker.index)
             if let date = self.event!.reminderDate {
                 self.reminderSwitch.isOn = true
                 self.reminderLabel.textColor = UIColor.blue
@@ -381,7 +385,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return self.courses.count
     }
