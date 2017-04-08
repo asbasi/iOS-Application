@@ -27,6 +27,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     @IBOutlet weak var endDate: UITextField!
     @IBOutlet weak var endDatePicker: FSCalendar!
     
+    @IBOutlet weak var pageTitle: UINavigationItem!
+    
     private func checkAllTextFields() {
         if (quarterTitle.text?.isEmpty)! {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -197,6 +199,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         self.tableView.tableFooterView = UIView()
         
         if self.operation == "edit" {
+            self.pageTitle.title = self.quarter!.title
             self.quarterTitle.text = self.quarter!.title
             self.currentSwitch.isOn = self.quarter!.current
             

@@ -414,6 +414,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.present(alert, animated: true, completion: nil)
             }
         }
+    
+        
+        //for event in self.events
+        //self.myTableView.scrollToRow(at: <#T##IndexPath#>, at: UITableViewScrollPosition.top, animated: true)
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation

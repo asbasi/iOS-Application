@@ -277,7 +277,7 @@
             </objects>
             <point key="canvasLocation" x="1848.8" y="-1118.5907046476761"/>
         </scene>
-        <!--Course Detail View Controller-->
+        <!--Stats-->
         <scene sceneID="nqq-Mr-zri">
             <objects>
                 <viewController id="yks-yA-J62" customClass="CourseDetailViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
@@ -348,6 +348,7 @@
                             <constraint firstItem="ieI-0j-bdS" firstAttribute="top" secondItem="yzl-MU-z4O" secondAttribute="bottom" constant="246" id="yHl-xm-HKd"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Stats" id="vfQ-Gd-xIH"/>
                     <connections>
                         <outlet property="barChartView" destination="ieI-0j-bdS" id="Hbo-Cc-dud"/>
                         <outlet property="circularProgressView" destination="JSe-j5-LdR" id="k5G-QB-sBa"/>
@@ -445,7 +446,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="kam-Oo-VSG">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
                             <rect key="frame" x="89" y="8" width="197" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <segments>
@@ -950,7 +951,7 @@
             </objects>
             <point key="canvasLocation" x="2849" y="-1613"/>
         </scene>
-        <!--Title-->
+        <!--Add Quarter-->
         <scene sceneID="NvY-sY-9jH">
             <objects>
                 <tableViewController id="Nwc-hL-QVy" customClass="QuarterAddTableViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
@@ -1093,7 +1094,7 @@
                             <outlet property="delegate" destination="Nwc-hL-QVy" id="iTZ-0G-d5U"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="qdf-Zg-wkL">
+                    <navigationItem key="navigationItem" title="Add Quarter" id="qdf-Zg-wkL">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fHz-xG-TU1">
                             <connections>
                                 <action selector="cancel:" destination="Nwc-hL-QVy" id="EY3-5r-gKo"/>
@@ -1109,6 +1110,7 @@
                         <outlet property="currentSwitch" destination="Ahq-V7-Bn3" id="LGn-6p-BbW"/>
                         <outlet property="endDate" destination="aMK-7a-GKU" id="X1K-Y7-rM3"/>
                         <outlet property="endDatePicker" destination="ph1-fq-VJm" id="zjU-A8-DZ8"/>
+                        <outlet property="pageTitle" destination="qdf-Zg-wkL" id="L2H-D7-3eT"/>
                         <outlet property="quarterTitle" destination="END-NN-Ugh" id="37c-ks-cGv"/>
                         <outlet property="startDate" destination="NDT-UD-kgh" id="DSC-0f-oQq"/>
                         <outlet property="startDatePicker" destination="aD3-dk-XJ3" id="ZOE-uJ-N1j"/>
