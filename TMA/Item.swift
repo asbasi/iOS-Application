@@ -20,5 +20,6 @@ class Item: Object {
     dynamic var date: Date!
     dynamic var course: Course!
     dynamic var duration: Float = 0 //hours
-    dynamic var type: Int = OTHER_EVENT 
+    dynamic var type: Int = OTHER_EVENT
+    dynamic var goal: Goal?
 }

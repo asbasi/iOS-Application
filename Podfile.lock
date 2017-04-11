@@ -1,16 +1,16 @@
 PODS:
   - BEMCheckBox (1.4.0)
-  - Charts (3.0.1):
-    - Charts/Core (= 3.0.1)
-  - Charts/Core (3.0.1)
-  - FSCalendar (2.7.1)
+  - Charts (3.0.2):
+    - Charts/Core (= 3.0.2)
+  - Charts/Core (3.0.2)
+  - FSCalendar (2.7.4)
   - KDCircularProgress (1.5.2)
   - PureLayout (3.0.2)
-  - Realm (2.4.2):
-    - Realm/Headers (= 2.4.2)
-  - Realm/Headers (2.4.2)
-  - RealmSwift (2.4.2):
-    - Realm (= 2.4.2)
+  - Realm (2.5.1):
+    - Realm/Headers (= 2.5.1)
+  - Realm/Headers (2.5.1)
+  - RealmSwift (2.5.1):
+    - Realm (= 2.5.1)
 
 DEPENDENCIES:
   - BEMCheckBox
@@ -22,12 +22,12 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   BEMCheckBox: e18e4a148905b290bd03d98b767651c104f4eda3
-  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
-  FSCalendar: cfc95384cb0d648ad7c1957649ea74d6c26bb0de
+  Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
+  FSCalendar: e95995a746acae531c4a7dd636b8393233125ec5
   KDCircularProgress: 12f677b2deb02409ab48c6cae1898d146b8ad549
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
-  RealmSwift: 9556c0fe0f0cfecacfb755ae9e68ff379fc6bead
+  Realm: 32f86104d37c8521f864d4274050b38ba6190733
+  RealmSwift: f719e7511c902b8908593e8f143f59e47931bdb6
 
 PODFILE CHECKSUM: b53c1e132121938ae5bf51cec2719b81a2be92b6
 

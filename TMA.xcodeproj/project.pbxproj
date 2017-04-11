@@ -18,6 +18,8 @@
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF402E1E47DDF70095B2FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402D1E47DDF70095B2FD /* Log.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
+		1118E6DC1E9C57B000A85134 /* GoalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */; };
+		1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DD1E9C57F100A85134 /* Goal.swift */; };
 		1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
@@ -61,6 +63,8 @@
 		00DF402B1E47DC930095B2FD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTableViewController.swift; sourceTree = "<group>"; };
+		1118E6DD1E9C57F100A85134 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddTableViewController.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 				60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */,
 				1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */,
 				601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */,
+				1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */,
 				609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */,
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
 				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
@@ -142,6 +147,7 @@
 				60E4E9961E96174B007EBEA4 /* Theme.swift */,
 				60B325BA1E8AE59F00CE6164 /* Quarter.swift */,
 				601962CC1E4EE780001EAAC0 /* Item.swift */,
+				1118E6DD1E9C57F100A85134 /* Goal.swift */,
 				00416AD41E47E5DB00DA733D /* Course.swift */,
 				00DF402B1E47DC930095B2FD /* Event.swift */,
 				00DF402D1E47DDF70095B2FD /* Log.swift */,
@@ -305,11 +311,13 @@
 				601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */,
 				606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */,
 				609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */,
+				1118E6DC1E9C57B000A85134 /* GoalTableViewController.swift in Sources */,
 				1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
+				1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 			);
