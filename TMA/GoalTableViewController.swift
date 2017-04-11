@@ -197,19 +197,19 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
 //                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
 //                courseDetailViewController.course = courses[selectedIndexPath!.row]
 //            }
-//            else {
+////            else {
 //                let navigation: UINavigationController = segue.destination as! UINavigationController
-//                var courseAddViewController = CourseAddViewController.init()
-//                courseAddViewController = navigation.viewControllers[0] as! CourseAddViewController
+//                var goalAddViewController = GoalAddViewController.init()
+//                goalAddViewController = navigation.viewControllers[0] as! GoalAddViewController
 //                
-//                courseAddViewController.quarter = self.quarter
+//                goalAddViewController.quarter = self.quarter
 //                
 //                if segue.identifier! == "addGoal" {
-//                    courseAddViewController.editOrAdd = "add"
+//                    goalAddViewController.editOrAdd = "add"
 //                }
 //                else if segue.identifier! == "editGoal" {
-//                    courseAddViewController.editOrAdd = "edit"
-//                    courseAddViewController.goal = goalToEdit!
+//                    goalAddViewController.editOrAdd = "edit"
+//                    goalAddViewController.goal = goalToEdit!
 //                }
 //            }
         }
