@@ -23,11 +23,12 @@ class PlannerViewCell: UITableViewCell {
     var buttonAction: ((_ sender: PlannerViewCell) -> Void)?
     
     @IBAction func checkboxToggled(_ sender: AnyObject) {
-        self.buttonAction?(self)
+        
         let alert = UIAlertController(title: "Enter Time", message: "How much time in hour did you do?", preferredStyle: UIAlertControllerStyle.alert)
         
-        let saveAction = UIAlertAction(title: "Add", style: .default, handler: {alert -> Void in
-            //enter code here to save
+        let logAction = UIAlertAction(title: "Log", style: .default, handler: {alert -> Void in
+            //cell sent to finished after add
+            self.buttonAction?(self)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {alert -> Void in
@@ -38,7 +39,7 @@ class PlannerViewCell: UITableViewCell {
             textField.placeholder = "Enter Time in hours"
         }
         
-        alert.addAction(saveAction)
+        alert.addAction(logAction)
         alert.addAction(cancelAction)
         
         UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
