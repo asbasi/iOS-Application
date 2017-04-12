@@ -749,9 +749,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CT7-T9-jTL">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CT7-T9-jTL">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <segue destination="O40-WZ-mkk" kind="embed" id="men-aa-2lq"/>
                                 </connections>
@@ -762,6 +761,12 @@
                             </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="CT7-T9-jTL" firstAttribute="leading" secondItem="ChZ-Ro-j0R" secondAttribute="leading" id="4TT-ud-D8r"/>
+                            <constraint firstAttribute="bottom" secondItem="CT7-T9-jTL" secondAttribute="bottom" id="S3k-M9-FcJ"/>
+                            <constraint firstAttribute="trailing" secondItem="CT7-T9-jTL" secondAttribute="trailing" id="Ykb-xE-6yz"/>
+                            <constraint firstItem="CT7-T9-jTL" firstAttribute="top" secondItem="ChZ-Ro-j0R" secondAttribute="top" id="ejp-Lb-1qy"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="containerView" destination="CT7-T9-jTL" id="fat-xC-NnA"/>

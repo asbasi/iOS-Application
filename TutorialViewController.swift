@@ -15,21 +15,40 @@ class TutorialViewController: UIViewController {
     
     var tutorialPageViewController: TutorialPageViewController? {
         didSet {
-            //tutorialPageViewController?.tutorialDelegate = self
+            tutorialPageViewController?.tutorialDelegate = self
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //pageControl.addTarget(self, action: "didChangePageControlValue", for: .valueChanged)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        pageControl.addTarget(self, action: "didChangePageControlValue", for: .valueChanged)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let tutorialPageViewController = segue.destination as? TutorialPageViewController {
+            self.tutorialPageViewController = tutorialPageViewController
+        }
+    }
     
+    /**
+     Fired when the user taps on the pageControl to change its current page.
+     */
+    func didChangePageControlValue() {
+        tutorialPageViewController?.scrollToViewController(index: pageControl.currentPage)
+    }
+}
+
+extension TutorialViewController: TutorialPageViewControllerDelegate {
+    
+    func tutorialPageViewController(_ tutorialPageViewController: TutorialPageViewController,
+                                    didUpdatePageCount count: Int) {
+        pageControl.numberOfPages = count
+    }
+    
+    func tutorialPageViewController(_ tutorialPageViewController: TutorialPageViewController,
+                                    didUpdatePageIndex index: Int) {
+        pageControl.currentPage = index
+    }
     
 }
