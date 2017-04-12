@@ -195,7 +195,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E2G-o6-Kx8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5225" y="-448"/>
+            <point key="canvasLocation" x="5358" y="-448"/>
         </scene>
         <!--Log-->
         <scene sceneID="0Xz-yZ-eEj">
@@ -447,7 +447,7 @@
                     <navigationItem key="navigationItem" id="kam-Oo-VSG">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
-                            <rect key="frame" x="89" y="7.5" width="197" height="29"/>
+                            <rect key="frame" x="89" y="8" width="197" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Active"/>
@@ -775,7 +775,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="48S-fq-mNG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2720.8000000000002" y="1388.4557721139431"/>
+            <point key="canvasLocation" x="2849" y="1388"/>
         </scene>
         <!--Tutorial Page View Controller-->
         <scene sceneID="eDf-Q8-uFZ">
@@ -783,7 +783,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="O40-WZ-mkk" customClass="TutorialPageViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VJm-nR-ZFM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2721" y="2127"/>
+            <point key="canvasLocation" x="2849" y="2150"/>
         </scene>
         <!--Tutorial1 View Controller-->
         <scene sceneID="B6Q-Zt-rIr">
@@ -797,17 +797,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9uO-NK-wvx">
-                                <rect key="frame" x="67" y="108" width="240" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9uO-NK-wvx">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="TQs-RB-eMX" firstAttribute="top" secondItem="9uO-NK-wvx" secondAttribute="bottom" constant="190" id="JOR-lz-T4m"/>
-                            <constraint firstItem="9uO-NK-wvx" firstAttribute="leading" secondItem="fdT-z5-Bdv" secondAttribute="leadingMargin" constant="51" id="Sxc-n4-xKM"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9uO-NK-wvx" secondAttribute="trailing" constant="52" id="gd2-uK-RRR"/>
-                            <constraint firstItem="9uO-NK-wvx" firstAttribute="top" secondItem="EaD-Hx-Y2g" secondAttribute="bottom" constant="88" id="l9Q-0M-KRf"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="9uO-NK-wvx" id="rTb-EM-UbC"/>
@@ -815,7 +810,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fcy-eC-EJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3543.1999999999998" y="1523.3883058470765"/>
+            <point key="canvasLocation" x="3633" y="1388"/>
         </scene>
         <!--Tutorial2 View Controller-->
         <scene sceneID="ba7-Bi-GV6">
@@ -829,17 +824,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="trx-t0-sH7">
-                                <rect key="frame" x="67" y="108" width="240" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="trx-t0-sH7">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="trx-t0-sH7" firstAttribute="top" secondItem="6Vp-9G-WHA" secondAttribute="bottom" constant="88" id="AVi-FW-mhO"/>
-                            <constraint firstItem="trx-t0-sH7" firstAttribute="leading" secondItem="B4O-Am-8g4" secondAttribute="leadingMargin" constant="51" id="diL-X7-Mdr"/>
-                            <constraint firstItem="uvM-Qh-AVh" firstAttribute="top" secondItem="trx-t0-sH7" secondAttribute="bottom" constant="190" id="tbp-aQ-Nw3"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="trx-t0-sH7" secondAttribute="trailing" constant="52" id="yZ5-0P-KJU"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="trx-t0-sH7" id="KVc-Vi-Zqm"/>
@@ -847,7 +837,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oi3-li-GqM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4202" y="1523"/>
+            <point key="canvasLocation" x="4478" y="1388"/>
         </scene>
         <!--Tutorial3 View Controller-->
         <scene sceneID="Ag7-iQ-QOU">
@@ -861,17 +851,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vl1-RK-m9m">
-                                <rect key="frame" x="67" y="108" width="240" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vl1-RK-m9m">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Vl1-RK-m9m" firstAttribute="top" secondItem="Yue-xu-6V4" secondAttribute="bottom" constant="88" id="ICD-y2-sDZ"/>
-                            <constraint firstItem="97w-J1-iWL" firstAttribute="top" secondItem="Vl1-RK-m9m" secondAttribute="bottom" constant="190" id="ZRp-Jq-NfK"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Vl1-RK-m9m" secondAttribute="trailing" constant="52" id="ojT-M2-2Bs"/>
-                            <constraint firstItem="Vl1-RK-m9m" firstAttribute="leading" secondItem="PTe-EL-Uua" secondAttribute="leadingMargin" constant="51" id="sM5-4e-C7l"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="Vl1-RK-m9m" id="WQs-hl-hBC"/>
@@ -879,7 +864,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4W-iv-wQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4882" y="1523"/>
+            <point key="canvasLocation" x="5358" y="1388"/>
         </scene>
         <!--Tutorial4 View Controller-->
         <scene sceneID="X58-1x-7gj">
@@ -893,17 +878,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m2k-eI-HIX">
-                                <rect key="frame" x="67" y="108" width="240" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m2k-eI-HIX">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="m2k-eI-HIX" secondAttribute="trailing" constant="52" id="327-lg-oxc"/>
-                            <constraint firstItem="m2k-eI-HIX" firstAttribute="top" secondItem="blP-Eh-AS2" secondAttribute="bottom" constant="88" id="HpM-Li-n2G"/>
-                            <constraint firstItem="wbC-Kj-OWW" firstAttribute="top" secondItem="m2k-eI-HIX" secondAttribute="bottom" constant="190" id="OvN-Gg-Bar"/>
-                            <constraint firstItem="m2k-eI-HIX" firstAttribute="leading" secondItem="5Vr-yL-yw5" secondAttribute="leadingMargin" constant="51" id="Sca-M3-ndx"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="m2k-eI-HIX" id="mLl-GA-KEs"/>
@@ -911,7 +891,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bE9-y9-HjW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3543" y="2180"/>
+            <point key="canvasLocation" x="3614" y="2178"/>
         </scene>
         <!--Tutorial5 View Controller-->
         <scene sceneID="W7D-0o-Y9p">
@@ -925,17 +905,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4GU-XC-q6Q">
-                                <rect key="frame" x="67" y="108" width="240" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4GU-XC-q6Q">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="4GU-XC-q6Q" secondAttribute="trailing" constant="52" id="Ipj-mE-Ti7"/>
-                            <constraint firstItem="4GU-XC-q6Q" firstAttribute="leading" secondItem="To4-id-RGa" secondAttribute="leadingMargin" constant="51" id="Zna-Wj-Zvk"/>
-                            <constraint firstItem="4GU-XC-q6Q" firstAttribute="top" secondItem="Vq3-Nj-bad" secondAttribute="bottom" constant="88" id="nMB-cV-qAx"/>
-                            <constraint firstItem="oli-po-KxH" firstAttribute="top" secondItem="4GU-XC-q6Q" secondAttribute="bottom" constant="190" id="sWg-N6-yja"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="4GU-XC-q6Q" id="XdL-tZ-6gQ"/>
@@ -943,7 +918,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPp-3n-OAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4201" y="2179"/>
+            <point key="canvasLocation" x="4478" y="2179"/>
         </scene>
         <!--Tutorial6 View Controller-->
         <scene sceneID="pDH-u0-t7v">
@@ -957,17 +932,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Wh-Pe-4Yc">
-                                <rect key="frame" x="51" y="108" width="272" height="369"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Wh-Pe-4Yc">
+                                <rect key="frame" x="37" y="108" width="300" height="300"/>
+                                <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="4Wh-Pe-4Yc" firstAttribute="top" secondItem="otJ-zw-n9c" secondAttribute="bottom" constant="88" id="0IO-nA-w1v"/>
-                            <constraint firstAttribute="trailing" secondItem="4Wh-Pe-4Yc" secondAttribute="trailing" constant="52" id="OVz-pw-mR4"/>
-                            <constraint firstItem="24X-Gz-i9G" firstAttribute="top" secondItem="4Wh-Pe-4Yc" secondAttribute="bottom" constant="190" id="l0W-fF-WdU"/>
-                            <constraint firstItem="4Wh-Pe-4Yc" firstAttribute="leading" secondItem="F1K-RT-Y7I" secondAttribute="leading" constant="51" id="zDL-GA-l2y"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Photo" destination="4Wh-Pe-4Yc" id="B3c-qQ-k3o"/>
@@ -975,7 +945,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wio-bd-1to" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4881" y="2178"/>
+            <point key="canvasLocation" x="5358" y="2178"/>
         </scene>
         <!--Theme-->
         <scene sceneID="eyB-G1-uou">
@@ -1036,7 +1006,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9F-FZ-lag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2716" y="2892"/>
+            <point key="canvasLocation" x="2849" y="2898"/>
         </scene>
         <!--Settings-->
         <scene sceneID="cMT-f7-7G8">
@@ -2096,9 +2066,9 @@
         <image name="settings" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="SVf-2y-i4z"/>
         <segue reference="ofd-vI-vWm"/>
         <segue reference="VgT-gx-cUX"/>
-        <segue reference="7XP-UM-StG"/>
         <segue reference="dap-Ky-MzN"/>
     </inferredMetricsTieBreakers>
 </document>
