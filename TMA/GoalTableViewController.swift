@@ -200,11 +200,12 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
 
             else {
-//                let navigation: UINavigationController = segue.destination as! UINavigationController
-//                var goalAddViewController = GoalAddTableViewController.init()
-//                goalAddViewController = navigation.viewControllers[0] as! GoalAddTableViewController
-                let goalAddViewController = segue.destination as! GoalAddTableViewController
+
+                let navigation: UINavigationController = segue.destination as! UINavigationController
                 
+               var goalAddViewController = GoalAddTableViewController.init()
+                
+                goalAddViewController = navigation.viewControllers[0] as! GoalAddTableViewController
                 
                 if segue.identifier! == "addGoal" {
                     goalAddViewController.operation = "add"
