@@ -27,16 +27,18 @@ class PlannerViewCell: UITableViewCell {
         let alert = UIAlertController(title: "Enter Time", message: "How much time in hour did you do?", preferredStyle: UIAlertControllerStyle.alert)
         
         let logAction = UIAlertAction(title: "Log", style: .default, handler: {alert -> Void in
-            //cell sent to finished after add
+            //add a log here
+            
             self.buttonAction?(self)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: {alert -> Void in
-            //enter code here to save
+            
         })
         
         alert.addTextField { (textField : UITextField!) -> Void in
             textField.placeholder = "Enter Time in hours"
+            textField.keyboardType = .numberPad
         }
         
         alert.addAction(logAction)
