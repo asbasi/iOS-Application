@@ -20,7 +20,7 @@
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
 		1118E6DC1E9C57B000A85134 /* GoalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */; };
 		1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DD1E9C57F100A85134 /* Goal.swift */; };
-		116C5B0D1E9C883100660764 /* GoalAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116C5B0C1E9C883100660764 /* GoalAddViewController.swift */; };
+		116C5B0D1E9C883100660764 /* GoalAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */; };
 		1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
@@ -66,7 +66,7 @@
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTableViewController.swift; sourceTree = "<group>"; };
 		1118E6DD1E9C57F100A85134 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
-		116C5B0C1E9C883100660764 /* GoalAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAddViewController.swift; sourceTree = "<group>"; };
+		116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAddTableViewController.swift; sourceTree = "<group>"; };
 		1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddTableViewController.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 				009C4E2B1E42DD2800260378 /* CourseViewController.swift */,
 				1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */,
 				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
-				116C5B0C1E9C883100660764 /* GoalAddViewController.swift */,
+				116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */,
 				605724731E4800AC00B6BC8B /* LogViewController.swift */,
 				009C4E131E42D37D00260378 /* AppDelegate.swift */,
 				00DF402F1E47E0700095B2FD /* Helpers.swift */,
@@ -304,7 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */,
-				116C5B0D1E9C883100660764 /* GoalAddViewController.swift in Sources */,
+				116C5B0D1E9C883100660764 /* GoalAddTableViewController.swift in Sources */,
 				00416AD51E47E5DB00DA733D /* Course.swift in Sources */,
 				60822B8C1E6B9A58009670EC /* PlannerAddTableViewController.swift in Sources */,
 				605724741E4800AC00B6BC8B /* LogViewController.swift in Sources */,

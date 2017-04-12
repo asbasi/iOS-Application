@@ -199,20 +199,20 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             
 
-//            else {
+            else {
 //                let navigation: UINavigationController = segue.destination as! UINavigationController
-//                var goalAddViewController = GoalAddViewController.init()
-//                goalAddViewController = navigation.viewControllers[0] as! GoalAddViewController
-//                
-//                goalAddViewController.quarter = self.quarter
-//                
-//                if segue.identifier! == "addGoal" {
-//                    goalAddViewController.editOrAdd = "add"
-//                }
-//                else if segue.identifier! == "editGoal" {
-//                    goalAddViewController.editOrAdd = "edit"
-//                    goalAddViewController.goal = goalToEdit!
-//                }
-//            }
+//                var goalAddViewController = GoalAddTableViewController.init()
+//                goalAddViewController = navigation.viewControllers[0] as! GoalAddTableViewController
+                let goalAddViewController = segue.destination as! GoalAddTableViewController
+                
+                
+                if segue.identifier! == "addGoal" {
+                    goalAddViewController.operation = "add"
+                }
+                else if segue.identifier! == "editGoal" {
+                    goalAddViewController.operation = "edit"
+                    goalAddViewController.goal = goalToEdit!
+                }
+            }
         }
 }
