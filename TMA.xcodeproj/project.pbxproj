@@ -32,6 +32,8 @@
 		60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */; };
 		60E4E9951E9603FC007EBEA4 /* ThemeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */; };
 		60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9961E96174B007EBEA4 /* Theme.swift */; };
+		8F6361701E9DFDE300D97F8D /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */; };
+		8F6361741E9E128C00D97F8D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6361731E9E128C00D97F8D /* TutorialViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +79,8 @@
 		60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartersViewController.swift; sourceTree = "<group>"; };
 		60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTableViewController.swift; sourceTree = "<group>"; };
 		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialPageViewController.swift; path = ../TutorialPageViewController.swift; sourceTree = "<group>"; };
+		8F6361731E9E128C00D97F8D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialViewController.swift; path = ../TutorialViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -130,6 +134,8 @@
 				1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */,
 				601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */,
 				609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */,
+				8F6361731E9E128C00D97F8D /* TutorialViewController.swift */,
+				8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */,
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
 				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
 				009C4E211E42D37D00260378 /* Info.plist */,
@@ -304,7 +310,9 @@
 				00DF402E1E47DDF70095B2FD /* Log.swift in Sources */,
 				60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */,
 				009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */,
+				8F6361741E9E128C00D97F8D /* TutorialViewController.swift in Sources */,
 				009C4E321E42E3E300260378 /* CourseDetailViewController.swift in Sources */,
+				8F6361701E9DFDE300D97F8D /* TutorialPageViewController.swift in Sources */,
 				601962CD1E4EE780001EAAC0 /* Item.swift in Sources */,
 				601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */,
 				606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */,
