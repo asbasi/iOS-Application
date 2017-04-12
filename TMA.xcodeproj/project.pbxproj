@@ -34,6 +34,12 @@
 		60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9961E96174B007EBEA4 /* Theme.swift */; };
 		8F6361701E9DFDE300D97F8D /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */; };
 		8F6361741E9E128C00D97F8D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6361731E9E128C00D97F8D /* TutorialViewController.swift */; };
+		8F6361781E9E2FF400D97F8D /* Tutorial1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6361771E9E2FF400D97F8D /* Tutorial1ViewController.swift */; };
+		8FB4D1BA1E9E364F00E438F2 /* Tutorial2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4D1B91E9E364F00E438F2 /* Tutorial2ViewController.swift */; };
+		8FB4D1BC1E9E368E00E438F2 /* Tutorial3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4D1BB1E9E368E00E438F2 /* Tutorial3ViewController.swift */; };
+		8FB4D1BE1E9E36A900E438F2 /* Tutorial4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4D1BD1E9E36A900E438F2 /* Tutorial4ViewController.swift */; };
+		8FB4D1C01E9E36CC00E438F2 /* Tutorial5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4D1BF1E9E36CC00E438F2 /* Tutorial5ViewController.swift */; };
+		8FB4D1C21E9E36DF00E438F2 /* Tutorial6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4D1C11E9E36DF00E438F2 /* Tutorial6ViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +87,12 @@
 		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialPageViewController.swift; path = ../TutorialPageViewController.swift; sourceTree = "<group>"; };
 		8F6361731E9E128C00D97F8D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialViewController.swift; path = ../TutorialViewController.swift; sourceTree = "<group>"; };
+		8F6361771E9E2FF400D97F8D /* Tutorial1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial1ViewController.swift; path = ../tutorial/Tutorial1ViewController.swift; sourceTree = "<group>"; };
+		8FB4D1B91E9E364F00E438F2 /* Tutorial2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial2ViewController.swift; path = ../tutorial/Tutorial2ViewController.swift; sourceTree = "<group>"; };
+		8FB4D1BB1E9E368E00E438F2 /* Tutorial3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial3ViewController.swift; path = ../tutorial/Tutorial3ViewController.swift; sourceTree = "<group>"; };
+		8FB4D1BD1E9E36A900E438F2 /* Tutorial4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial4ViewController.swift; path = ../tutorial/Tutorial4ViewController.swift; sourceTree = "<group>"; };
+		8FB4D1BF1E9E36CC00E438F2 /* Tutorial5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial5ViewController.swift; path = ../tutorial/Tutorial5ViewController.swift; sourceTree = "<group>"; };
+		8FB4D1C11E9E36DF00E438F2 /* Tutorial6ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tutorial6ViewController.swift; path = ../tutorial/Tutorial6ViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -136,6 +148,12 @@
 				609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */,
 				8F6361731E9E128C00D97F8D /* TutorialViewController.swift */,
 				8F63616F1E9DFDE300D97F8D /* TutorialPageViewController.swift */,
+				8F6361771E9E2FF400D97F8D /* Tutorial1ViewController.swift */,
+				8FB4D1B91E9E364F00E438F2 /* Tutorial2ViewController.swift */,
+				8FB4D1BB1E9E368E00E438F2 /* Tutorial3ViewController.swift */,
+				8FB4D1BD1E9E36A900E438F2 /* Tutorial4ViewController.swift */,
+				8FB4D1BF1E9E36CC00E438F2 /* Tutorial5ViewController.swift */,
+				8FB4D1C11E9E36DF00E438F2 /* Tutorial6ViewController.swift */,
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
 				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
 				009C4E211E42D37D00260378 /* Info.plist */,
@@ -309,8 +327,10 @@
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
 				00DF402E1E47DDF70095B2FD /* Log.swift in Sources */,
 				60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */,
+				8FB4D1C21E9E36DF00E438F2 /* Tutorial6ViewController.swift in Sources */,
 				009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */,
 				8F6361741E9E128C00D97F8D /* TutorialViewController.swift in Sources */,
+				8FB4D1BE1E9E36A900E438F2 /* Tutorial4ViewController.swift in Sources */,
 				009C4E321E42E3E300260378 /* CourseDetailViewController.swift in Sources */,
 				8F6361701E9DFDE300D97F8D /* TutorialPageViewController.swift in Sources */,
 				601962CD1E4EE780001EAAC0 /* Item.swift in Sources */,
@@ -319,10 +339,14 @@
 				609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */,
 				1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
+				8FB4D1BA1E9E364F00E438F2 /* Tutorial2ViewController.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
+				8F6361781E9E2FF400D97F8D /* Tutorial1ViewController.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
+				8FB4D1C01E9E36CC00E438F2 /* Tutorial5ViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
+				8FB4D1BC1E9E368E00E438F2 /* Tutorial3ViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
