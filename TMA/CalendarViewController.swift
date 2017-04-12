@@ -264,6 +264,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
+        if segue.identifier! == "toggle" {
+            return
+        }
+        
         let navigation: UINavigationController = segue.destination as! UINavigationController
         
         var eventAddViewController = PlannerAddTableViewController.init()

@@ -386,7 +386,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aZw-ft-Tyt" id="HTg-ob-jfk">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkj-go-540">
@@ -446,8 +446,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="kam-Oo-VSG">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" image="calendar" id="fDE-Ua-f1r">
+                            <connections>
+                                <segue destination="2rF-ra-S7W" kind="show" identifier="toggle" id="GBk-Mu-z6t"/>
+                            </connections>
+                        </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Bwu-bi-czA">
-                            <rect key="frame" x="89" y="7.5" width="197" height="29"/>
+                            <rect key="frame" x="89" y="8" width="197" height="29"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Active"/>
@@ -474,24 +479,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4g-B0-zRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1848.8" y="339.58020989505252"/>
-        </scene>
-        <!--Calendar-->
-        <scene sceneID="U8L-sh-VxQ">
-            <objects>
-                <navigationController id="WzX-uN-jJ0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Calendar" image="calendar" id="uGd-3U-gGM"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pjV-6D-1fD">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="2rF-ra-S7W" kind="relationship" relationship="rootViewController" id="ghn-jG-JcV"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AdT-mp-uXS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="910" y="1074"/>
+            <point key="canvasLocation" x="1849" y="340"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="EDq-S7-ZEO">
@@ -588,6 +576,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Calendar" id="PF6-U8-Z1G">
+                        <barButtonItem key="leftBarButtonItem" image="planner" id="LO6-Mt-bWU">
+                            <connections>
+                                <segue destination="qfy-AI-Ncu" kind="show" identifier="toggle" id="5Mv-Ym-O0R"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="UH2-i2-vLy">
                             <connections>
                                 <action selector="addingEvent:" destination="2rF-ra-S7W" id="4du-yP-Wwa"/>
@@ -749,7 +742,7 @@
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KHx-vS-c2r" id="uxV-5R-QVF">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qdg-xF-NM3">
@@ -766,7 +759,7 @@
                                         <rect key="frame" x="0.0" y="79" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4R0-fZ-cnq" id="WFC-KZ-8cG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UC Davis Hype" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPk-De-8uL">
@@ -793,7 +786,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9F-FZ-lag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2849" y="1499"/>
+            <point key="canvasLocation" x="2849" y="1801"/>
         </scene>
         <!--Settings-->
         <scene sceneID="cMT-f7-7G8">
@@ -825,7 +818,6 @@
                     <connections>
                         <segue destination="DUF-S6-hWR" kind="relationship" relationship="viewControllers" id="pp3-dv-TwS"/>
                         <segue destination="FYF-Le-yp6" kind="relationship" relationship="viewControllers" id="BQf-22-Z68"/>
-                        <segue destination="WzX-uN-jJ0" kind="relationship" relationship="viewControllers" id="qj6-Xr-Usq"/>
                         <segue destination="i9N-kH-Hkd" kind="relationship" relationship="viewControllers" id="RcC-5b-O7i"/>
                         <segue destination="oht-li-hgF" kind="relationship" relationship="viewControllers" id="2i2-1M-Z3B"/>
                     </connections>
@@ -1829,16 +1821,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="calendar" width="32" height="32"/>
+        <image name="calendar" width="22" height="22"/>
         <image name="log" width="25" height="25"/>
         <image name="overview" width="25" height="22"/>
         <image name="planner" width="25" height="25"/>
-        <image name="settings" width="32" height="32"/>
+        <image name="settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="dap-Ky-MzN"/>
         <segue reference="ofd-vI-vWm"/>
         <segue reference="VgT-gx-cUX"/>
-        <segue reference="7XP-UM-StG"/>
-        <segue reference="dap-Ky-MzN"/>
+        <segue reference="zU2-iX-C5i"/>
+        <segue reference="5Mv-Ym-O0R"/>
     </inferredMetricsTieBreakers>
 </document>
