@@ -44,8 +44,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
-        
         self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
         //self.tableView.tableFooterView = UIView()
     }

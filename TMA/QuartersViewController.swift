@@ -31,7 +31,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
         self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
     }
     

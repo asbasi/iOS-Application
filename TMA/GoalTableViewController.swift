@@ -36,9 +36,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             else {
                 currentQuarter = currentQuarters[0]
                 self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
-//                debugPrint(self.goals)
                 self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.currentQuarter.title!)'")
-//                debugPrint(self.courses)
             }
         }
     
@@ -46,7 +44,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             super.viewWillAppear(animated)
             
             initializeGoalsAndCourses()
-            debugPrint(self.goals)
             self.tableView.reloadData()
             
         }
@@ -76,7 +73,10 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         func numberOfSections(in tableView: UITableView) -> Int {
-            debugPrint("numberofsections------ \(self.goals.count)")
+            if (self.goals == nil){
+                return 0
+            }
+            
             
             if self.goals.count > 0 {
                 self.tableView.backgroundView = nil
@@ -88,7 +88,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
             else {
                 let image = UIImage(named: "bar-chart")!
-                let topMessage = "Courses"
+                let topMessage = "Goals"
                 let bottomMessage = "You haven't created any goals. All your goals will show up here."
                 
                 self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
@@ -113,10 +113,9 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            debugPrint("cellforrowat \(self.goals.count)")
             let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell", for: indexPath)
             
-            let (goal, course) = getGoalAndCourseAtIndexPath(indexPath: indexPath)
+            let (goal, _) = getGoalAndCourseAtIndexPath(indexPath: indexPath)
             
             cell.textLabel?.text = goal.title
             
@@ -136,7 +135,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
                 
-                let (goal, course) = self.getGoalAndCourseAtIndexPath(indexPath: index)
+                let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: index)
                 
                 let optionMenu = UIAlertController(title: nil, message: "\"\(goal.title!)\" and all associated events will be deleted forever.", preferredStyle: .actionSheet)
                 //delete goals, events, logs
@@ -188,16 +187,17 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             // Get the new view controller using segue.destinationViewController.
             // Pass the selected object to the new view controller.
             
-//            if segue.identifier! == "showGoal" {
-//                
-//                let courseDetailViewController = segue.destination as! CourseDetailViewController
-//                
-//                var selectedIndexPath = tableView.indexPathForSelectedRow
-//                
-//                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
-//                courseDetailViewController.course = courses[selectedIndexPath!.row]
-//            }
-////            else {
+            if segue.identifier! == "showGoal" {
+                
+                let plannerViewController = segue.destination as! PlannerViewController
+                
+                let selectedIndexPath = tableView.indexPathForSelectedRow
+                
+                let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: selectedIndexPath!)
+                
+                plannerViewController.goal = goal
+            }
+//            else {
 //                let navigation: UINavigationController = segue.destination as! UINavigationController
 //                var goalAddViewController = GoalAddViewController.init()
 //                goalAddViewController = navigation.viewControllers[0] as! GoalAddViewController

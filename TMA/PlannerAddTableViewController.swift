@@ -11,10 +11,11 @@ import RealmSwift
 import UserNotifications
 import EventKit
 
-class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
+class PlannerAddTableViewController: UITableViewController, UITextFieldDelegate {
     
     let realm = try! Realm()
     let eventStore = EKEventStore();
+    var goal: Goal!
     
     @IBOutlet weak var segmentController: UISegmentedControl!
     
@@ -23,7 +24,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var durationTextField: UITextField!
     
     @IBOutlet weak var courseLabel: UILabel!
-    @IBOutlet weak var coursePicker: UIPickerView!
     
     @IBOutlet weak var dateLabel: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -65,8 +65,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     
     private func checkAllTextFields() {
-        if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! ||
-            (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)!) {
+        if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (dateLabel.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
         }
         else {
@@ -92,7 +91,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     var operation: String = ""
     var event: Event?
-    var courses: Results<Course>!
+    
     var dateFormatter = DateFormatter()
     
     @IBAction func cancel(_ sender: Any) {
@@ -102,16 +101,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     @IBAction func save(_ sender: Any) {
         //get the course
-        let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
+        
+        
         
         if(self.operation == "add") {
             let event = Event()
             
+            event.goal = self.goal
+            event.course = self.goal.course
+            event.type = self.goal.type
+            
             event.title = titleTextField.text
             event.duration = Float(durationTextField.text!)!
             event.date = datePicker.date
-            event.course = course
-            event.type = segmentController.selectedSegmentIndex
             event.reminderID = UUID().uuidString
 
             if reminderSwitch.isOn {                
@@ -133,20 +135,17 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             Helpers.DB_insert(obj: event)
             
         }
+            
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
                 event!.title = titleTextField.text
                 event!.duration = Float(durationTextField.text!)!
-                event!.course = course
                 event!.date = dateFormatter.date(from: dateLabel.text!)
-                event!.type = segmentController.selectedSegmentIndex
                 
                 // Remove any existing notifications for this event.
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
                 
                 
-                
-                self.coursePicker.selectedRow(inComponent: )
                 if reminderSwitch.isOn {
                     // Schedule a notification.
                     event!.reminderDate = reminderPicker.date
@@ -234,7 +233,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.courses = self.realm.objects(Course.self).filter("quarter.current = true")
     }
     
     override func viewDidLoad() {
@@ -245,20 +243,13 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         self.courseLabel.isEnabled = false
         self.dateLabel.isEnabled = false
-        
-        self.courses = self.realm.objects(Course.self).filter("quarter.current = true")
+        self.segmentController.isEnabled = false
         
         self.tableView.tableFooterView = UIView()
         
         // Text field setup
         self.titleTextField.delegate = self
         self.durationTextField.delegate = self
-        
-        // Course picker setup
-        self.coursePicker.showsSelectionIndicator = true
-        self.coursePicker.delegate = self
-        self.coursePicker.dataSource = self
-        self.coursePicker.isHidden = true
         
         // Date picker setup
         self.datePicker.isHidden = true
@@ -268,19 +259,28 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         self.reminderSwitch.isOn = false
         self.reminderPicker.isHidden = true
         
+        
+        
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
             self.pageTitleTextField.title = "Add Event"
+            
+            //type and course are preset
+            self.segmentController.selectedSegmentIndex = self.goal.type
+            self.courseLabel.text = self.goal.course.identifier
+
         }
         else if (self.operation == "edit" || self.operation == "show") {
+            self.goal = self.event!.goal
+            self.segmentController.selectedSegmentIndex = self.goal.type
+            self.courseLabel.text = self.goal.course.identifier
+            
             self.pageTitleTextField.title = self.event!.title
             self.titleTextField.text = self.event!.title
             self.durationTextField.text = "\(self.event!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
-            self.courseLabel.text = self.event!.course.identifier
-            self.segmentController.selectedSegmentIndex = self.event!.type
             
-            //self.coursePicker.selectedRow(inComponent: self.coursePicker.index)
+            
             if let date = self.event!.reminderDate {
                 self.reminderSwitch.isOn = true
                 self.reminderLabel.textColor = UIColor.blue
@@ -304,12 +304,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if(indexPath.section == 0 && indexPath.row == 3)
-        {
-            let height: CGFloat = coursePicker.isHidden ? 0.0 : 217
-            return height
-        }
-        
         if(indexPath.section == 1 && indexPath.row == 1)
         {
             let height: CGFloat = datePicker.isHidden ? 0.0 : 216
@@ -329,26 +323,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let courseIndexPath = IndexPath(row: 2, section: 0)
+        
         let dateIndexPath = IndexPath(row: 0, section: 1)
         let reminderIndexPath = IndexPath(row: 0, section: 2)
         
-        if courseIndexPath == indexPath {
-            coursePicker.isHidden = !coursePicker.isHidden
-            
-            if (courseLabel.text?.isEmpty)! {
-                if courses.count != 0 {
-                    self.coursePicker.selectRow(0, inComponent: 0, animated: false)
-                    courseLabel.text = courses[0].identifier
-                }
-            }
-            
-            if !coursePicker.isHidden {
-                datePicker.isHidden = true
-                reminderPicker.isHidden = true
-            }
-        }
-        else if dateIndexPath == indexPath {
+        
+        if dateIndexPath == indexPath {
             
             datePicker.isHidden = !datePicker.isHidden
             
@@ -357,7 +337,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
             
             if !datePicker.isHidden {
-                coursePicker.isHidden = true
                 reminderPicker.isHidden = true
             }
         }
@@ -370,7 +349,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
             
             if !reminderPicker.isHidden {
-                coursePicker.isHidden = true
                 datePicker.isHidden = true
             }
         }
@@ -386,17 +364,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         return 1
     }
 
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.courses.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component:Int ) -> String? {
-        return self.courses[row].identifier
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        courseLabel.text = courses[row].identifier
-    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
