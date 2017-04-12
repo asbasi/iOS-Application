@@ -10,7 +10,7 @@
 		00416AD51E47E5DB00DA733D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00416AD41E47E5DB00DA733D /* Course.swift */; };
 		005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709AB1E480046008D2D96 /* CourseAddViewController.swift */; };
 		009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E131E42D37D00260378 /* AppDelegate.swift */; };
-		009C4E1B1E42D37D00260378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E191E42D37D00260378 /* Main.storyboard */; };
+		009C4E1B1E42D37D00260378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E191E42D37D00260378 /* Main.storyboard */; settings = {ASSET_TAGS = (Cancel, ); }; };
 		009C4E1D1E42D37D00260378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1C1E42D37D00260378 /* Assets.xcassets */; };
 		009C4E201E42D37D00260378 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */; };
 		009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E2B1E42DD2800260378 /* CourseViewController.swift */; };
@@ -205,6 +205,9 @@
 		009C4E081E42D37D00260378 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					Cancel,
+				);
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Abdulrahman Sahmoud";

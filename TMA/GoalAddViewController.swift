@@ -11,6 +11,7 @@ import UIKit
 import RealmSwift
 import EventKit
 
+
 class GoalAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     let eventStore = EKEventStore();
@@ -123,6 +124,9 @@ class GoalAddViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = "Add Goal";
+        
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

@@ -197,6 +197,8 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 plannerViewController.goal = goal
             }
+            
+
 //            else {
 //                let navigation: UINavigationController = segue.destination as! UINavigationController
 //                var goalAddViewController = GoalAddViewController.init()
