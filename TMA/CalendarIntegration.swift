@@ -82,77 +82,99 @@ func requestAccessToCalendar() {
 }
 
 func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
-    if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
-        
-        // Create the calendar event.
-        let newEvent = EKEvent(eventStore: eventStore)
-        
-        newEvent.calendar = calendarForEvent
-        newEvent.title = "\(event.title!) (\(event.course.name!))"
-        newEvent.startDate = event.date
-        
-        var components = DateComponents()
-        components.setValue(Int(event.duration), for: .hour)
-        components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-        newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-        
-        // Save the event in the calendar.
-        do {
-            try eventStore.save(newEvent, span: .thisEvent, commit: true)
-            
-            return newEvent.eventIdentifier
-        }
-        catch {
-            let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
-            let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(OKAction)
-            
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-        }
-    }
-    return nil
+    
+    var identifier: String?
+    
+    eventStore.requestAccess(to: .event, completion:
+        { (granted, error) in
+            if granted {
+                if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
+                    
+                    // Create the calendar event.
+                    let newEvent = EKEvent(eventStore: eventStore)
+                    
+                    newEvent.calendar = calendarForEvent
+                    newEvent.title = "\(event.title!) (\(event.course.name!))"
+                    newEvent.startDate = event.date
+                    
+                    var components = DateComponents()
+                    components.setValue(Int(event.duration), for: .hour)
+                    components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
+                    newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
+                    
+                    // Save the event in the calendar.
+                    do {
+                        try eventStore.save(newEvent, span: .thisEvent, commit: true)
+                        
+                        identifier = newEvent.eventIdentifier
+                    }
+                    catch {
+                        let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                        alert.addAction(OKAction)
+                        
+                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+    })
+    return identifier
 }
 
 func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
-    if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
-        calEvent.title = "\(event.title!) (\(event.course.name!))"
-        calEvent.startDate = event.date
-        
-        var components = DateComponents()
-        components.setValue(Int(event.duration), for: .hour)
-        components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-        calEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-        
-        do {
-            try eventStore.save(calEvent, span: .thisEvent, commit: true)
-        }
-        catch {
-            let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
-            let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(OKAction)
-            
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-        }
-    }
-    else {
-        // Event with identifier doesn't exist so make it.
-        try! realm.write {
-            event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
-        }
-    }
+    eventStore.requestAccess(to: .event, completion:
+        { (granted, error) in
+            if granted {
+                
+                if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
+                    calEvent.title = "\(event.title!) (\(event.course.name!))"
+                    calEvent.startDate = event.date
+                    
+                    var components = DateComponents()
+                    components.setValue(Int(event.duration), for: .hour)
+                    components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
+                    calEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
+                    
+                    do {
+                        try eventStore.save(calEvent, span: .thisEvent, commit: true)
+                    }
+                    catch {
+                        let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                        alert.addAction(OKAction)
+                        
+                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    // Event with identifier doesn't exist so make it.
+                    try! realm.write {
+                        event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
+                    }
+                }
+                
+            }
+    })
 }
 
 func deleteEventFromCalendar(withID eventID: String) {
-    if let calEvent = eventStore.event(withIdentifier: eventID) {
-        do {
-            try eventStore.remove(calEvent, span: .thisEvent, commit: true)
-        }
-        catch {
-            let alert = UIAlertController(title: "Event could not be deleted from calendar", message: (error as Error).localizedDescription, preferredStyle: .alert)
-            let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(OKAction)
-            
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-        }
-    }
+    
+    eventStore.requestAccess(to: .event, completion:
+        { (granted, error) in
+            if granted {
+                
+                if let calEvent = eventStore.event(withIdentifier: eventID) {
+                    do {
+                        try eventStore.remove(calEvent, span: .thisEvent, commit: true)
+                    }
+                    catch {
+                        let alert = UIAlertController(title: "Event could not be deleted from calendar", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                        alert.addAction(OKAction)
+                        
+                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+    })
 }

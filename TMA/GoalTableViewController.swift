@@ -9,6 +9,13 @@
 import UIKit
 import RealmSwift
 
+class GoalViewCell: UITableViewCell {
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var type: UILabel!
+    @IBOutlet weak var deadline: UILabel!
+    @IBOutlet weak var remaining: UILabel!
+}
+
 class GoalTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let realm = try! Realm()
@@ -85,17 +92,11 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         func numberOfSections(in tableView: UITableView) -> Int {
-            if (self.goals == nil){
-                return 0
-            }
-            
-            
             if self.goals.count > 0 {
                 self.tableView.backgroundView = nil
                 self.tableView.separatorStyle = .singleLine
                 
-                
-                return self.courses.count
+                return self.goals.count
             }
             
             else {
@@ -114,30 +115,34 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             let courseForSection = self.courses[section]
             return self.goals.filter("course.name = '\(courseForSection.name!)'").count
         }
+    
         
         func getGoalAndCourseAtIndexPath(indexPath: IndexPath) -> (Goal, Course) {
             let courseForSection = self.courses[indexPath.section]
             let goalsForSection = self.goals.filter("course.name = '\(courseForSection.name!)'")
             let goal = goalsForSection[indexPath.row]
+            
             return (goal, courseForSection)
         }
     
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell", for: indexPath) as! GoalViewCell
             
             let (goal, _) = getGoalAndCourseAtIndexPath(indexPath: indexPath)
             
-            cell.textLabel?.text = goal.title
+            cell.title?.text = goal.title
+            cell.type?.text = "\(eventType[goal.type]) Goal"
             
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "US_en")
+            formatter.dateFormat = "M/d/yy"
             
+            cell.deadline?.text = formatter.string(from: goal.deadline)
+            
+            cell.remaining?.text = "\(goal.duration) Hours Remaining"
             
             return cell
         }
-        
-        
-        // MARK: - Navigation
-        
-        // In a storyboard-based application, you will often want to do a little preparation before navigation
         
         func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
             
@@ -191,11 +196,11 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
             return true
         }
-        
-        // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
+        // MARK: - Navigation
+    
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            // Get the new view controller using segue.destinationViewController.
-            // Pass the selected object to the new view controller.
             
             if segue.identifier! == "showGoal" {
                 

@@ -64,7 +64,7 @@
 		009C4E311E42E3E300260378 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseDetailViewController.swift; path = ../CourseDetailViewController.swift; sourceTree = "<group>"; };
 		00DF402B1E47DC930095B2FD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = TMA/Helpers.swift; sourceTree = "<group>"; };
 		1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTableViewController.swift; sourceTree = "<group>"; };
 		1118E6DD1E9C57F100A85134 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAddTableViewController.swift; sourceTree = "<group>"; };
@@ -75,14 +75,14 @@
 		602BFBD91E641A58006FED32 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		605724731E4800AC00B6BC8B /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuarterAddTableViewController.swift; sourceTree = "<group>"; };
-		60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntegration.swift; sourceTree = "<group>"; };
-		607A784F1E983DE100177692 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarIntegration.swift; path = TMA/CalendarIntegration.swift; sourceTree = "<group>"; };
+		607A784F1E983DE100177692 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = TMA/Keys.swift; sourceTree = "<group>"; };
 		60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerAddTableViewController.swift; sourceTree = "<group>"; };
-		609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
+		609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmptyBackgroundView.swift; path = TMA/EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		60B325BA1E8AE59F00CE6164 /* Quarter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quarter.swift; sourceTree = "<group>"; };
 		60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartersViewController.swift; sourceTree = "<group>"; };
 		60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTableViewController.swift; sourceTree = "<group>"; };
-		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = TMA/Theme.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -120,27 +120,15 @@
 		009C4E121E42D37D00260378 /* TMA */ = {
 			isa = PBXGroup;
 			children = (
-				60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */,
-				60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */,
-				606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */,
-				602BFBD91E641A58006FED32 /* CalendarViewController.swift */,
+				6015DC001E9F7566005C8009 /* General */,
+				6015DBFF1E9F754B005C8009 /* Settings Pages */,
+				6015DBFE1E9F753A005C8009 /* Goal Pages */,
+				6015DBFD1E9F751F005C8009 /* Course Pages */,
+				6015DBFC1E9F750D005C8009 /* Quarters Pages */,
+				6015DBFB1E9F74FB005C8009 /* Log Pages */,
+				6015DBF91E9F74B8005C8009 /* Planner Pages */,
+				6015DBF61E9F7406005C8009 /* Helpers */,
 				00AA39051E47EA0800D819DD /* Models */,
-				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
-				009C4E2B1E42DD2800260378 /* CourseViewController.swift */,
-				1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */,
-				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
-				116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */,
-				605724731E4800AC00B6BC8B /* LogViewController.swift */,
-				009C4E131E42D37D00260378 /* AppDelegate.swift */,
-				00DF402F1E47E0700095B2FD /* Helpers.swift */,
-				009C4E191E42D37D00260378 /* Main.storyboard */,
-				60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */,
-				1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */,
-				601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */,
-				609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */,
-				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
-				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
-				009C4E211E42D37D00260378 /* Info.plist */,
 			);
 			path = TMA;
 			sourceTree = "<group>";
@@ -148,9 +136,6 @@
 		00AA39051E47EA0800D819DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */,
-				607A784F1E983DE100177692 /* Keys.swift */,
-				60E4E9961E96174B007EBEA4 /* Theme.swift */,
 				60B325BA1E8AE59F00CE6164 /* Quarter.swift */,
 				601962CC1E4EE780001EAAC0 /* Item.swift */,
 				1118E6DD1E9C57F100A85134 /* Goal.swift */,
@@ -176,6 +161,86 @@
 				B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		6015DBF61E9F7406005C8009 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				00DF402F1E47E0700095B2FD /* Helpers.swift */,
+				609FB4811E6BF6DB00B09346 /* EmptyBackgroundView.swift */,
+				60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */,
+				607A784F1E983DE100177692 /* Keys.swift */,
+				60E4E9961E96174B007EBEA4 /* Theme.swift */,
+			);
+			name = Helpers;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		6015DBF91E9F74B8005C8009 /* Planner Pages */ = {
+			isa = PBXGroup;
+			children = (
+				601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */,
+				602BFBD91E641A58006FED32 /* CalendarViewController.swift */,
+				60822B8B1E6B9A58009670EC /* PlannerAddTableViewController.swift */,
+			);
+			name = "Planner Pages";
+			sourceTree = "<group>";
+		};
+		6015DBFB1E9F74FB005C8009 /* Log Pages */ = {
+			isa = PBXGroup;
+			children = (
+				1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */,
+				605724731E4800AC00B6BC8B /* LogViewController.swift */,
+			);
+			name = "Log Pages";
+			sourceTree = "<group>";
+		};
+		6015DBFC1E9F750D005C8009 /* Quarters Pages */ = {
+			isa = PBXGroup;
+			children = (
+				606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */,
+				60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */,
+			);
+			name = "Quarters Pages";
+			sourceTree = "<group>";
+		};
+		6015DBFD1E9F751F005C8009 /* Course Pages */ = {
+			isa = PBXGroup;
+			children = (
+				009C4E311E42E3E300260378 /* CourseDetailViewController.swift */,
+				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
+				009C4E2B1E42DD2800260378 /* CourseViewController.swift */,
+			);
+			name = "Course Pages";
+			sourceTree = "<group>";
+		};
+		6015DBFE1E9F753A005C8009 /* Goal Pages */ = {
+			isa = PBXGroup;
+			children = (
+				116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */,
+				1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */,
+			);
+			name = "Goal Pages";
+			sourceTree = "<group>";
+		};
+		6015DBFF1E9F754B005C8009 /* Settings Pages */ = {
+			isa = PBXGroup;
+			children = (
+				60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */,
+			);
+			name = "Settings Pages";
+			sourceTree = "<group>";
+		};
+		6015DC001E9F7566005C8009 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				009C4E131E42D37D00260378 /* AppDelegate.swift */,
+				009C4E191E42D37D00260378 /* Main.storyboard */,
+				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
+				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
+				009C4E211E42D37D00260378 /* Info.plist */,
+			);
+			name = General;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

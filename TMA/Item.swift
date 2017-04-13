@@ -15,6 +15,8 @@ let PROJECT_EVENT = 2
 let LAB_EVENT = 3
 let OTHER_EVENT = 4
 
+let eventType: [String] = ["Study", "Homework", "Project", "Lab", "Other"]
+
 class Item: Object {
     dynamic var title: String!
     dynamic var date: Date!
