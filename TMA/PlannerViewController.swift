@@ -38,7 +38,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var eventToEdit: Event!
     var events = [[Event]]()
-    var goal: Goal!
     
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
@@ -63,7 +62,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     {
         let cal = Calendar(identifier: .gregorian)
         
-        let allEvents = self.realm.objects(Event.self).filter("goal.title = '\(self.goal!.title!)'").sorted(byKeyPath: "date", ascending: true)
+        let allEvents = self.realm.objects(Event.self).filter("course.quarter.current = true").sorted(byKeyPath: "date", ascending: true)
         
         let activeEvents = allEvents.filter("checked = false").sorted(byKeyPath: "date", ascending: true)
         let finishedEvents = allEvents.filter("checked = true").sorted(byKeyPath: "date", ascending: true)
@@ -343,8 +342,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Pass the selected object to the new view controller.
         
         if segue.identifier! == "toggle" {
-            let calendarViewController = segue.destination as! CalendarViewController
-            calendarViewController.goal = self.goal
             return
         }
         
@@ -355,7 +352,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         if segue.identifier! == "addEvent" {
             eventAddViewController.operation = "add"
-            eventAddViewController.goal = self.goal
         }
         else if segue.identifier! == "editEvent" {
             eventAddViewController.operation = "edit"

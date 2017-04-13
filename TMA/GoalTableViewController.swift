@@ -205,10 +205,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: selectedIndexPath!)
                 
-                plannerViewController.goal = goal
             }
-            
-
             else {
 
                 let navigation: UINavigationController = segue.destination as! UINavigationController

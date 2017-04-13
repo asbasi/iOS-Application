@@ -31,7 +31,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     @IBOutlet weak var calendar: FSCalendar!
     
     let realm = try! Realm()
-    var goal: Goal!
     
     fileprivate var events: Results<Event>!
     fileprivate var eventToEdit: Event!
@@ -265,9 +264,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         // Pass the selected object to the new view controller.
         
         if segue.identifier! == "toggle" {
-            let plannerViewController = segue.destination as! PlannerViewController
-            plannerViewController.goal = self.goal
-            
             return
         }
         
