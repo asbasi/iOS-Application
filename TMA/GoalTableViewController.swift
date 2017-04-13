@@ -44,11 +44,11 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                     alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
-                
-                
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
-                
-                self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
+                else {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    
+                    self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
+                }
                 
             }
         }
