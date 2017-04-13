@@ -29,14 +29,27 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         func initializeGoalsAndCourses() {
             let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
             if currentQuarters.count != 1 {
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
                 let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
             else {
                 currentQuarter = currentQuarters[0]
-                self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
                 self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.currentQuarter.title!)'")
+                
+                if self.courses.count == 0 {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = false
+                    let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                
+                self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
+                
             }
         }
     
