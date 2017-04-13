@@ -85,6 +85,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         
+        checkCalendarAuthorizationStatus()
+        
         self.calendar.reloadData()
         self.myTableView.reloadData()
     }
@@ -221,6 +223,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
+                deleteEventFromCalendar(withID: event.calEventID)
+                
                 try! self.realm.write {
                     let event: Event = self.events[index.row]
                     self.realm.delete(event)
@@ -259,6 +263,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier! == "toggle" {
+            return
+        }
         
         let navigation: UINavigationController = segue.destination as! UINavigationController
         
