@@ -115,7 +115,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         populateSegments()
         checkCalendarAuthorizationStatus()
         
@@ -344,6 +343,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         // Pass the selected object to the new view controller.
         
         if segue.identifier! == "toggle" {
+            let calendarViewController = segue.destination as! CalendarViewController
+            calendarViewController.goal = self.goal
             return
         }
         

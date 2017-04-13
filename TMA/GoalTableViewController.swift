@@ -68,7 +68,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             
             let courseForSection = self.courses[section]
-            debugPrint("title for header in section = \(courseForSection.name!)")
             return courseForSection.name!
         }
         
@@ -82,7 +81,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.tableView.backgroundView = nil
                 self.tableView.separatorStyle = .singleLine
                 
-                debugPrint("number of sections = \(self.courses.count)")
+                
                 return self.courses.count
             }
             
@@ -100,8 +99,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             let courseForSection = self.courses[section]
-            debugPrint("courseForSection = \(courseForSection.name!)")
-            debugPrint("number of rows in sections = \(self.goals.filter("course.name = '\(courseForSection.name!)'").count)")
             return self.goals.filter("course.name = '\(courseForSection.name!)'").count
         }
         
