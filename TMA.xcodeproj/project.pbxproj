@@ -22,6 +22,7 @@
 		1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DD1E9C57F100A85134 /* Goal.swift */; };
 		116C5B0D1E9C883100660764 /* GoalAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */; };
 		1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */; };
+		600EE8B91EA033E500D063FA /* GoalTrackerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600EE8B81EA033E500D063FA /* GoalTrackerTableViewController.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602BFBD91E641A58006FED32 /* CalendarViewController.swift */; };
@@ -70,6 +71,7 @@
 		116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalAddTableViewController.swift; sourceTree = "<group>"; };
 		1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddTableViewController.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
+		600EE8B81EA033E500D063FA /* GoalTrackerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalTrackerTableViewController.swift; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		602BFBD91E641A58006FED32 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		6015DBFE1E9F753A005C8009 /* Goal Pages */ = {
 			isa = PBXGroup;
 			children = (
+				600EE8B81EA033E500D063FA /* GoalTrackerTableViewController.swift */,
 				116C5B0C1E9C883100660764 /* GoalAddTableViewController.swift */,
 				1118E6DB1E9C57B000A85134 /* GoalTableViewController.swift */,
 			);
@@ -234,11 +237,11 @@
 		6015DC001E9F7566005C8009 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				009C4E211E42D37D00260378 /* Info.plist */,
 				009C4E131E42D37D00260378 /* AppDelegate.swift */,
 				009C4E191E42D37D00260378 /* Main.storyboard */,
 				009C4E1E1E42D37D00260378 /* LaunchScreen.storyboard */,
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
-				009C4E211E42D37D00260378 /* Info.plist */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				1118E6DC1E9C57B000A85134 /* GoalTableViewController.swift in Sources */,
 				1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
+				600EE8B91EA033E500D063FA /* GoalTrackerTableViewController.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,

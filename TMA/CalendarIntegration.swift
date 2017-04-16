@@ -36,11 +36,25 @@ func requestAccessToCalendar() {
         { (granted, error) in
             if granted {
                 print("Access to calendar store granted")
-                
+
+                let _ = createCalendar(withTitle: "Back On Track Application")
+            }
+            else {
+                print("Access to calendar store not granted")
+            }
+    })
+}
+
+func createCalendar(withTitle title: String) -> String? {
+    var identifier: String?
+    
+    eventStore.requestAccess(to: .event, completion:
+        { (granted, error) in
+            if granted {
                 // Create a local calendar.
                 let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
                 
-                newCalendar.title = "Back On Track Application"
+                newCalendar.title = title
                 
                 let sourcesInEventStore = eventStore.sources
                 
@@ -66,6 +80,8 @@ func requestAccessToCalendar() {
                 do {
                     try eventStore.saveCalendar(newCalendar, commit: true)
                     UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: calendarKey);
+                    
+                    identifier = newCalendar.calendarIdentifier
                 }
                 catch {
                     let alert = UIAlertController(title: "Calendar could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
@@ -75,10 +91,9 @@ func requestAccessToCalendar() {
                     UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
                 }
             }
-            else {
-                print("Access to calendar store not granted")
-            }
     })
+    
+    return identifier
 }
 
 func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
@@ -118,6 +133,7 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
                 }
             }
     })
+    
     return identifier
 }
 

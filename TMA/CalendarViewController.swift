@@ -66,8 +66,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.calendar.appearance.headerMinimumDissolvedAlpha = 0.0; // Hide the extra subheadings.
         //self.calendar.today = nil // Get rid of the today circle.
         self.calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
-        let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
-        self.calendar.addGestureRecognizer(scopeGesture)
+        
+        /*let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
+        self.calendar.addGestureRecognizer(scopeGesture) */
         
         let currentDate: Date = Date()
         let dateFormatter = DateFormatter()
@@ -77,7 +78,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         selectedDate = currentDate
         
         self.myTableView.frame.origin.y = self.calendar.frame.maxY
-        self.myTableView.tableFooterView = UIView()
+        //self.myTableView.tableFooterView = UIView()
         
         // setGradientBackground(view: self.view, colorTop: UIColor.blue, colorBottom: UIColor.lightGray)
     }
@@ -147,8 +148,30 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     /***************************** Table View Functions *****************************/
     
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "Futura", size: 11)
+        header.textLabel?.textColor = UIColor.lightGray
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Events"
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM d"
+        let date = selectedDate
+        
+        let strDate = formatter.string(from: date)
+        if Calendar.current.isDateInToday(date) {
+            return "Today (\(strDate))"
+        }
+        else if Calendar.current.isDateInTomorrow(date) {
+            return "Tommorow (\(strDate))"
+        }
+        else {
+            return strDate
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -189,11 +212,17 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     */
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.myTableView.dequeueReusableCell(withIdentifier: "CalendarPlannerCell", for: indexPath) as! CalendarViewPlannerCell
+        let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
 
-        cell.title?.text = self.events[indexPath.row].title
-        cell.checkbox.on = self.events[indexPath.row].checked
-        cell.course?.text = self.events[indexPath.row].course.identifier
+        let event = self.events[indexPath.row]
+        
+        cell.title?.text = event.title
+        cell.checkbox.on = event.checked
+        cell.course?.text = event.course.identifier
+        
+        cell.color.backgroundColor = colorMappings[event.course.color]
+        cell.color.layer.cornerRadius = 4.0
+        cell.color.clipsToBounds = true
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
@@ -206,6 +235,19 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             try! self.realm.write {
                 self.events[indexPath.row].checked = !self.events[indexPath.row].checked
             }
+        }
+        
+        if Calendar.current.isDateInToday(date) // Today.
+        {
+            cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
+        }
+        else if NSDate().compare(date) == .orderedDescending // Before Today.
+        {
+            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        }
+        else // After Today.
+        {
+            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
         
         return cell

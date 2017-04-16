@@ -19,7 +19,6 @@ class GoalViewCell: UITableViewCell {
 class GoalTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let realm = try! Realm()
-        
     
         @IBOutlet weak var tableView: UITableView!
     
@@ -31,7 +30,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         @IBAction func add(_ sender: Any) {
             self.performSegue(withIdentifier: "addGoal", sender: nil)
         }
-    
     
         func initializeGoalsAndCourses() {
             let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
@@ -84,11 +82,17 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // MARK: - Table view data source
         
+        func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+        {
+            let header = view as! UITableViewHeaderFooterView
+            header.textLabel?.font = UIFont(name: "Futura", size: 11)
+                header.textLabel?.textColor = UIColor.lightGray
+        }
     
         func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             
             let courseForSection = self.courses[section]
-            return courseForSection.name!
+            return "\(courseForSection.name!) (\(courseForSection.identifier!))"
         }
         
         func numberOfSections(in tableView: UITableView) -> Int {
@@ -203,13 +207,9 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             
             if segue.identifier! == "showGoal" {
+                let goalTrackerTableViewController = segue.destination as! GoalTrackerTableViewController
                 
-                let plannerViewController = segue.destination as! PlannerViewController
-                
-                let selectedIndexPath = tableView.indexPathForSelectedRow
-                
-                let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: selectedIndexPath!)
-                
+                goalTrackerTableViewController.pageTitle = (sender as! GoalViewCell).title!.text
             }
             else {
 
