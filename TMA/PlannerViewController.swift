@@ -181,7 +181,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return 0
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
         footerView.backgroundColor = UIColor.clear
         
@@ -190,7 +190,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
         return 20.0
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
@@ -242,6 +242,49 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             var path: IndexPath = self.myTableView.indexPath(for: sender)!
             
             let event = self.events[path.section][path.row]
+            
+            if(event.checked) { // About to be unchecked.
+                if let log = event.log {
+                    try! self.realm.write {
+                        self.realm.delete(log)
+                        event.log = nil
+                    }
+                }
+            }
+            else { // About to be checked.
+                // Try to create a Log.
+                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+                
+                alert.addTextField { (textField) in
+                    textField.keyboardType = .numberPad
+                }
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+                    
+                    if let duration = textField.text {
+                        let log = Log()
+                    
+                        log.title = event.title
+                        log.duration = Float(duration)!
+                        log.date = event.date
+                        log.course = event.course
+                        log.type = event.type
+                    
+                        Helpers.DB_insert(obj: log)
+                    
+                        try! self.realm.write {
+                            event.log = log
+                        }
+                    }
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Skip", style: .default, handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+    
             
             if !event.checked {
                 // About to check off the event so remove any pending notifications.

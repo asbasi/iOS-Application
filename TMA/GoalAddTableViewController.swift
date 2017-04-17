@@ -210,9 +210,9 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate, UI
                 deadlineDateLabel.text = dateFormatter.string(from: Date())
             }
             
-//            if !deadlineDatePicker.isHidden {
-//                deadlineDatePicker.isHidden = true
-//            }
+            if !coursePicker.isHidden {
+                coursePicker.isHidden = true
+            }
         }
         else if courseIndexPath == indexPath{
             coursePicker.isHidden = !coursePicker.isHidden

@@ -68,11 +68,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            
-            initializeGoalsAndCourses()
-            self.tableView.reloadData()
-            
-            //self.tableView.tableFooterView = UIView()
         }
         
         override func didReceiveMemoryWarning() {
@@ -96,11 +91,20 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         func numberOfSections(in tableView: UITableView) -> Int {
-            if self.goals.count > 0 {
+            
+            var numSections: Int = 0
+            
+            for course in self.courses {
+                if self.realm.objects(Goal.self).filter("course.identifier = '\(course.identifier!)'").count > 0 {
+                    numSections += 1
+                }
+            }
+            
+            if numSections > 0 {
                 self.tableView.backgroundView = nil
                 self.tableView.separatorStyle = .singleLine
                 
-                return self.goals.count
+                return numSections
             }
             
             else {

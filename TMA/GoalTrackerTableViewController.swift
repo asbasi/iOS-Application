@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import EventKit
+import RealmSwift
 
 class GoalTrackerViewCell: UITableViewCell {
     @IBOutlet weak var day: UILabel!
@@ -16,6 +18,10 @@ class GoalTrackerViewCell: UITableViewCell {
 
 class GoalTrackerTableViewController: UITableViewController {
 
+    let realm = try! Realm()
+    let eventStore = EKEventStore()
+    var events = [EKEvent]()
+    
     @IBOutlet weak var navBar: UINavigationItem!
     
     var pageTitle: String?
@@ -28,6 +34,15 @@ class GoalTrackerTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
+            if let calendar = getCalendar(withIdentifier: identifier as! String) {
+                events = getCalendarEvents(forDate: Date(), fromCalendars: [calendar])
+            }
+        }
+        self.tableView.reloadData()
+        
+        print(self.events.count)
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,25 +52,45 @@ class GoalTrackerTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "Futura", size: 11)
+        header.textLabel?.textColor = UIColor.lightGray
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+        if section == 0 {
+            return "Scheduled Times"
+        }
+        else if section == 1 {
+            return "Free Times"
+        }
+        
+        return ""
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return self.events.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
 
-        // Configure the cell...
+        if indexPath.section == 0 {
+            
+        }
+        else if indexPath.section == 1 {
+            
+        }
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -86,5 +121,4 @@ class GoalTrackerTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

@@ -11,20 +11,6 @@ import RealmSwift
 import FSCalendar
 import BEMCheckBox
 
-class CalendarViewPlannerCell: UITableViewCell {
-    
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var course: UILabel!
-    @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var checkbox: BEMCheckBox!
-    
-    var buttonAction: ((_ sender: AnyObject) -> Void)?
-    
-    @IBAction func checkboxToggled(_ sender: AnyObject) {
-        self.buttonAction?(sender)
-    }
-}
-
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var myTableView: UITableView!

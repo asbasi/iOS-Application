@@ -45,6 +45,10 @@ func requestAccessToCalendar() {
     })
 }
 
+func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
+    return eventStore.calendar(withIdentifier: identifier)
+}
+
 func createCalendar(withTitle title: String) -> String? {
     var identifier: String?
     
@@ -193,4 +197,39 @@ func deleteEventFromCalendar(withID eventID: String) {
                 }
             }
     })
+}
+
+func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]?) -> [EKEvent] {
+    
+    var events: [EKEvent] = []
+    var flag: Bool = false
+    
+    eventStore.requestAccess(to: .event, completion:
+        { (granted, error) in
+            if granted {
+                
+                let startDate = Calendar.current.startOfDay(for: date)
+                
+                var dateComponents = DateComponents()
+                dateComponents.day = 1
+                let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
+                
+                //let calendars = eventStore.calendars(for: .event)
+                
+                let eventsPredicate = eventStore.predicateForEvents(withStart: startDate, end: endDate!, calendars: calendars)
+                
+                events = eventStore.events(matching: eventsPredicate)
+                
+                flag = true
+            }
+    })
+    
+    while(!flag) {
+    }
+    
+    return events
+}
+
+func findFreeTimes(fromState startDate: Date, toEnd endDate: Date, withEvents: [EKEvent]) -> [Event] {
+    return []
 }
