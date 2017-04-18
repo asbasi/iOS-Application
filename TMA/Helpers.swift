@@ -61,6 +61,20 @@ extension Date {
         dateFormatter.dateFormat = "dd"
         return dateFormatter.string(from: self)
     }
+    
+    static func getEndDate(fromStart start: Date, withDuration duration: Float) -> Date{
+        var components = DateComponents()
+        components.setValue(Int(duration), for: .hour)
+        components.setValue(Int(round(60 * (duration - floor(duration)))), for: .minute)
+        return Calendar.current.date(byAdding: components, to: start)!
+    }
+    
+    static func getDifference(initial start: Date, final end: Date) -> Float {
+        let interval = end.timeIntervalSince(start) // In seconds. Note: TimeInterval = double
+        
+        // Convert seconds to hours.
+        return (Float(interval / (60.0 * 60.0)))
+    }
 }
 
 extension UIViewController {

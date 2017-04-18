@@ -141,7 +141,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.percentage!.textColor = UIColor.red
         }
         else if(overallPercentage <= 75) {
-            cell.percentage!.textColor = UIColor.yellow
+            cell.percentage!.textColor = UIColor.blue
         }
         else {
             cell.percentage!.textColor = UIColor.green

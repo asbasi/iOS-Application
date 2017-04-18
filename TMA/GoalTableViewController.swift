@@ -26,11 +26,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         var goalToEdit: Goal!
         var goals: Results<Goal>!
         var courses: Results<Course>!
-        
-        @IBAction func add(_ sender: Any) {
-            self.performSegue(withIdentifier: "addGoal", sender: nil)
-        }
-    
+
         func initializeGoalsAndCourses() {
             let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
             if currentQuarters.count != 1 {

@@ -13,7 +13,7 @@ import UIKit
 // NOTE: UCD Gold - UIColor(red: 218.0/255.0, green: 170.0/255.0, blue: 0.0/255.0, alpha: 1.0)
 
 enum Theme: Int {
-    case Default = 0, UCDavis = 1
+    case Default = 0, UCDavis = 1, Red = 2
     
     var barColor: UIColor {
         switch self {
@@ -21,6 +21,9 @@ enum Theme: Int {
                 return UIColor(red: 46.0/255.0, green: 14.0/255.0, blue: 74.0/255.0, alpha: 1.0)
             case .UCDavis:
                 return UIColor(red: 0.0/255.0, green: 40.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+            case .Red:
+                return UIColor(red: 215.0/255.0, green: 37.0/255.0, blue: 37.0/255.0, alpha: 0.1)
+
         }
     }
     
@@ -30,6 +33,8 @@ enum Theme: Int {
             return UIColor.white
         case .UCDavis:
             return UIColor(red: 218.0/255.0, green: 170.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+        case .Red:
+            return UIColor.white
         }
     }
 }

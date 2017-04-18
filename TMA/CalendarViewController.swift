@@ -167,7 +167,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             return 1
         }
 
-        let image = UIImage(named: "happy")!
+        
+        let image = UIImage(named: "like")!
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"
@@ -176,6 +177,17 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
+        
+        /*
+        let rect = CGRect(x: 0, y: 0, width: self.myTableView.bounds.size.width, height: self.myTableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+        
+        noDataLabel.text = "No events on selected day"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.myTableView.backgroundView = noDataLabel
+        //self.myTableView.separatorStyle = .none
+        */
         
         return 0
     }

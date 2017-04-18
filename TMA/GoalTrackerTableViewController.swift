@@ -20,7 +20,7 @@ class GoalTrackerTableViewController: UITableViewController {
 
     let realm = try! Realm()
     let eventStore = EKEventStore()
-    var events = [EKEvent]()
+    var events = [Event]()
     
     @IBOutlet weak var navBar: UINavigationItem!
     
@@ -37,12 +37,12 @@ class GoalTrackerTableViewController: UITableViewController {
         
         if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
             if let calendar = getCalendar(withIdentifier: identifier as! String) {
-                events = getCalendarEvents(forDate: Date(), fromCalendars: [calendar])
+                let calEvents = getCalendarEvents(forDate: Date(), fromCalendars: [calendar])
+                print(calEvents.count)
+                self.events = findFreeTimes(onDate: Date(), withEvents: calEvents)
             }
         }
         self.tableView.reloadData()
-        
-        print(self.events.count)
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,19 +60,12 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-
-        if section == 0 {
-            return "Scheduled Times"
-        }
-        else if section == 1 {
-            return "Free Times"
-        }
         
         return ""
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,13 +75,26 @@ class GoalTrackerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
 
-        if indexPath.section == 0 {
-            
+        let event = self.events[indexPath.row]
+        
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "EEEE"
+        cell.day?.text = dayFormatter.string(from: event.date)
+        
+        cell.title?.text = "Free"
+        
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        timeFormatter.timeZone = TimeZone.current
+        
+        if(event.duration == 24.0) {
+            cell.time?.text = "All Day"
         }
-        else if indexPath.section == 1 {
-            
+        else {
+            cell.time?.text = timeFormatter.string(from: event.date) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
         }
-
+        
         return cell
     }
 

@@ -102,6 +102,7 @@ func createCalendar(withTitle title: String) -> String? {
 
 func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
     
+    var flag: Bool = false;
     var identifier: String?
     
     eventStore.requestAccess(to: .event, completion:
@@ -124,8 +125,9 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
                     // Save the event in the calendar.
                     do {
                         try eventStore.save(newEvent, span: .thisEvent, commit: true)
-                        
                         identifier = newEvent.eventIdentifier
+                        
+                        flag = true
                     }
                     catch {
                         let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
@@ -133,10 +135,15 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
                         alert.addAction(OKAction)
                         
                         UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                        
+                        flag = true
                     }
                 }
             }
     })
+    
+    while(!flag) {
+    }
     
     return identifier
 }
@@ -150,11 +157,8 @@ func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
                     calEvent.title = "\(event.title!) (\(event.course.name!))"
                     calEvent.startDate = event.date
                     
-                    var components = DateComponents()
-                    components.setValue(Int(event.duration), for: .hour)
-                    components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-                    calEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-                    
+                    calEvent.endDate = Date.getEndDate(fromStart: event.date, withDuration: event.duration)
+
                     do {
                         try eventStore.save(calEvent, span: .thisEvent, commit: true)
                     }
@@ -230,6 +234,65 @@ func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]
     return events
 }
 
-func findFreeTimes(fromState startDate: Date, toEnd endDate: Date, withEvents: [EKEvent]) -> [Event] {
-    return []
+func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
+    
+    let startDate = Calendar.current.startOfDay(for: date)
+    
+    var dateComponents = DateComponents()
+    dateComponents.day = 1
+    let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
+    
+    // Will hold the current set of free timnes.
+    let freeTimes:LinkedList<TimeBlock> = LinkedList<TimeBlock>()
+    
+    // Initialize each of the 30-minute blocks to unallocated.
+    var initial: Date = startDate
+    while initial != endDate {
+        var dateComponents = DateComponents()
+        dateComponents.minute = 30
+        let final = Calendar.current.date(byAdding: dateComponents, to: initial)!
+        
+        freeTimes.append(value: TimeBlock(start: initial, end: final, allocated: false))
+        
+        initial = final
+        
+        if initial == endDate {
+            freeTimes.append(value: TimeBlock(start: initial, end: Calendar.current.date(byAdding: dateComponents, to: initial)!, allocated: true))
+        }
+    }
+    
+    
+    // For each event compare the start and end times to the start/end times of the
+    for event in events {
+        for range in freeTimes {
+            if !range.value.allocated && range.value.start >= event.startDate && range.value.start <= event.endDate  {
+                range.value.allocated = true
+            }
+        }
+    }
+    
+    var events = [Event]()
+    
+    // Combine the free times into the largest possible groupings and return.
+    
+    var start: Date = startDate
+    var found: Bool = false
+    
+    for range in freeTimes {
+        if !range.value.allocated && !found {
+            found = true
+            start = range.value.start
+        }
+        else if range.value.allocated && found {
+            found = false
+            
+            let event: Event = Event()
+            event.date = start
+            event.duration = Date.getDifference(initial: start, final: range.value.start)
+            
+            events.append(event)
+        }
+    }
+
+    return events
 }

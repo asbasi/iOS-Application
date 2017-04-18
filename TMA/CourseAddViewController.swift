@@ -25,6 +25,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
     
+    @IBAction func courseTitleChanged(_ sender: Any) {
+        checkAllTextFields()
+    }
+    
     @IBAction func courseChanged(_ sender: Any) {
         checkAllTextFields()
     }
@@ -32,8 +36,21 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBAction func instructorChanged(_ sender: Any) {
         checkAllTextFields()
     }
+    
     @IBAction func unitsChanged(_ sender: Any) {
+        recommendedHours()
         checkAllTextFields()
+    }
+    
+    private func recommendedHours() {
+        if unitTextField.text != "" {
+            if Float(unitTextField.text!) != nil {
+                recommendedTextField.text = "\(Float(unitTextField.text!)! * 3) hours/week recommended."
+            }
+        }
+        else {
+            recommendedTextField.text = ""
+        }
     }
     
     private func toggleShowColorPicker () {
@@ -60,7 +77,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
     @IBOutlet weak var courseTitleTextField: UITextField!
-    
+    @IBOutlet weak var recommendedTextField: UILabel!
 
     @IBAction func cancel(_ sender: Any) {
         self.dismissKeyboard()
@@ -150,6 +167,8 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             let colorRow = colorPickerData[0].index(of: self.course!.color)
             self.colorPicker.selectRow(colorRow!, inComponent: 0, animated: true)
             self.colorLabel.text = self.course!.color
+            
+            recommendedHours()
         }
         
         self.hideKeyboardWhenTapped()

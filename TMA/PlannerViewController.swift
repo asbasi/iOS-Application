@@ -55,6 +55,28 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     @IBAction func addingEvent(_ sender: Any) {
+        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
+        if currentQuarters.count != 1 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            let currentQuarter = currentQuarters[0]
+            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter.title!)'")
+            
+            if courses.count == 0 {
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+                let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+            }
+            
+        }
         self.performSegue(withIdentifier: "addEvent", sender: nil)
     }
     
@@ -256,17 +278,17 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
                 
                 alert.addTextField { (textField) in
-                    textField.keyboardType = .numberPad
+                    textField.keyboardType = .decimalPad
                 }
                 
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
                     
-                    if let duration = textField.text {
+                    if textField.text != "" {
                         let log = Log()
                     
                         log.title = event.title
-                        log.duration = Float(duration)!
+                        log.duration = Float(textField.text!)!
                         log.date = event.date
                         log.course = event.course
                         log.type = event.type
@@ -279,7 +301,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     }
                 }))
                 
-                alert.addAction(UIAlertAction(title: "Skip", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
                 
                 self.present(alert, animated: true, completion: nil)
             }
@@ -350,7 +372,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 // Remove any pending notifications for the event.
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
-                deleteEventFromCalendar(withID: event.calEventID)
+                
+                if let id = event.calEventID {
+                    deleteEventFromCalendar(withID: id)
+                }
                 
                 try! self.realm.write {
                     self.events[index.section].remove(at: index.row)
