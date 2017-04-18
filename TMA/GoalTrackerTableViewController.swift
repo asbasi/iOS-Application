@@ -21,6 +21,7 @@ class GoalTrackerTableViewController: UITableViewController {
     let realm = try! Realm()
     let eventStore = EKEventStore()
     var events = [Event]()
+    var goal: Goal!
     
     @IBOutlet weak var navBar: UINavigationItem!
     
@@ -34,6 +35,9 @@ class GoalTrackerTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    
+        // TODO: Check if the course (and by extension the goal) still exists before doing any of this.
+        // If not, we need to dismiss the view.
         
         if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
             if let calendar = getCalendar(withIdentifier: identifier as! String) {

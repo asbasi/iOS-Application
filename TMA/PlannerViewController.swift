@@ -54,7 +54,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.myTableView.reloadData()
     }
     
-    @IBAction func addingEvent(_ sender: Any) {
+    private func verify() {
         let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
         if currentQuarters.count != 1 {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -75,8 +75,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             else {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
-            
         }
+    }
+    
+    
+    @IBAction func addingEvent(_ sender: Any) {
         self.performSegue(withIdentifier: "addEvent", sender: nil)
     }
     
@@ -137,6 +140,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         populateSegments()
+        verify()
         checkCalendarAuthorizationStatus()
         
         self.myTableView.reloadData()

@@ -150,8 +150,6 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         
         func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
             
-            
-            
             let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
                 
                 let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: index)
@@ -201,6 +199,14 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             return true
         }
     
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: indexPath)
+        
+            self.goalToEdit = goal
+        
+            self.performSegue(withIdentifier: "showGoal", sender: nil)
+        }
+    
     
         // MARK: - Navigation
     
@@ -209,7 +215,8 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             if segue.identifier! == "showGoal" {
                 let goalTrackerTableViewController = segue.destination as! GoalTrackerTableViewController
                 
-                goalTrackerTableViewController.pageTitle = (sender as! GoalViewCell).title!.text
+                goalTrackerTableViewController.goal = goalToEdit!
+                goalTrackerTableViewController.pageTitle = goalToEdit!.title
             }
             else {
 

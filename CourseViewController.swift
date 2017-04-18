@@ -173,6 +173,9 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let eventsToDelete = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
                     self.realm.delete(eventsToDelete)
                     
+                    let goalsToDelete = self.realm.objects(Goal.self).filter("course.identifier = '\(course.identifier!)'")
+                    self.realm.delete(goalsToDelete)
+                    
                     self.realm.delete(course)
                 }
                 self.tableView.reloadData()
