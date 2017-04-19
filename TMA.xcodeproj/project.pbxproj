@@ -38,6 +38,14 @@
 		60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9961E96174B007EBEA4 /* Theme.swift */; };
 		60FD5E331EA5724600C73B9C /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD5E321EA5724600C73B9C /* LinkedList.swift */; };
 		60FD5E351EA5789D00C73B9C /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD5E341EA5789D00C73B9C /* TimeBlock.swift */; };
+		8F2CCA191EA7F42C0068B942 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */; };
+		8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */; };
+		8F2CCA1D1EA7F45B0068B942 /* Tutorial1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA1C1EA7F45B0068B942 /* Tutorial1ViewController.swift */; };
+		8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA1E1EA7F46F0068B942 /* Tutorial2ViewController.swift */; };
+		8F2CCA211EA7F47B0068B942 /* Tutorial3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA201EA7F47B0068B942 /* Tutorial3ViewController.swift */; };
+		8F2CCA231EA7F4860068B942 /* Tutorial4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */; };
+		8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */; };
+		8F2CCA271EA7F49A0068B942 /* Tutorial6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +97,14 @@
 		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = TMA/Theme.swift; sourceTree = "<group>"; };
 		60FD5E321EA5724600C73B9C /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		60FD5E341EA5789D00C73B9C /* TimeBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeBlock.swift; sourceTree = "<group>"; };
+		8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		8F2CCA1C1EA7F45B0068B942 /* Tutorial1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial1ViewController.swift; sourceTree = "<group>"; };
+		8F2CCA1E1EA7F46F0068B942 /* Tutorial2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial2ViewController.swift; sourceTree = "<group>"; };
+		8F2CCA201EA7F47B0068B942 /* Tutorial3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial3ViewController.swift; sourceTree = "<group>"; };
+		8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial4ViewController.swift; sourceTree = "<group>"; };
+		8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial5ViewController.swift; sourceTree = "<group>"; };
+		8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial6ViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -235,6 +251,9 @@
 		6015DBFF1E9F754B005C8009 /* Settings Pages */ = {
 			isa = PBXGroup;
 			children = (
+				8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */,
+				8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */,
+				8F2CCA0D1EA770300068B942 /* Tutorial Pages */,
 				60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */,
 			);
 			name = "Settings Pages";
@@ -250,6 +269,19 @@
 				009C4E1C1E42D37D00260378 /* Assets.xcassets */,
 			);
 			name = General;
+			sourceTree = "<group>";
+		};
+		8F2CCA0D1EA770300068B942 /* Tutorial Pages */ = {
+			isa = PBXGroup;
+			children = (
+				8F2CCA1C1EA7F45B0068B942 /* Tutorial1ViewController.swift */,
+				8F2CCA1E1EA7F46F0068B942 /* Tutorial2ViewController.swift */,
+				8F2CCA201EA7F47B0068B942 /* Tutorial3ViewController.swift */,
+				8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */,
+				8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */,
+				8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */,
+			);
+			name = "Tutorial Pages";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,11 +415,13 @@
 				009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */,
 				116C5B0D1E9C883100660764 /* GoalAddTableViewController.swift in Sources */,
 				00416AD51E47E5DB00DA733D /* Course.swift in Sources */,
+				8F2CCA231EA7F4860068B942 /* Tutorial4ViewController.swift in Sources */,
 				60822B8C1E6B9A58009670EC /* PlannerAddTableViewController.swift in Sources */,
 				605724741E4800AC00B6BC8B /* LogViewController.swift in Sources */,
 				607A78501E983DE100177692 /* Keys.swift in Sources */,
 				60E4E9951E9603FC007EBEA4 /* ThemeTableViewController.swift in Sources */,
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
+				8F2CCA271EA7F49A0068B942 /* Tutorial6ViewController.swift in Sources */,
 				00DF402E1E47DDF70095B2FD /* Log.swift in Sources */,
 				60FD5E331EA5724600C73B9C /* LinkedList.swift in Sources */,
 				60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */,
@@ -396,8 +430,11 @@
 				601962CD1E4EE780001EAAC0 /* Item.swift in Sources */,
 				601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */,
 				606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */,
+				8F2CCA191EA7F42C0068B942 /* TutorialViewController.swift in Sources */,
+				8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */,
 				60FD5E351EA5789D00C73B9C /* TimeBlock.swift in Sources */,
 				609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */,
+				8F2CCA211EA7F47B0068B942 /* Tutorial3ViewController.swift in Sources */,
 				1118E6DC1E9C57B000A85134 /* GoalTableViewController.swift in Sources */,
 				1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
@@ -405,7 +442,10 @@
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
+				8F2CCA1D1EA7F45B0068B942 /* Tutorial1ViewController.swift in Sources */,
+				8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */,
 				1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */,
+				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 			);
