@@ -20,7 +20,14 @@ class GoalTrackerTableViewController: UITableViewController {
 
     let realm = try! Realm()
     let eventStore = EKEventStore()
-    var events = [Event]()
+    var dayOneFreeTime = [Event]()
+    var dayTwoFreeTime = [Event]()
+    var dayThreeFreeTime = [Event]()
+    var dayFourFreeTime = [Event]()
+    var dayFiveFreeTime = [Event]()
+    var daySixFreeTime = [Event]()
+    var daySevenFreeTime = [Event]()
+    
     var goal: Goal!
     
     @IBOutlet weak var navBar: UINavigationItem!
@@ -43,7 +50,14 @@ class GoalTrackerTableViewController: UITableViewController {
             if let calendar = getCalendar(withIdentifier: identifier as! String) {
                 let calEvents = getCalendarEvents(forDate: Date(), fromCalendars: [calendar])
                 print(calEvents.count)
-                self.events = findFreeTimes(onDate: Date(), withEvents: calEvents)
+                self.dayOneFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 0)
+                self.dayTwoFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 1)
+                self.dayThreeFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 2)
+                self.dayFourFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 3)
+                self.dayFiveFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 4)
+                self.daySixFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 5)
+                self.daySevenFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 6)
+                
             }
         }
         self.tableView.reloadData()
@@ -69,21 +83,243 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+
+        return 7
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.events.count
+        switch section {
+        
+        case 0:
+            return self.dayOneFreeTime.count
+            
+        case 1:
+            return self.dayTwoFreeTime.count
+            
+        case 2:
+            return self.dayThreeFreeTime.count
+            
+        case 3:
+            return self.dayFourFreeTime.count
+            
+        case 4:
+            return self.dayFiveFreeTime.count
+            
+        case 5:
+            return self.daySixFreeTime.count
+            
+        case 6:
+            return self.daySevenFreeTime.count
+           
+        default:
+            return 0
+        }
+        
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
 
-        let event = self.events[indexPath.row]
+        let section = indexPath.section
+        switch section {
+            
+        case 0:
+            let event = self.dayOneFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 1:
+            let event = self.dayTwoFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 2:
+            let event = self.dayThreeFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 3:
+            let event = self.dayFourFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 4:
+            let event = self.dayFiveFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 5:
+            let event = self.daySixFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        case 6:
+            let event = self.daySevenFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
+            break
+            
+        default:
+            let event = self.dayOneFreeTime[indexPath.row]
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            cell.title?.text = "Free"
+            
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
         
+        }
+        
+       /*
         let dayFormatter = DateFormatter()
         dayFormatter.dateFormat = "EEEE"
-        cell.day?.text = dayFormatter.string(from: event.date)
+        cell.day?.text = dayFormatter.string(from: event.date )
         
         cell.title?.text = "Free"
         
@@ -96,10 +332,10 @@ class GoalTrackerTableViewController: UITableViewController {
             cell.time?.text = "All Day"
         }
         else {
-            cell.time?.text = timeFormatter.string(from: event.date) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
         }
         
-        return cell
+        return cell*/
     }
 
     /*

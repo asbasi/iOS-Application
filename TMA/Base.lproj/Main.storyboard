@@ -2199,7 +2199,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Monday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qoA-Ro-ybA">
-                                            <rect key="frame" x="7" y="4" width="73" height="21"/>
+                                            <rect key="frame" x="7" y="4" width="136" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -2261,11 +2261,11 @@
         <image name="settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GgH-JQ-Emg"/>
+        <segue reference="eKZ-Z2-3ph"/>
         <segue reference="hU1-k3-hHN"/>
         <segue reference="a3P-Mg-OMn"/>
-        <segue reference="eKZ-Z2-3ph"/>
-        <segue reference="SVf-2y-i4z"/>
         <segue reference="5Mv-Ym-O0R"/>
+        <segue reference="SVf-2y-i4z"/>
+        <segue reference="SDE-vL-mb8"/>
     </inferredMetricsTieBreakers>
 </document>
