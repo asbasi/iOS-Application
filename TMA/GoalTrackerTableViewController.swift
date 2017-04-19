@@ -20,13 +20,8 @@ class GoalTrackerTableViewController: UITableViewController {
 
     let realm = try! Realm()
     let eventStore = EKEventStore()
-    var dayOneFreeTime = [Event]()
-    var dayTwoFreeTime = [Event]()
-    var dayThreeFreeTime = [Event]()
-    var dayFourFreeTime = [Event]()
-    var dayFiveFreeTime = [Event]()
-    var daySixFreeTime = [Event]()
-    var daySevenFreeTime = [Event]()
+    
+    var freeTimes = [[Event]]()
     
     var goal: Goal!
     
@@ -40,26 +35,35 @@ class GoalTrackerTableViewController: UITableViewController {
         navBar.title = pageTitle
     }
 
+    
+    private func populateFreeTimes() {
+        freeTimes = [[Event]]()
+        
+        if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
+            if let calendar = getCalendar(withIdentifier: identifier as! String) {
+                for offset in 0...6 {
+                    
+                    var components = DateComponents()
+                    components.day = offset
+                    let date = Calendar.current.date(byAdding: components, to: Date())!
+                    
+                    let calEvents = getCalendarEvents(forDate: date, fromCalendars: [calendar])
+                    freeTimes.append(findFreeTimes(onDate: date, withEvents: calEvents))
+                    
+                }
+                
+            }
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
         // TODO: Check if the course (and by extension the goal) still exists before doing any of this.
         // If not, we need to dismiss the view.
         
-        if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
-            if let calendar = getCalendar(withIdentifier: identifier as! String) {
-                let calEvents = getCalendarEvents(forDate: Date(), fromCalendars: [calendar])
-                print(calEvents.count)
-                self.dayOneFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 0)
-                self.dayTwoFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 1)
-                self.dayThreeFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 2)
-                self.dayFourFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 3)
-                self.dayFiveFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 4)
-                self.daySixFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 5)
-                self.daySevenFreeTime = findFreeTimes(onDate: Date(), withEvents: calEvents, day: 6)
-                
-            }
-        }
+        self.populateFreeTimes()
+        
         self.tableView.reloadData()
     }
     
@@ -78,251 +82,33 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "EEEE"
         
-        return ""
+        if freeTimes[section].count != 0 {
+            return dayFormatter.string(from: freeTimes[section][0].date)
+        }
+
+        return nil
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-
-        return 7
+        return freeTimes.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        
-        case 0:
-            return self.dayOneFreeTime.count
-            
-        case 1:
-            return self.dayTwoFreeTime.count
-            
-        case 2:
-            return self.dayThreeFreeTime.count
-            
-        case 3:
-            return self.dayFourFreeTime.count
-            
-        case 4:
-            return self.dayFiveFreeTime.count
-            
-        case 5:
-            return self.daySixFreeTime.count
-            
-        case 6:
-            return self.daySevenFreeTime.count
-           
-        default:
-            return 0
-        }
-        
+        return freeTimes[section].count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
 
-        let section = indexPath.section
-        switch section {
-            
-        case 0:
-            let event = self.dayOneFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 1:
-            let event = self.dayTwoFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 2:
-            let event = self.dayThreeFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 3:
-            let event = self.dayFourFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 4:
-            let event = self.dayFiveFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 5:
-            let event = self.daySixFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        case 6:
-            let event = self.daySevenFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-            break
-            
-        default:
-            let event = self.dayOneFreeTime[indexPath.row]
-            
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            cell.day?.text = dayFormatter.string(from: event.date )
-            
-            cell.title?.text = "Free"
-            
-            
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            timeFormatter.timeZone = TimeZone.current
-            
-            if(event.duration == 24.0) {
-                cell.time?.text = "All Day"
-            }
-            else {
-                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-            }
-            
-            return cell
-        
-        }
-        
-       /*
+        let event = freeTimes[indexPath.section][indexPath.row]
         let dayFormatter = DateFormatter()
         dayFormatter.dateFormat = "EEEE"
         cell.day?.text = dayFormatter.string(from: event.date )
         
         cell.title?.text = "Free"
-        
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
@@ -335,7 +121,7 @@ class GoalTrackerTableViewController: UITableViewController {
             cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
         }
         
-        return cell*/
+        return cell
     }
 
     /*

@@ -177,7 +177,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //        "Today (Monday, January 23rd)"
-        
+         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"

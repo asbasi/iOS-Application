@@ -51,6 +51,7 @@ func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
 
 func createCalendar(withTitle title: String) -> String? {
     var identifier: String?
+    var flag: Bool = false
     
     eventStore.requestAccess(to: .event, completion:
         { (granted, error) in
@@ -86,6 +87,7 @@ func createCalendar(withTitle title: String) -> String? {
                     UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: calendarKey);
                     
                     identifier = newCalendar.calendarIdentifier
+                    flag = true
                 }
                 catch {
                     let alert = UIAlertController(title: "Calendar could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
@@ -96,6 +98,9 @@ func createCalendar(withTitle title: String) -> String? {
                 }
             }
     })
+    
+    while(!flag) {
+    }
     
     return identifier
 }
@@ -234,20 +239,19 @@ func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]
     return events
 }
 
-func findFreeTimes(onDate date: Date, withEvents events: [EKEvent], day: Int) -> [Event] {
+func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
+    
+    let startDate = Calendar.current.startOfDay(for: date)
     
     var dateComponents = DateComponents()
-    dateComponents.day = day
-    let startD = Calendar.current.startOfDay(for: date)
-    let startDate = Calendar.current.date(byAdding: dateComponents, to: startD)
     dateComponents.day = 1
-    let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate!)
+    let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
     
     // Will hold the current set of free timnes.
     let freeTimes:LinkedList<TimeBlock> = LinkedList<TimeBlock>()
     
     // Initialize each of the 30-minute blocks to unallocated.
-    var initial: Date = startDate!
+    var initial: Date = startDate
     while initial != endDate {
         var dateComponents = DateComponents()
         dateComponents.minute = 30
@@ -276,7 +280,7 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent], day: Int) ->
     
     // Combine the free times into the largest possible groupings and return.
     
-    var start: Date = startDate!
+    var start: Date = startDate
     var found: Bool = false
     
     for range in freeTimes {
@@ -294,6 +298,6 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent], day: Int) ->
             events.append(event)
         }
     }
-
+    
     return events
 }
