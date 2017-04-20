@@ -279,35 +279,59 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             }
             else { // About to be checked.
                 // Try to create a Log.
-                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
                 
-                alert.addTextField { (textField) in
-                    textField.keyboardType = .decimalPad
+                // set the studyhours = assigned hours and unchecked
+                if let log = event.log{
+                    // effecting the change inside the realm database
+                    try! self.realm.write {
+                        log.duration = event.duration
+                    }
+                }
+                // no log has been put
+                else{
+                    let log = Log()
+                    // insert the log var that doesn't exist in db into the db
+                    log.title = event.title
+                    log.date = event.date
+                    log.course = event.course
+                    log.type = event.type
+                    log.duration = event.duration
+                    Helpers.DB_insert(obj: log)
+                    try! self.realm.write {
+                        event.log = log
+                    }
                 }
                 
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
-                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-                    
-                    if textField.text != "" {
-                        let log = Log()
-                    
-                        log.title = event.title
-                        log.duration = Float(textField.text!)!
-                        log.date = event.date
-                        log.course = event.course
-                        log.type = event.type
-                    
-                        Helpers.DB_insert(obj: log)
-                    
-                        try! self.realm.write {
-                            event.log = log
-                        }
-                    }
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-                
-                self.present(alert, animated: true, completion: nil)
+                // popup
+//                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+//                
+//                alert.addTextField { (textField) in
+//                    textField.keyboardType = .decimalPad
+//                }
+//                
+//                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+//                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+//                    
+//                    if textField.text != "" {
+//                        let log = Log()
+//                    
+//                        log.title = event.title
+//                        log.duration = Float(textField.text!)!
+//                        log.date = event.date
+//                        log.course = event.course
+//                        log.type = event.type
+//                    
+//                        Helpers.DB_insert(obj: log)
+//                    
+//                        try! self.realm.write {
+//                            event.log = log
+//                        }
+//                    }
+//                }))
+//                
+//                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+//                
+//                self.present(alert, animated: true, completion: nil)
             }
             
     
