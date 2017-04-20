@@ -177,7 +177,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //        "Today (Monday, January 23rd)"
-         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"
@@ -302,39 +301,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     }
                 }
                 
-                // popup
-//                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-//                
-//                alert.addTextField { (textField) in
-//                    textField.keyboardType = .decimalPad
-//                }
-//                
-//                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
-//                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-//                    
-//                    if textField.text != "" {
-//                        let log = Log()
-//                    
-//                        log.title = event.title
-//                        log.duration = Float(textField.text!)!
-//                        log.date = event.date
-//                        log.course = event.course
-//                        log.type = event.type
-//                    
-//                        Helpers.DB_insert(obj: log)
-//                    
-//                        try! self.realm.write {
-//                            event.log = log
-//                        }
-//                    }
-//                }))
-//                
-//                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-//                
-//                self.present(alert, animated: true, completion: nil)
             }
-            
-    
             
             if !event.checked {
                 // About to check off the event so remove any pending notifications.
@@ -382,9 +349,46 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return true
     }
     
+    // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.eventToEdit = self.events[indexPath.section][indexPath.row]
-        self.performSegue(withIdentifier: "showEvent", sender: nil)
+        print("did select row at")
+        
+        // the row to add log in
+        let event = self.events[indexPath.section][indexPath.row]
+
+        // popup
+        let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.keyboardType = .decimalPad
+        }
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+            
+            if textField.text != "" {
+                let log = Log()
+                
+                log.title = event.title
+                log.duration = Float(textField.text!)!
+                log.date = event.date
+                log.course = event.course
+                log.type = event.type
+                
+                Helpers.DB_insert(obj: log)
+                
+                try! self.realm.write {
+                    event.log = log
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+//        self.eventToEdit = self.events[indexPath.section][indexPath.row]
+//        self.performSegue(withIdentifier: "showEvent", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
@@ -443,7 +447,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        
         if segue.identifier! == "toggle" {
             return
         }
@@ -458,10 +461,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         else if segue.identifier! == "editEvent" {
             eventAddViewController.operation = "edit"
-            eventAddViewController.event = eventToEdit!
-        }
-        else if segue.identifier! == "showEvent" {
-            eventAddViewController.operation = "show"
             eventAddViewController.event = eventToEdit!
         }
     }
