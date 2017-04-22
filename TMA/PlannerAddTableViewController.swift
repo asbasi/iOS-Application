@@ -176,7 +176,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             let newEvent = EKEvent(eventStore: self.eventStore)
             
             newEvent.calendar = calendarForEvent
-            newEvent.title = "\(event.title!) (\(event.course.name!))"
+            newEvent.title = "\(event.title!) (\(event.course.title!))"
             newEvent.startDate = event.date
             
             var components = DateComponents()
@@ -203,7 +203,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
         if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
-            calEvent.title = "\(event.title!) (\(event.course.name!))"
+            calEvent.title = "\(event.title!) (\(event.course.title!))"
             calEvent.startDate = event.date
             
             var components = DateComponents()

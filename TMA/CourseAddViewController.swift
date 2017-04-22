@@ -85,7 +85,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     private func isDuplicate() -> Bool {
-        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND name = '\(courseTitleTextField.text!)'")
+        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND title = '\(courseTitleTextField.text!)'")
         if results.count != 0 {
             let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -103,7 +103,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             }
             
             self.course = Course()
-            course!.name = courseTitleTextField.text!
+            course!.title = courseTitleTextField.text!
             course!.identifier = identifierTextField.text!
             course!.instructor = instructorTextField.text!
             course!.units = Float(unitTextField.text!)!
@@ -116,12 +116,12 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         if(editOrAdd=="edit"){
             try! self.realm.write {
                 
-                if course!.name != courseTitleTextField.text! {
+                if course!.title != courseTitleTextField.text! {
                     if isDuplicate() {
                         return
                     }
                     else {
-                        course!.name = courseTitleTextField.text!
+                        course!.title = courseTitleTextField.text!
                     }
                 }
 
@@ -159,7 +159,9 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.colorLabel.text = "None"
         
         if self.editOrAdd == "edit" {
-            self.courseTitleTextField.text = self.course!.name
+            self.navigationItem.title = self.course!.title
+            
+            self.courseTitleTextField.text = self.course!.title
             self.identifierTextField.text = self.course!.identifier
             self.instructorTextField.text = self.course!.instructor
             self.unitTextField.text = "\(self.course!.units)"

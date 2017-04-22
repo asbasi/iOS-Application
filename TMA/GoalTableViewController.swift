@@ -22,42 +22,17 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
     
         @IBOutlet weak var tableView: UITableView!
     
-        var currentQuarter: Quarter!
         var goalToEdit: Goal!
         var goals: Results<Goal>!
-        var courses: Results<Course>!
-
-        func initializeGoalsAndCourses() {
-            let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-            if currentQuarters.count != 1 {
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
-                let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-            else {
-                currentQuarter = currentQuarters[0]
-                self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.currentQuarter.title!)'")
-                
-                if self.courses.count == 0 {
-                    self.navigationItem.rightBarButtonItem?.isEnabled = false
-                    let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                }
-                else {
-                    self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    
-                    self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.currentQuarter.title!)'")
-                }
-                
-            }
-        }
+        var course: Course!
     
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             
-            initializeGoalsAndCourses()
+            print("course.quarter.title = '\(self.course.quarter.title!)' AND course.identifier = '\(self.course.identifier!)'")
+            
+            self.goals = self.realm.objects(Goal.self).filter("course.quarter.title = '\(self.course.quarter.title!)' AND course.identifier = '\(self.course.identifier!)'")
+            
             self.tableView.reloadData()
             
         }
@@ -82,57 +57,36 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
     
         func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             
-            let courseForSection = self.courses[section]
-            return "\(courseForSection.name!) (\(courseForSection.identifier!))"
+            return ""
         }
         
         func numberOfSections(in tableView: UITableView) -> Int {
             
-            var numSections: Int = 0
-            
-            for course in self.courses {
-                if self.realm.objects(Goal.self).filter("course.identifier = '\(course.identifier!)'").count > 0 {
-                    numSections += 1
-                }
-            }
-            
-            if numSections > 0 {
+            if self.goals.count > 0 {
                 self.tableView.backgroundView = nil
                 self.tableView.separatorStyle = .singleLine
                 
-                return numSections
+                return 1
             }
             
-            else {
-                let image = UIImage(named: "bar-chart")!
-                let topMessage = "Goals"
-                let bottomMessage = "You haven't created any goals. All your goals will show up here."
+            let image = UIImage(named: "bar-chart")!
+            let topMessage = "Goals"
+            let bottomMessage = "You haven't created any goals. All your goals will show up here."
                 
-                self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
-                self.tableView.separatorStyle = .none
-                
-                return 0
-            }
+            self.tableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
+            self.tableView.separatorStyle = .none
+            
+            return 0
         }
         
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            let courseForSection = self.courses[section]
-            return self.goals.filter("course.name = '\(courseForSection.name!)'").count
-        }
-    
-        
-        func getGoalAndCourseAtIndexPath(indexPath: IndexPath) -> (Goal, Course) {
-            let courseForSection = self.courses[indexPath.section]
-            let goalsForSection = self.goals.filter("course.name = '\(courseForSection.name!)'")
-            let goal = goalsForSection[indexPath.row]
-            
-            return (goal, courseForSection)
+            return self.goals.count
         }
     
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "GoalCell", for: indexPath) as! GoalViewCell
             
-            let (goal, _) = getGoalAndCourseAtIndexPath(indexPath: indexPath)
+            let goal = self.goals[indexPath.row]
             
             cell.title?.text = goal.title
             cell.type?.text = "\(eventType[goal.type]) Goal"
@@ -152,7 +106,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
                 
-                let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: index)
+                let goal = self.goals[index.row]
                 
                 let optionMenu = UIAlertController(title: nil, message: "\"\(goal.title!)\" and all associated events will be deleted forever.", preferredStyle: .actionSheet)
                 //delete goals, events, logs
@@ -184,7 +138,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
             delete.backgroundColor = .red
             
             let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
-                let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: index)
+                let goal = self.goals[index.row]
                 
                 self.goalToEdit = goal
                 
@@ -200,7 +154,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let (goal, _) = self.getGoalAndCourseAtIndexPath(indexPath: indexPath)
+            let goal = self.goals[indexPath.row]
         
             self.goalToEdit = goal
         
@@ -228,6 +182,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 if segue.identifier! == "addGoal" {
                     goalAddViewController.operation = "add"
+                    goalAddViewController.course = self.course
                 }
                 else if segue.identifier! == "editGoal" {
                     goalAddViewController.operation = "edit"

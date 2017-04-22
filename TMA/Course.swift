@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 class Course: Object {
-    dynamic var name: String!
+    dynamic var title: String!
     dynamic var identifier: String!
     dynamic var instructor: String!
     dynamic var units: Float = 0

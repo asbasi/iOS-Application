@@ -119,7 +119,7 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
                     let newEvent = EKEvent(eventStore: eventStore)
                     
                     newEvent.calendar = calendarForEvent
-                    newEvent.title = "\(event.title!) (\(event.course.name!))"
+                    newEvent.title = "\(event.title!) (\(event.course.title!))"
                     newEvent.startDate = event.date
                     
                     var components = DateComponents()
@@ -159,7 +159,7 @@ func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
             if granted {
                 
                 if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
-                    calEvent.title = "\(event.title!) (\(event.course.name!))"
+                    calEvent.title = "\(event.title!) (\(event.course.title!))"
                     calEvent.startDate = event.date
                     
                     calEvent.endDate = Date.getEndDate(fromStart: event.date, withDuration: event.duration)
@@ -269,9 +269,11 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
     
     // For each event compare the start and end times to the start/end times of the
     for event in events {
-        for range in freeTimes {
-            if !range.value.allocated && range.value.start >= event.startDate && range.value.start <= event.endDate  {
-                range.value.allocated = true
+        if !event.isAllDay { // Filter out all day events.
+            for range in freeTimes {
+                if !range.value.allocated && range.value.start >= event.startDate && range.value.start <= event.endDate  {
+                    range.value.allocated = true
+                }
             }
         }
     }

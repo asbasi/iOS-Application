@@ -58,7 +58,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
         if currentQuarters.count != 1 {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -68,7 +68,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             
             if courses.count == 0 {
                 self.navigationItem.rightBarButtonItem?.isEnabled = false
-                let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -277,6 +277,37 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
             else { // About to be checked.
+                
+                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+
+                alert.addTextField { (textField) in
+                    textField.keyboardType = .decimalPad
+                }
+
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+
+                    if textField.text != "" {
+                        let log = Log()
+
+                        log.title = event.title
+                        log.duration = Float(textField.text!)!
+                        log.date = event.date
+                        log.course = event.course
+                        log.type = event.type
+
+                        Helpers.DB_insert(obj: log)
+
+                        try! self.realm.write {
+                            event.log = log
+                        }
+                    }
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+                /*
                 // Try to create a Log.
                 
                 // set the studyhours = assigned hours and unchecked
@@ -295,11 +326,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     log.course = event.course
                     log.type = event.type
                     log.duration = event.duration
+
                     Helpers.DB_insert(obj: log)
                     try! self.realm.write {
                         event.log = log
                     }
-                }
+                }*/
                 
             }
             
@@ -351,6 +383,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*
         print("did select row at")
         
         // the row to add log in
@@ -386,9 +419,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
-        
-//        self.eventToEdit = self.events[indexPath.section][indexPath.row]
-//        self.performSegue(withIdentifier: "showEvent", sender: nil)
+        */
+        self.eventToEdit = self.events[indexPath.section][indexPath.row]
+        self.performSegue(withIdentifier: "showEvent", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {

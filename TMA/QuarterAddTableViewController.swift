@@ -150,6 +150,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 else {
                     var components = DateComponents()
                     components.setValue(2, for: .month)
+                    components.setValue(14, for: .day)
                     quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
                 }
                 

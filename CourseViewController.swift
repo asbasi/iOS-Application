@@ -17,6 +17,9 @@ class CourseTableViewCell: UITableViewCell {
     @IBOutlet weak var courseTitle: UILabel!
     @IBOutlet weak var instructor: UILabel!
     @IBOutlet weak var units: UILabel!
+    
+    @IBOutlet weak var viewGoals: UIButton!
+    @IBOutlet weak var viewStats: UIButton!
 }
 
 
@@ -116,11 +119,11 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.color.clipsToBounds = true
         
         
-        cell.courseTitle!.text = course.name
+        cell.courseTitle!.text = course.title
         cell.courseIdentifer!.text = course.identifier
         cell.instructor!.text = course.instructor
         cell.units!.text = "\(course.units) units"
-        
+
         let all_logs = self.realm.objects(Log.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
         let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
         
@@ -161,7 +164,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
             let course = self.courses[index.row]
             
-            let optionMenu = UIAlertController(title: nil, message: "\"\(course.name!)\" and all associated items will be deleted forever.", preferredStyle: .actionSheet)
+            let optionMenu = UIAlertController(title: nil, message: "\"\(course.title!)\" and all associated items will be deleted forever.", preferredStyle: .actionSheet)
             
             let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
@@ -204,8 +207,11 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return [delete, edit]
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+        self.courseToEdit = courses[indexPath.row]
+        
+        self.performSegue(withIdentifier: "editCourse", sender: nil)
     }
     
    // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -213,14 +219,24 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier! == "showCourse" {
+        if segue.identifier! == "showStats" || segue.identifier! == "showGoals" {
             
-            let courseDetailViewController = segue.destination as! CourseDetailViewController
+            if let button = sender as? UIButton {
+                let cell = button.superview?.superview as! UITableViewCell
             
-            var selectedIndexPath = tableView.indexPathForSelectedRow
+                let indexPath: IndexPath = self.tableView.indexPath(for: cell)!
             
-            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
-            courseDetailViewController.course = courses[selectedIndexPath!.row]
+                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+
+                if segue.identifier! == "showStats" {
+                    let courseDetailViewController = segue.destination as! CourseStatsViewController
+                    courseDetailViewController.course = courses[indexPath.row]
+                }
+                else if segue.identifier! == "showGoals" {
+                    let courseGoalViewController = segue.destination as! GoalTableViewController
+                    courseGoalViewController.course = courses[indexPath.row]
+                }
+            }
         }
         else {
             let navigation: UINavigationController = segue.destination as! UINavigationController

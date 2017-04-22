@@ -32,6 +32,30 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return panGesture
     }()
     
+    private func verify() {
+        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
+        if currentQuarters.count != 1 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            let currentQuarter = currentQuarters[0]
+            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter.title!)'")
+            
+            if courses.count == 0 {
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+                let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+            }
+        }
+    }
+    
     @IBAction func addingEvent(_ sender: Any) {
         if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
             let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
@@ -71,6 +95,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
+        
+        verify()
         checkCalendarAuthorizationStatus()
         
         self.calendar.reloadData()
@@ -229,9 +255,55 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         cell.checkbox.boxType = BEMBoxType.square
         cell.checkbox.onAnimationType = BEMAnimationType.fill
-        cell.buttonAction = { (_ sender: AnyObject) -> Void in
+        cell.buttonAction = { (_ sender: PlannerViewCell) -> Void in
+            
+            var path: IndexPath = self.myTableView.indexPath(for: sender)!
+            
+            let event = self.events[path.row]
+            
+            if(event.checked) { // About to be unchecked.
+                if let log = event.log {
+                    try! self.realm.write {
+                        self.realm.delete(log)
+                        event.log = nil
+                    }
+                }
+            }
+            else { // About to be checked.
+                
+                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+                
+                alert.addTextField { (textField) in
+                    textField.keyboardType = .decimalPad
+                }
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+                    
+                    if textField.text != "" {
+                        let log = Log()
+                        
+                        log.title = event.title
+                        log.duration = Float(textField.text!)!
+                        log.date = event.date
+                        log.course = event.course
+                        log.type = event.type
+                        
+                        Helpers.DB_insert(obj: log)
+                        
+                        try! self.realm.write {
+                            event.log = log
+                        }
+                    }
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+            
             try! self.realm.write {
-                self.events[indexPath.row].checked = !self.events[indexPath.row].checked
+                self.events[path.row].checked = !self.events[path.row].checked
             }
         }
         

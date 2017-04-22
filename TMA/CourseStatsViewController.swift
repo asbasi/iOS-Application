@@ -1,8 +1,8 @@
 //
-//  CourseDetailViewController.swift
+//  CourseStatsViewController.swift
 //  TMA
 //
-//  Created by Abdulrahman Sahmoud on 2/1/17.
+//  Created by Arvinder Basi on 4/21/17.
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
@@ -58,7 +58,7 @@ class Ring:UIButton
     }
 }
 
-class CourseDetailViewController: UIViewController {
+class CourseStatsViewController: UIViewController {
     
     
     @IBOutlet weak var percentageLabel: UILabel!
@@ -200,7 +200,7 @@ class CourseDetailViewController: UIViewController {
         var weekDays = [String]()
         var monthDays = [String]()
         
-
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //weekly
         for offsetDay in [6,5,4,3,2,1,0]{
@@ -266,6 +266,4 @@ class CourseDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
 }
