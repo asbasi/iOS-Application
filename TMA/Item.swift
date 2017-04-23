@@ -20,8 +20,9 @@ let eventType: [String] = ["Study", "Homework", "Project", "Lab", "Other"]
 class Item: Object {
     dynamic var title: String!
     dynamic var date: Date!
+    dynamic var endDate: Date!
     dynamic var course: Course!
-    dynamic var duration: Float = 0 //hours
+    dynamic var duration: Float = 0.0 //hours
     dynamic var type: Int = OTHER_EVENT
     dynamic var goal: Goal?
 }

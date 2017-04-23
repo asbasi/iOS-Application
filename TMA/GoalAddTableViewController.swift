@@ -87,7 +87,7 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
                 goal.title = titleTextField.text
                 goal.duration = Float(durationTextField.text!)!
                 goal.deadline = deadlineDatePicker.date
-                goal.course = self.course
+                goal.course = self.goal.course
             }
             
         }
@@ -171,6 +171,8 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
             if (deadlineDateLabel.text?.isEmpty)! {
                 deadlineDateLabel.text = dateFormatter.string(from: Date())
             }
+            
+            checkAllTextFields()
         }
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in

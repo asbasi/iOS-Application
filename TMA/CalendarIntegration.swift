@@ -208,6 +208,7 @@ func deleteEventFromCalendar(withID eventID: String) {
     })
 }
 
+
 func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]?) -> [EKEvent] {
     
     var events: [EKEvent] = []

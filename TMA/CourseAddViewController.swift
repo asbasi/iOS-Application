@@ -17,7 +17,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     let colorPickerData = [["None", "Red", "Green", "Blue"]]
     
     func checkAllTextFields() {
-        if unitTextField.text == "" || courseTitleTextField.text == "" || instructorTextField.text == "" {
+        if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
         }
         else {
