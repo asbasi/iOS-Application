@@ -29,6 +29,8 @@ class GoalTrackerTableViewController: UITableViewController {
     
     var goal: Goal!
     
+    private var selectedEvent: Event?
+    
     @IBOutlet weak var navBar: UINavigationItem!
     
     var pageTitle: String?
@@ -202,16 +204,10 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedEvent = segmentController.selectedSegmentIndex == ALLOCATED_TIMES ? allocatedTimes[indexPath.section][indexPath.row] : freeTimes[indexPath.section][indexPath.row]
         
+        self.performSegue(withIdentifier: "manageEvent", sender: nil)
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     /*
     // Override to support editing the table view.
@@ -225,13 +221,23 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier! == "manageEvent" {
+            
+            let navigation: UINavigationController = segue.destination as! UINavigationController
+            
+            var manageEventTableViewController = ManageEventTableViewController.init()
+            manageEventTableViewController = navigation.viewControllers[0] as! ManageEventTableViewController
+            
+            if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
+                
+            }
+            else {
+                
+            }
+        }
     }
-    */
 }
