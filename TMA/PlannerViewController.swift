@@ -443,9 +443,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
                 
                 try! self.realm.write {
+                    
                     self.events[index.section].remove(at: index.row)
+                    
                     if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
+                    }
+                    
+                    if let log = event.log {
+                        self.realm.delete(log)
                     }
 
                     self.realm.delete(event)

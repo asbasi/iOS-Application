@@ -338,6 +338,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 
                 try! self.realm.write {
                     let event: Event = self.events[index.row]
+                    
+                    if let log = event.log {
+                        self.realm.delete(log)
+                    }
+                    
                     self.realm.delete(event)
                 }
                 

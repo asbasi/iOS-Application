@@ -19,7 +19,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UINavigationItem!
-    @IBOutlet weak var durationTextField: UITextField!
     
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var coursePicker: UIPickerView!
@@ -30,30 +29,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var endDateLabel: UITextField!
     @IBOutlet weak var endDatePicker: UIDatePicker!
     
-    private func getDuration(date1: Date, date2: Date) -> Double {
-        
-        let difference = date2.timeIntervalSince(date1)
-        return (Double((Double(difference) / 36).rounded(.toNearestOrAwayFromZero)) / 100)
-    }
-    
     @IBAction func setDate(_ sender: UIDatePicker) {
         
         dateLabel.text = dateFormatter.string(from: datePicker.date)
-        
-        if((dateLabel.text?.isEmpty)! == false && (endDateLabel.text?.isEmpty)! == false) {
-            dur = getDuration(date1: datePicker.date, date2: endDatePicker.date)
-            self.durationTextField.text = String(dur)
-        }
-        
     }
+    
     @IBAction func setEndDate(_ sender: UIDatePicker) {
         
         endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
-        
-        if((dateLabel.text?.isEmpty)! == false && (endDateLabel.text?.isEmpty)! == false) {
-            dur = getDuration(date1: datePicker.date, date2: endDatePicker.date)
-            self.durationTextField.text = String(dur)
-        }
     }
     
     
@@ -91,8 +74,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     private func checkAllTextFields() {
         
-        if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! ||
-            (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)! || (endDateLabel.text?.isEmpty)!) {
+        if ((titleTextField.text?.isEmpty)! || (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)! || (endDateLabel.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
         }
         else {
@@ -137,12 +119,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             let event = Event()
             
             event.title = titleTextField.text
-            event.duration = Float(durationTextField.text!)!
             event.date = datePicker.date
             event.endDate = endDatePicker.date
             event.course = course
             event.type = segmentController.selectedSegmentIndex
             event.reminderID = UUID().uuidString
+            event.duration = Date.getDifference(initial: event.date, final: event.endDate)
             
             if reminderSwitch.isOn {
                 // Schedule a notification.
@@ -166,18 +148,15 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         else if(self.operation == "edit" || self.operation == "show") {
             try! self.realm.write {
                 event!.title = titleTextField.text
-                event!.duration = Float(durationTextField.text!)!
                 event!.course = course
                 event!.date = dateFormatter.date(from: dateLabel.text!)
                 event!.endDate = dateFormatter.date(from: endDateLabel.text!)
                 event!.type = segmentController.selectedSegmentIndex
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 
                 // Remove any existing notifications for this event.
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
                 
-                
-                
-                self.coursePicker.selectedRow(inComponent: )
                 if reminderSwitch.isOn {
                     // Schedule a notification.
                     event!.reminderDate = reminderPicker.date
@@ -277,7 +256,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         self.courseLabel.isEnabled = false
         self.dateLabel.isEnabled = false
         self.endDateLabel.isEnabled = false
-        self.durationTextField.isEnabled = false
         
         self.courses = self.realm.objects(Course.self).filter("quarter.current = true")
         
@@ -285,7 +263,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         // Text field setup
         self.titleTextField.delegate = self
-        self.durationTextField.delegate = self
         
         // Course picker setup
         self.coursePicker.showsSelectionIndicator = true
@@ -309,7 +286,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         else if (self.operation == "edit" || self.operation == "show") {
             self.pageTitleTextField.title = self.event!.title
             self.titleTextField.text = self.event!.title
-            self.durationTextField.text = "\(self.event!.duration)"
             self.dateLabel.text = dateFormatter.string(from: self.event!.date)
             self.endDateLabel.text = dateFormatter.string(from: self.event!.endDate)
             self.courseLabel.text = self.event!.course.identifier
@@ -408,11 +384,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             if (dateLabel.text?.isEmpty)! {
                 datePicker.date = (Date())
                 dateLabel.text = dateFormatter.string(from: datePicker.date)
-                if (endDateLabel.text?.isEmpty)! == false {
-                    dur = getDuration(date1: datePicker.date, date2: endDatePicker.date)
-                    self.durationTextField.text = String(dur)
-                }
-                
+
                 checkAllTextFields()
             }
             
@@ -441,11 +413,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 if (endDateLabel.text?.isEmpty)! {
                     endDatePicker.date = datePicker.date.addingTimeInterval(900)
                     endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
-                    
-                    if (dateLabel.text?.isEmpty)! == false {
-                        dur = getDuration(date1: datePicker.date, date2: endDatePicker.date)
-                        self.durationTextField.text = String(dur)
-                    }
                     
                     checkAllTextFields()
                 }
