@@ -171,6 +171,8 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
             if (deadlineDateLabel.text?.isEmpty)! {
                 deadlineDateLabel.text = dateFormatter.string(from: Date())
             }
+            
+            checkAllTextFields()
         }
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in

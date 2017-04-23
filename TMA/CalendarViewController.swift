@@ -277,7 +277,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     textField.keyboardType = .decimalPad
                 }
                 
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
                     
                     if textField.text != "" {

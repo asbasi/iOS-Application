@@ -283,7 +283,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     textField.keyboardType = .decimalPad
                 }
 
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
 
                     if textField.text != "" {
@@ -292,6 +292,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         log.title = event.title
                         log.duration = Float(textField.text!)!
                         log.date = event.date
+                        log.endDate = event.endDate
                         log.course = event.course
                         log.type = event.type
 
@@ -395,7 +396,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             textField.keyboardType = .decimalPad
         }
         
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
             let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
             
             if textField.text != "" {
