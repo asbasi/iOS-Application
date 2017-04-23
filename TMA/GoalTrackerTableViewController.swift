@@ -9,6 +9,7 @@
 import UIKit
 import EventKit
 import RealmSwift
+import UserNotifications
 
 class GoalTrackerViewCell: UITableViewCell {
     @IBOutlet weak var day: UILabel!
@@ -68,7 +69,9 @@ class GoalTrackerTableViewController: UITableViewController {
                     
                     let events = findFreeTimes(onDate: date, withEvents: calEvents)
                     
-                    freeTimes.append(events)
+                    if(events.count > 0) {
+                        freeTimes.append(events)
+                    }
                 }
             }
         }
@@ -130,6 +133,10 @@ class GoalTrackerTableViewController: UITableViewController {
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"
 
+        // Just in case. Was getting some weird nil values when unwrapping.
+        populateFreeTimes()
+        populateAllocatedTimes()
+        
         var date: Date!
         if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
             if allocatedTimes[section].count != 0 {
@@ -208,18 +215,73 @@ class GoalTrackerTableViewController: UITableViewController {
         
         self.performSegue(withIdentifier: "manageEvent", sender: nil)
     }
-
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let event = self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES ? self.allocatedTimes[index.section][index.row] : self.freeTimes[index.section][index.row]
+            
+            let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                // Remove any pending notifications for the event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
+                
+                if let id = event.calEventID {
+                    deleteEventFromCalendar(withID: id)
+                }
+                
+                try! self.realm.write {
+                    
+                    if self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES {
+                        self.allocatedTimes[index.section].remove(at: index.row)
+                        
+                        if self.allocatedTimes[index.section].count == 0 {
+                            self.allocatedTimes.remove(at: index.section)
+                        }
+                    }
+                    else {
+                        self.freeTimes[index.section].remove(at: index.row)
+                        
+                        if self.freeTimes[index.section].count == 0 {
+                            self.freeTimes.remove(at: index.section)
+                        }
+                    }
+                    
+                    if let log = event.log {
+                        self.realm.delete(log)
+                    }
+                    
+                    self.realm.delete(event)
+                }
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+            })
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
+        }//end delete
+        delete.backgroundColor = .red
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            
+            self.selectedEvent = self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES ? self.allocatedTimes[index.section][index.row] : self.freeTimes[index.section][index.row]
+            
+            self.performSegue(withIdentifier: "manageEvent", sender: nil)
+        }
+        edit.backgroundColor = .blue
+        
+        return [delete, edit]
+    }*/
 
     // MARK: - Navigation
 
@@ -232,12 +294,9 @@ class GoalTrackerTableViewController: UITableViewController {
             var manageEventTableViewController = ManageEventTableViewController.init()
             manageEventTableViewController = navigation.viewControllers[0] as! ManageEventTableViewController
             
-            if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
-                
-            }
-            else {
-                
-            }
+            manageEventTableViewController.event = selectedEvent!
+            manageEventTableViewController.goal = self.goal
+            manageEventTableViewController.type = segmentController.selectedSegmentIndex == ALLOCATED_TIMES ? "alloc" : "free"
         }
     }
 }

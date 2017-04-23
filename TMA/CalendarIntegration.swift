@@ -51,55 +51,46 @@ func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
 
 func createCalendar(withTitle title: String) -> String? {
     var identifier: String?
-    var flag: Bool = false
     
-    eventStore.requestAccess(to: .event, completion:
-        { (granted, error) in
-            if granted {
-                // Create a local calendar.
-                let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
-                
-                newCalendar.title = title
-                
-                let sourcesInEventStore = eventStore.sources
-                
-                var foundSource: Bool = false
-                
-                // If iCloud is configured use that as the source.
-                for source in sourcesInEventStore {
-                    if(source.sourceType == EKSourceType.calDAV && source.title == "iCloud") {
-                        newCalendar.source = source
-                        foundSource = true
-                    }
-                }
-                
-                // Otherwise use the local source.
-                if(!foundSource) {
-                    for source in sourcesInEventStore {
-                        if(source.sourceType == EKSourceType.local) {
-                            newCalendar.source = source
-                        }
-                    }
-                }
-                
-                do {
-                    try eventStore.saveCalendar(newCalendar, commit: true)
-                    UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: calendarKey);
-                    
-                    identifier = newCalendar.calendarIdentifier
-                    flag = true
-                }
-                catch {
-                    let alert = UIAlertController(title: "Calendar could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
-                    let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                    alert.addAction(OKAction)
-                    
-                    UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-                }
+    // Create a local calendar.
+    let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
+    
+    newCalendar.title = title
+    
+    let sourcesInEventStore = eventStore.sources
+    
+    var foundSource: Bool = false
+    
+    // If iCloud is configured use that as the source.
+    for source in sourcesInEventStore {
+        if(source.sourceType == EKSourceType.calDAV && source.title == "iCloud") {
+            newCalendar.source = source
+            foundSource = true
+        }
+    }
+    
+    // Otherwise use the local source.
+    if(!foundSource) {
+        for source in sourcesInEventStore {
+            if(source.sourceType == EKSourceType.local) {
+                newCalendar.source = source
             }
-    })
+        }
+    }
     
-    while(!flag) {
+    do {
+        try eventStore.saveCalendar(newCalendar, commit: true)
+        UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: calendarKey);
+        
+        identifier = newCalendar.calendarIdentifier
+
+    }
+    catch {
+        let alert = UIAlertController(title: "Calendar could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(OKAction)
+        
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
     return identifier
@@ -107,83 +98,64 @@ func createCalendar(withTitle title: String) -> String? {
 
 func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
     
-    var flag: Bool = false;
     var identifier: String?
     
-    eventStore.requestAccess(to: .event, completion:
-        { (granted, error) in
-            if granted {
-                if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
-                    
-                    // Create the calendar event.
-                    let newEvent = EKEvent(eventStore: eventStore)
-                    
-                    newEvent.calendar = calendarForEvent
-                    newEvent.title = "\(event.title!) (\(event.course.title!))"
-                    newEvent.startDate = event.date
-                    
-                    var components = DateComponents()
-                    components.setValue(Int(event.duration), for: .hour)
-                    components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-                    newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-                    
-                    // Save the event in the calendar.
-                    do {
-                        try eventStore.save(newEvent, span: .thisEvent, commit: true)
-                        identifier = newEvent.eventIdentifier
-                        
-                        flag = true
-                    }
-                    catch {
-                        let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
-                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                        alert.addAction(OKAction)
-                        
-                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-                        
-                        flag = true
-                    }
-                }
-            }
-    })
-    
-    while(!flag) {
+    if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
+        
+        // Create the calendar event.
+        let newEvent = EKEvent(eventStore: eventStore)
+        
+        newEvent.calendar = calendarForEvent
+        newEvent.title = "\(event.title!) (\(event.course.title!))"
+        newEvent.startDate = event.date
+        
+        var components = DateComponents()
+        components.setValue(Int(event.duration), for: .hour)
+        components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
+        newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
+        
+        // Save the event in the calendar.
+        do {
+            try eventStore.save(newEvent, span: .thisEvent, commit: true)
+            identifier = newEvent.eventIdentifier
+        }
+        catch {
+            let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(OKAction)
+            
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+        }
     }
     
     return identifier
 }
 
 func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
-    eventStore.requestAccess(to: .event, completion:
-        { (granted, error) in
-            if granted {
-                
-                if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
-                    calEvent.title = "\(event.title!) (\(event.course.title!))"
-                    calEvent.startDate = event.date
-                    
-                    calEvent.endDate = Date.getEndDate(fromStart: event.date, withDuration: event.duration)
+    
+    if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
+        calEvent.title = "\(event.title!) (\(event.course.title!))"
+        calEvent.startDate = event.date
+        
+        calEvent.endDate = Date.getEndDate(fromStart: event.date, withDuration: event.duration)
 
-                    do {
-                        try eventStore.save(calEvent, span: .thisEvent, commit: true)
-                    }
-                    catch {
-                        let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
-                        let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                        alert.addAction(OKAction)
-                        
-                        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-                    }
-                }
-                else {
-                    // Event with identifier doesn't exist so make it.
-                    try! realm.write {
-                        event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
-                    }
-                }
-                
-            }
-    })
+        do {
+            try eventStore.save(calEvent, span: .thisEvent, commit: true)
+        }
+        catch {
+            let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(OKAction)
+            
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+        }
+    }
+    else {
+        // Event with identifier doesn't exist so make it.
+        try! realm.write {
+            event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
+        }
+    }
 }
 
 func deleteEventFromCalendar(withID eventID: String) {
@@ -296,6 +268,7 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
             
             let event: Event = Event()
             event.date = start
+            event.endDate = range.value.start
             event.duration = Date.getDifference(initial: start, final: range.value.start)
             
             events.append(event)

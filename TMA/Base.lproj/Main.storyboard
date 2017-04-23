@@ -2391,7 +2391,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Optional Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qc-jv-uDS">
-                                            <rect key="frame" x="8" y="25" width="71" height="21"/>
+                                            <rect key="frame" x="8" y="25" width="190" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2440,7 +2440,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RAi-wW-CNm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4828" y="1446"/>
+            <point key="canvasLocation" x="4828" y="1445.1274362818592"/>
         </scene>
         <!--Plan Event-->
         <scene sceneID="xW9-pg-oOv">
@@ -2454,7 +2454,7 @@
                             <tableViewSection headerTitle="Time" id="sXW-lD-98D">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mkg-G0-49i">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mkg-G0-49i" id="x9p-a9-1B1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -2478,7 +2478,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="216" id="eLS-JQ-HX2">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="216"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="375" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eLS-JQ-HX2" id="zfe-xx-K6A">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
@@ -2490,12 +2490,15 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="514605906.594401">
                                                         <!--2017-04-23 02:05:06 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="setStartDate:" destination="efZ-9F-Bo0" eventType="valueChanged" id="3Yh-FF-7f5"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="JPO-UZ-9tl">
-                                        <rect key="frame" x="0.0" y="316" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="315.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JPO-UZ-9tl" id="VYH-K6-iN0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -2519,7 +2522,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="216" id="46K-Nt-0MD">
-                                        <rect key="frame" x="0.0" y="360" width="375" height="216"/>
+                                        <rect key="frame" x="0.0" y="359.5" width="375" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="46K-Nt-0MD" id="Ctf-HR-BoJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
@@ -2531,6 +2534,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="514605915.512133">
                                                         <!--2017-04-23 02:05:15 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="setEndDate:" destination="efZ-9F-Bo0" eventType="valueChanged" id="OU2-EK-lAn"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -2540,7 +2546,7 @@
                             <tableViewSection headerTitle="" id="nVV-KE-prl">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Res-RJ-lRn">
-                                        <rect key="frame" x="0.0" y="612" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="611.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Res-RJ-lRn" id="mci-6c-TF3">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -2565,8 +2571,24 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Plan Event" id="w0W-BR-8oB">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="a0m-x9-iSo"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="a0m-x9-iSo">
+                            <connections>
+                                <action selector="cancel:" destination="efZ-9F-Bo0" id="Rkj-ic-VGa"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="TK3-tv-Y3R">
+                            <connections>
+                                <action selector="save:" destination="efZ-9F-Bo0" id="7N8-Hv-wQa"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="bottomLabel" destination="CIi-a6-lq9" id="5Ww-3g-0VC"/>
+                        <outlet property="endDateLabel" destination="4bB-zr-dwE" id="Ddu-he-iBd"/>
+                        <outlet property="endDatePicker" destination="YvS-84-hiW" id="rFQ-lN-pkN"/>
+                        <outlet property="startDateLabel" destination="gpS-Hv-rJ3" id="ViZ-oJ-bCn"/>
+                        <outlet property="startDatePicker" destination="qD7-Pb-GHF" id="FfC-IV-Keq"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YiC-wA-qUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

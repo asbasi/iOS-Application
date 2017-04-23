@@ -13,8 +13,8 @@ import EventKit
 class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     let realm = try! Realm()
-    let eventStore = EKEventStore();
-    var dur: Double = 0.0
+    let eventStore = EKEventStore()
+    
     @IBOutlet weak var segmentController: UISegmentedControl!
     
     @IBOutlet weak var titleTextField: UITextField!
@@ -178,67 +178,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
-        if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
-            
-            // Create the calendar event.
-            let newEvent = EKEvent(eventStore: self.eventStore)
-            
-            newEvent.calendar = calendarForEvent
-            newEvent.title = "\(event.title!) (\(event.course.title!))"
-            newEvent.startDate = event.date
-            
-            var components = DateComponents()
-            components.setValue(Int(event.duration), for: .hour)
-            components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-            newEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-            
-            // Save the event in the calendar.
-            do {
-                try self.eventStore.save(newEvent, span: .thisEvent, commit: true)
-                
-                return newEvent.eventIdentifier
-            }
-            catch {
-                let alert = UIAlertController(title: "Event could not save", message: (error as Error).localizedDescription, preferredStyle: .alert)
-                let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                alert.addAction(OKAction)
-                
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-        return nil
-    }
-    
-    func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
-        if let calEvent = eventStore.event(withIdentifier: event.calEventID) {
-            calEvent.title = "\(event.title!) (\(event.course.title!))"
-            calEvent.startDate = event.date
-            
-            var components = DateComponents()
-            components.setValue(Int(event.duration), for: .hour)
-            components.setValue(Int(round(60 * (event.duration - floor(event.duration)))), for: .minute)
-            calEvent.endDate = Calendar.current.date(byAdding: components, to: event.date)!
-            
-            do {
-                try self.eventStore.save(calEvent, span: .thisEvent, commit: true)
-            }
-            catch {
-                let alert = UIAlertController(title: "Event could not edited", message: (error as Error).localizedDescription, preferredStyle: .alert)
-                let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                alert.addAction(OKAction)
-                
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-        else {
-            // Event with identifier doesn't exist so make it.
-            try! self.realm.write {
-                event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier)
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -417,7 +356,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     checkAllTextFields()
                 }
                 
-                if !datePicker.isHidden {
+                if !endDatePicker.isHidden {
                     coursePicker.isHidden = true
                     datePicker.isHidden = true
                     reminderPicker.isHidden = true
