@@ -21,7 +21,11 @@ class GoalTrackerTableViewController: UITableViewController {
     let realm = try! Realm()
     let eventStore = EKEventStore()
     
+    var allocatedTimes = [[Event]]()
     var freeTimes = [[Event]]()
+    
+    private let ALLOCATED_TIMES = 0
+    private let FREE_TIMES = 1
     
     var goal: Goal!
     
@@ -29,40 +33,77 @@ class GoalTrackerTableViewController: UITableViewController {
     
     var pageTitle: String?
     
+    @IBOutlet weak var segmentController: UISegmentedControl!
+    
+    @IBAction func segmentToggled(_ sender: Any) {
+        self.populateFreeTimes()
+        self.populateAllocatedTimes()
+        
+        self.tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navBar.title = pageTitle
     }
-
     
     private func populateFreeTimes() {
         freeTimes = [[Event]]()
         
         if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
             if let calendar = getCalendar(withIdentifier: identifier as! String) {
+                //let calendars = eventStore.calendars(for: .event)
+            
                 for offset in 0...6 {
                     
                     var components = DateComponents()
                     components.day = offset
                     let date = Calendar.current.date(byAdding: components, to: Date())!
                     
+                    //let calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
                     let calEvents = getCalendarEvents(forDate: date, fromCalendars: [calendar])
-                    freeTimes.append(findFreeTimes(onDate: date, withEvents: calEvents))
                     
+                    let events = findFreeTimes(onDate: date, withEvents: calEvents)
+                    
+                    freeTimes.append(events)
                 }
-                
             }
+        }
+    }
+    
+    private func populateAllocatedTimes() {
+        allocatedTimes = [[Event]]()
+        
+        // Get all events related to the course.
+        let events = self.realm.objects(Event.self).filter("course.identifier = '\(self.goal.course.identifier!)'").sorted(byKeyPath: "date", ascending: true)
+        
+        var allDates = [Date]()
+        
+        for event in events {
+            let date = Calendar.current.startOfDay(for: event.date)
+            
+            if !allDates.contains(date) && date >= Calendar.current.startOfDay(for: Date()) {
+                allDates.append(date)
+            }
+        }
+        
+        for dateBegin in allDates {
+            var components = DateComponents()
+            components.day = 1
+            let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+            
+            allocatedTimes.append(Array(events.filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
-        // TODO: Check if the course (and by extension the goal) still exists before doing any of this.
-        // If not, we need to dismiss the view.
+        
+        checkCalendarAuthorizationStatus()
         
         self.populateFreeTimes()
+        self.populateAllocatedTimes()
         
         self.tableView.reloadData()
     }
@@ -82,33 +123,69 @@ class GoalTrackerTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEEE"
         
-        if freeTimes[section].count != 0 {
-            return dayFormatter.string(from: freeTimes[section][0].date)
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM d"
+
+        var date: Date!
+        if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
+            if allocatedTimes[section].count != 0 {
+                date = self.allocatedTimes[section][0].date
+            }
+        }
+        else {
+            if freeTimes[section].count != 0 {
+                date = self.freeTimes[section][0].date
+            }
+        }
+        
+        let strDate = formatter.string(from: date!)
+        if Calendar.current.isDateInToday(date) {
+            return "Today (\(strDate))"
+        }
+        else if Calendar.current.isDateInTomorrow(date) {
+            return "Tommorow (\(strDate))"
         }
 
-        return nil
+        return strDate
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return freeTimes.count
+        if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
+            return allocatedTimes.count
+        }
+        else {
+            return freeTimes.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return freeTimes[section].count
+        if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
+            return allocatedTimes[section].count
+        }
+        else {
+            return freeTimes[section].count
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
 
-        let event = freeTimes[indexPath.section][indexPath.row]
+        var event: Event
+        
+        if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
+            event = allocatedTimes[indexPath.section][indexPath.row]
+            cell.title?.text = event.title
+        }
+        else {
+            event = freeTimes[indexPath.section][indexPath.row]
+            cell.title?.text = "Free"
+        }
+        
         let dayFormatter = DateFormatter()
         dayFormatter.dateFormat = "EEEE"
         cell.day?.text = dayFormatter.string(from: event.date )
-        
-        cell.title?.text = "Free"
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
@@ -122,6 +199,10 @@ class GoalTrackerTableViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 
     /*

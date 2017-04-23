@@ -87,7 +87,7 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
                 goal.title = titleTextField.text
                 goal.duration = Float(durationTextField.text!)!
                 goal.deadline = deadlineDatePicker.date
-                goal.course = self.course
+                goal.course = self.goal.course
             }
             
         }

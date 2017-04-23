@@ -187,6 +187,7 @@ class GoalTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 else if segue.identifier! == "editGoal" {
                     goalAddViewController.operation = "edit"
                     goalAddViewController.goal = goalToEdit!
+                    goalAddViewController.course = self.course
                 }
             }
         }
