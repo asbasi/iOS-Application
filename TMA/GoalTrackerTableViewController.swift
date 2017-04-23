@@ -81,7 +81,7 @@ class GoalTrackerTableViewController: UITableViewController {
         allocatedTimes = [[Event]]()
         
         // Get all events related to the course.
-        let events = self.realm.objects(Event.self).filter("course.identifier = '\(self.goal.course.identifier!)'").sorted(byKeyPath: "date", ascending: true)
+        let events = self.realm.objects(Event.self).filter("goal.course.quarter.current = true AND goal.title = '\(self.goal.title!)'").sorted(byKeyPath: "date", ascending: true)
         
         var allDates = [Date]()
         
