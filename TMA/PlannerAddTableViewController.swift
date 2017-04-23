@@ -314,7 +314,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         else if dateIndexPath == indexPath {
             
             datePicker.isHidden = !datePicker.isHidden
-            
+            if tableView.cellForRow(at: dateIndexPath)!.backgroundColor != UIColor.white {
+                tableView.cellForRow(at: dateIndexPath)!.backgroundColor = UIColor.white
+            }
             //set  maximum time
             if (endDateLabel.text?.isEmpty)! == false {
                 datePicker.maximumDate = endDatePicker.date.addingTimeInterval(-minTimeDifference)
@@ -340,6 +342,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 dateAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(dateAlert, animated: true, completion: nil)
                 
+                tableView.cellForRow(at: dateIndexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
                 
             else{
