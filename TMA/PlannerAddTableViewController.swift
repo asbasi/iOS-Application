@@ -71,7 +71,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         }
     }
     
-    
+    /*
     private func checkAllTextFields() {
         
         if ((titleTextField.text?.isEmpty)! || (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)! || (endDateLabel.text?.isEmpty)!) {
@@ -80,25 +80,31 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true;
         }
-    }
+    }*/
     
     @IBAction func eventTitleChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.white
+        }
+        
     }
     
     @IBAction func courseLabelChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+        }
     }
     
     @IBAction func dateLabelChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((dateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+        }
     }
     
     @IBAction func endDateLabelChanged(_ sender: Any) {
-        checkAllTextFields()
-    }
-    @IBAction func durationTextFieldChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+        }
     }
     
     var operation: String = ""
@@ -112,72 +118,99 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     @IBAction func save(_ sender: Any) {
-        //get the course
-        let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
         
-        if(self.operation == "add") {
-            let event = Event()
+        if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||
+            (self.dateLabel.text?.isEmpty)! || (self.endDateLabel.text?.isEmpty)!{
             
-            event.title = titleTextField.text
-            event.date = datePicker.date
-            event.endDate = endDatePicker.date
-            event.course = course
-            event.type = segmentController.selectedSegmentIndex
-            event.reminderID = UUID().uuidString
-            event.duration = Date.getDifference(initial: event.date, final: event.endDate)
+            let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
-            if reminderSwitch.isOn {
-                // Schedule a notification.
-                event.reminderDate = reminderPicker.date
-                let delegate = UIApplication.shared.delegate as? AppDelegate
-                delegate?.scheduleNotifcation(at: event.reminderDate!, title: event.title, body: "Reminder!", identifier: event.reminderID)
-            }
-            else
-            {
-                event.reminderDate = nil
+            if (self.titleTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
-            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
-                
-                event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier as! String)
+            if (self.courseLabel.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
-            Helpers.DB_insert(obj: event)
+            if (self.dateLabel.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
             
+            if (self.endDateLabel.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
         }
-        else if(self.operation == "edit" || self.operation == "show") {
-            try! self.realm.write {
-                event!.title = titleTextField.text
-                event!.course = course
-                event!.date = dateFormatter.date(from: dateLabel.text!)
-                event!.endDate = dateFormatter.date(from: endDateLabel.text!)
-                event!.type = segmentController.selectedSegmentIndex
-                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+        
+        else {
+            //get the course
+            let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
+            
+            if(self.operation == "add") {
+                let event = Event()
                 
-                // Remove any existing notifications for this event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
+                event.title = titleTextField.text
+                event.date = datePicker.date
+                event.endDate = endDatePicker.date
+                event.course = course
+                event.type = segmentController.selectedSegmentIndex
+                event.reminderID = UUID().uuidString
+                event.duration = Date.getDifference(initial: event.date, final: event.endDate)
                 
                 if reminderSwitch.isOn {
                     // Schedule a notification.
-                    event!.reminderDate = reminderPicker.date
+                    event.reminderDate = reminderPicker.date
                     let delegate = UIApplication.shared.delegate as? AppDelegate
-                    delegate?.scheduleNotifcation(at: event!.reminderDate!, title: event!.title, body: "Reminder!", identifier: event!.reminderID)
+                    delegate?.scheduleNotifcation(at: event.reminderDate!, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
                 else
                 {
-                    event!.reminderDate = nil
+                    event.reminderDate = nil
+                }
+                
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier as! String)
+                }
+                
+                Helpers.DB_insert(obj: event)
+                
+            }
+            else if(self.operation == "edit" || self.operation == "show") {
+                try! self.realm.write {
+                    event!.title = titleTextField.text
+                    event!.course = course
+                    event!.date = dateFormatter.date(from: dateLabel.text!)
+                    event!.endDate = dateFormatter.date(from: endDateLabel.text!)
+                    event!.type = segmentController.selectedSegmentIndex
+                    event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                    
+                    // Remove any existing notifications for this event.
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
+                    
+                    if reminderSwitch.isOn {
+                        // Schedule a notification.
+                        event!.reminderDate = reminderPicker.date
+                        let delegate = UIApplication.shared.delegate as? AppDelegate
+                        delegate?.scheduleNotifcation(at: event!.reminderDate!, title: event!.title, body: "Reminder!", identifier: event!.reminderID)
+                    }
+                    else
+                    {
+                        event!.reminderDate = nil
+                    }
+                }
+                
+                // Edit Calendar Entry.
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
                 }
             }
             
-            // Edit Calendar Entry.
-            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
-                
-                editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
-            }
+            self.dismissKeyboard()
+            self.dismiss(animated: true, completion: nil)
         }
-        
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -242,7 +275,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         self.hideKeyboardWhenTapped()
         
         // Hide the save button.
-        self.checkAllTextFields()
+        //self.checkAllTextFields()
     }
     
     override func didReceiveMemoryWarning() {
@@ -302,7 +335,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     courseLabel.text = courses[0].identifier
                 }
                 
-                checkAllTextFields()
+                if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
+                    tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+                }
             }
             
             if !coursePicker.isHidden {
@@ -326,7 +361,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 datePicker.date = (Date())
                 dateLabel.text = dateFormatter.string(from: datePicker.date)
 
-                checkAllTextFields()
+                if ((dateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
+                    tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+                }
             }
             
             if !datePicker.isHidden {
@@ -356,7 +393,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     endDatePicker.date = datePicker.date.addingTimeInterval(900)
                     endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
                     
-                    checkAllTextFields()
+                    if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
+                        tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+                    }
                 }
                 
                 if !endDatePicker.isHidden {
