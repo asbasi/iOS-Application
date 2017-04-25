@@ -26,7 +26,7 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var deadlineDateLabel: UITextField!
     @IBOutlet weak var deadlineDatePicker: UIDatePicker!
-    
+    /*
     private func checkAllTextFields() {
         if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (deadlineDateLabel.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
@@ -34,28 +34,32 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
         else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true;
         }
-    }
+    }*/
 
     
     @IBAction func durationChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((durationTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+        }
     }
     @IBAction func GoalTitleChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.white
+        }
     }
-
-    @IBAction func courseLabelChanged(_ sender: Any) {
-        checkAllTextFields()
-    }
+    
     
     
     @IBAction func setDate(_ sender: Any) {
         deadlineDateLabel.text = dateFormatter.string(from: deadlineDatePicker.date)
-        checkAllTextFields()
+        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+        }
+        //checkAllTextFields()
     }
     
     @IBAction func durationTitleChanged(_ sender: Any) {
-        checkAllTextFields()
+        //checkAllTextFields()
     }
     
     var operation: String = ""
@@ -68,32 +72,53 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func save(_ sender: Any) {
-        if(self.operation == "add") {
-            let goal = Goal()
+        if ((titleTextField.text?.isEmpty)! || (durationTextField.text?.isEmpty)! || (deadlineDateLabel.text?.isEmpty)!) {
             
-            goal.type = segmentController.selectedSegmentIndex
-            goal.title = titleTextField.text
-            goal.duration = Float(durationTextField.text!)!
-            goal.deadline = deadlineDatePicker.date
-            goal.course = self.course
+            let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
-            Helpers.DB_insert(obj: goal)
+            if (titleTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
+            
+            if (durationTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
+            
+            if(deadlineDateLabel.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
         }
-            
-        else if(self.operation == "edit" || self.operation == "show") {
-            try! self.realm.write {
 
+        else {
+            if(self.operation == "add") {
+                let goal = Goal()
+                
                 goal.type = segmentController.selectedSegmentIndex
                 goal.title = titleTextField.text
                 goal.duration = Float(durationTextField.text!)!
                 goal.deadline = deadlineDatePicker.date
-                goal.course = self.goal.course
+                goal.course = self.course
+                
+                Helpers.DB_insert(obj: goal)
+            }
+                
+            else if(self.operation == "edit" || self.operation == "show") {
+                try! self.realm.write {
+
+                    goal.type = segmentController.selectedSegmentIndex
+                    goal.title = titleTextField.text
+                    goal.duration = Float(durationTextField.text!)!
+                    goal.deadline = deadlineDatePicker.date
+                    goal.course = self.goal.course
+                }
+                
             }
             
+            self.dismissKeyboard()
+            self.dismiss(animated: true, completion: nil)
         }
-        
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -136,7 +161,7 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
         self.hideKeyboardWhenTapped()
         
         // Hide the save button.
-        self.checkAllTextFields()
+        //self.checkAllTextFields()
     }
     
     override func didReceiveMemoryWarning() {
@@ -172,7 +197,10 @@ class GoalAddTableViewController: UITableViewController, UITextFieldDelegate {
                 deadlineDateLabel.text = dateFormatter.string(from: Date())
             }
             
-            checkAllTextFields()
+            if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
+                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+            }
+            //checkAllTextFields()
         }
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
