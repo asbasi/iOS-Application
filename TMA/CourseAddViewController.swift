@@ -15,7 +15,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     let eventStore = EKEventStore();
     
     let colorPickerData = [["None", "Red", "Green", "Blue"]]
-    
+    /*
     func checkAllTextFields() {
         if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;
@@ -23,23 +23,29 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true;
         }
-    }
+    }*/
     
     @IBAction func courseTitleChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((courseTitleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.white
+        }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
-        checkAllTextFields()
+        //checkAllTextFields()
     }
     
     @IBAction func instructorChanged(_ sender: Any) {
-        checkAllTextFields()
+        if ((instructorTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+        }
     }
     
     @IBAction func unitsChanged(_ sender: Any) {
         recommendedHours()
-        checkAllTextFields()
+        if ((unitTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
+        }
     }
     
     private func recommendedHours() {
@@ -96,45 +102,65 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     @IBAction func done(_ sender: Any) {
-    
-        if(editOrAdd=="add"){
-            if isDuplicate() {
-                return
+        if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
+            let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            if (self.unitTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
-            self.course = Course()
-            course!.title = courseTitleTextField.text!
-            course!.identifier = identifierTextField.text!
-            course!.instructor = instructorTextField.text!
-            course!.units = Float(unitTextField.text!)!
-            course!.quarter = quarter
-            course!.color = colorLabel.text!
+            if (self.courseTitleTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
             
-            Helpers.DB_insert(obj: course!)
+            if (self.instructorTextField.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            }
+            
         }
+        else {
         
-        if(editOrAdd=="edit"){
-            try! self.realm.write {
-                
-                if course!.title != courseTitleTextField.text! {
-                    if isDuplicate() {
-                        return
-                    }
-                    else {
-                        course!.title = courseTitleTextField.text!
-                    }
+            if(editOrAdd=="add"){
+                if isDuplicate() {
+                    return
                 }
-
+                
+                self.course = Course()
+                course!.title = courseTitleTextField.text!
                 course!.identifier = identifierTextField.text!
                 course!.instructor = instructorTextField.text!
                 course!.units = Float(unitTextField.text!)!
                 course!.quarter = quarter
                 course!.color = colorLabel.text!
+                
+                Helpers.DB_insert(obj: course!)
             }
-        }
+            
+            if(editOrAdd=="edit"){
+                try! self.realm.write {
+                    
+                    if course!.title != courseTitleTextField.text! {
+                        if isDuplicate() {
+                            return
+                        }
+                        else {
+                            course!.title = courseTitleTextField.text!
+                        }
+                    }
 
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
+                    course!.identifier = identifierTextField.text!
+                    course!.instructor = instructorTextField.text!
+                    course!.units = Float(unitTextField.text!)!
+                    course!.quarter = quarter
+                    course!.color = colorLabel.text!
+                }
+            }
+
+            self.dismissKeyboard()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -175,7 +201,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
         self.hideKeyboardWhenTapped()
         
-        checkAllTextFields()
+        //checkAllTextFields()
         
         // Do any additional setup after loading the view.
     }
