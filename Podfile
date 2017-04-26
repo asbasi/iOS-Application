@@ -11,5 +11,6 @@ target 'TMA' do
   pod 'KDCircularProgress'
   pod 'FSCalendar'
   pod 'PureLayout'
+  pod 'Alamofire', '~> 4.4'
 
 end

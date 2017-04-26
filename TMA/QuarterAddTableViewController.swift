@@ -112,13 +112,14 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
             
             // Make sure no other quarter is set to current.
             if(currentSwitch.isOn) {
-                try! self.realm.write {
-                    let currQuarter = self.realm.objects(Quarter.self).filter("current = true")
-                    
-                    // Another 'current' quarter exists.
-                    if(currQuarter.count == 1) {
-                        currQuarter[0].current = false
-                    }
+                let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
+                
+                // Another 'current' quarter exists.
+                if(currentQuarters.count != 0) {
+                    let alert = UIAlertController(title: "Current Quarter Error", message: "You can only have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
                 }
             }
 

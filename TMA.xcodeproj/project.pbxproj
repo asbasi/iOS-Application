@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0009150B1EAD5628005A6BD3 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0009150A1EAD5628005A6BD3 /* LoginTableViewController.swift */; };
 		00416AD51E47E5DB00DA733D /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00416AD41E47E5DB00DA733D /* Course.swift */; };
 		005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005709AB1E480046008D2D96 /* CourseAddViewController.swift */; };
+		007EE6F51EB0506A00E4CC30 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007EE6F41EB0506A00E4CC30 /* Storage.swift */; };
 		009C4E141E42D37D00260378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E131E42D37D00260378 /* AppDelegate.swift */; };
 		009C4E1B1E42D37D00260378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E191E42D37D00260378 /* Main.storyboard */; settings = {ASSET_TAGS = (Cancel, ); }; };
 		009C4E1D1E42D37D00260378 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 009C4E1C1E42D37D00260378 /* Assets.xcassets */; };
@@ -64,8 +66,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0009150A1EAD5628005A6BD3 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginTableViewController.swift; path = ../LoginTableViewController.swift; sourceTree = "<group>"; };
 		00416AD41E47E5DB00DA733D /* Course.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		005709AB1E480046008D2D96 /* CourseAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseAddViewController.swift; sourceTree = "<group>"; };
+		007EE6F41EB0506A00E4CC30 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		009C4E101E42D37D00260378 /* TMA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		009C4E131E42D37D00260378 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		009C4E1A1E42D37D00260378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				00416AD41E47E5DB00DA733D /* Course.swift */,
 				00DF402B1E47DC930095B2FD /* Event.swift */,
 				00DF402D1E47DDF70095B2FD /* Log.swift */,
+				007EE6F41EB0506A00E4CC30 /* Storage.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -255,6 +260,7 @@
 		6015DBFF1E9F754B005C8009 /* Settings Pages */ = {
 			isa = PBXGroup;
 			children = (
+				0009150A1EAD5628005A6BD3 /* LoginTableViewController.swift */,
 				8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */,
 				8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */,
 				60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */,
@@ -444,6 +450,7 @@
 				604DFBE91EAB079300AD0656 /* CourseStatsViewController.swift in Sources */,
 				8F2CCA191EA7F42C0068B942 /* TutorialViewController.swift in Sources */,
 				8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */,
+				0009150B1EAD5628005A6BD3 /* LoginTableViewController.swift in Sources */,
 				60FD5E351EA5789D00C73B9C /* TimeBlock.swift in Sources */,
 				609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */,
 				8F2CCA211EA7F47B0068B942 /* Tutorial3ViewController.swift in Sources */,
@@ -460,6 +467,7 @@
 				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
+				007EE6F51EB0506A00E4CC30 /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
