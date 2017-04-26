@@ -17,22 +17,53 @@ class CourseStatsViewController: UIViewController {
     var course: Course!
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // ****************************************************************
+    // **                 populateGraphs from the database           **
+    // ****************************************************************
+    func populateGraphs(){
         
-
-        //pieChart.delegate = self as! ChartViewDelegate
+        var studyHours = [Double]()
         pieChart.descriptionText = ""
         pieChart.legend.enabled = false
-        
         let types = ["Study", "Homework", "Project", "Lab", "Other"]
-
-        let unitsSold = [20.0, 4.0, 6.0, 3.0, 12.0]
         
-        setChart(dataPoints: types, values: unitsSold)
+        // Get a list of all the log for the course from the database
+        var sumOfLogHours = [Double]()
+        for i in 0...types.count-1 {
+            let logs = self.realm.objects(Log.self).filter("type = \(i) AND course.identifier = '\(self.course.identifier!)'")
+            var sum = 0.0
+            for log in logs {
+                sum += Double(log.duration)
+            }
+            sumOfLogHours.append(sum)
+        }
+        
+        
+        //filter types and sumOfLogHours so we don't have 0's
+        var filteredTypes = [String]()
+        var filteredSumOfLogHours = [Double]()
+        for i in 0...types.count-1 {
+            if sumOfLogHours[i] != 0 {
+                filteredTypes.append(types[i])
+                filteredSumOfLogHours.append(sumOfLogHours[i])
+            }
+        }
+        
+        
+        // dummy values will be deleted
+//        let unitSold = [20.0, 4.0, 6.0, 3.0, 12.0]
+        
+        setChart(dataPoints: filteredTypes, values: filteredSumOfLogHours)
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        populateGraphs()
     }
     
     func setChart(dataPoints: [String], values: [Double]) {
+        pieChart.entryLabelColor = UIColor.black
         
         
         var dataEntries: [PieChartDataEntry] = []

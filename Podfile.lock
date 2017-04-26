@@ -7,11 +7,11 @@ PODS:
   - FSCalendar (2.7.4)
   - KDCircularProgress (1.5.2)
   - PureLayout (3.0.2)
-  - Realm (2.5.1):
-    - Realm/Headers (= 2.5.1)
-  - Realm/Headers (2.5.1)
-  - RealmSwift (2.5.1):
-    - Realm (= 2.5.1)
+  - Realm (2.6.2):
+    - Realm/Headers (= 2.6.2)
+  - Realm/Headers (2.6.2)
+  - RealmSwift (2.6.2):
+    - Realm (= 2.6.2)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
@@ -29,8 +29,8 @@ SPEC CHECKSUMS:
   FSCalendar: e95995a746acae531c4a7dd636b8393233125ec5
   KDCircularProgress: 12f677b2deb02409ab48c6cae1898d146b8ad549
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Realm: 32f86104d37c8521f864d4274050b38ba6190733
-  RealmSwift: f719e7511c902b8908593e8f143f59e47931bdb6
+  Realm: 29222766425b9f831228f81b63f0e38a97a4d700
+  RealmSwift: d161a80f96cb91ae88391a7d5a9cf08024a7bc8e
 
 PODFILE CHECKSUM: 53b62c80c0fec81e7a764d88886fbe51993cabe8
 
