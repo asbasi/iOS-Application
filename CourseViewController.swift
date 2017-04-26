@@ -229,6 +229,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
 
                 if segue.identifier! == "showStats" {
+                    //minjie
                     let courseDetailViewController = segue.destination as! CourseStatsViewController
                     courseDetailViewController.course = courses[indexPath.row]
                 }
