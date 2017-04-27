@@ -28,7 +28,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     @IBOutlet weak var endDatePicker: FSCalendar!
     
     @IBOutlet weak var pageTitle: UINavigationItem!
-    
+    /*
     private func checkAllTextFields() {
         if (quarterTitle.text?.isEmpty)! {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -36,10 +36,12 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
-    }
+    }*/
     
     @IBAction func quarterTitleChanged(_ sender: Any) {
-        self.checkAllTextFields()
+        if ((quarterTitle.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.white
+        }
     }
     
     private func toggleStartDatePicker() {
@@ -84,59 +86,24 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     
     @IBAction func save(_ sender: Any) {
         
-        if operation == "add" {
-            if isDuplicate() {
-                return
-            }
+        if (self.quarterTitle.text?.isEmpty)! {
             
-            self.quarter = Quarter()
-            quarter!.title = quarterTitle.text!
+            let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             
-            if startDate.text != "" {
-                quarter!.startDate = dateFormatter.date(from: startDate.text!)
+            if (self.quarterTitle.text?.isEmpty)! {
+                tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
-            else {
-                quarter!.startDate = Date()
-            }
-            
-            if endDate.text != "" {
-                quarter!.endDate = dateFormatter.date(from: endDate.text!)
-            }
-            else {
-                var components = DateComponents()
-                components.setValue(2, for: .month)
-                quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
-            }
-            
-            quarter!.current = currentSwitch.isOn
-            
-            // Make sure no other quarter is set to current.
-            if(currentSwitch.isOn) {
-                let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-                
-                // Another 'current' quarter exists.
-                if(currentQuarters.count != 0) {
-                    let alert = UIAlertController(title: "Current Quarter Error", message: "You can only have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            if operation == "add" {
+                if isDuplicate() {
                     return
                 }
-            }
-
-            Helpers.DB_insert(obj: quarter!)
-        }
-        else if operation == "edit" {
-            try! self.realm.write {
                 
-                if quarter!.title != quarterTitle.text!
-                {
-                    if isDuplicate() {
-                        return
-                    }
-                    else {
-                        quarter!.title = quarterTitle.text!
-                    }
-                }
+                self.quarter = Quarter()
+                quarter!.title = quarterTitle.text!
                 
                 if startDate.text != "" {
                     quarter!.startDate = dateFormatter.date(from: startDate.text!)
@@ -151,25 +118,72 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 else {
                     var components = DateComponents()
                     components.setValue(2, for: .month)
-                    components.setValue(14, for: .day)
                     quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
                 }
                 
+                quarter!.current = currentSwitch.isOn
+                
                 // Make sure no other quarter is set to current.
                 if(currentSwitch.isOn) {
-                    let quarters = self.realm.objects(Quarter.self)
+                    let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
                     
-                    for quarter in quarters {
-                        quarter.current = false
+                    // Another 'current' quarter exists.
+                    if(currentQuarters.count != 0) {
+                        let alert = UIAlertController(title: "Current Quarter Error", message: "You can only have one current quarter.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        return
                     }
                 }
-                
-                quarter!.current = currentSwitch.isOn
+
+                Helpers.DB_insert(obj: quarter!)
             }
+            else if operation == "edit" {
+                try! self.realm.write {
+                    
+                    if quarter!.title != quarterTitle.text!
+                    {
+                        if isDuplicate() {
+                            return
+                        }
+                        else {
+                            quarter!.title = quarterTitle.text!
+                        }
+                    }
+                    
+                    if startDate.text != "" {
+                        quarter!.startDate = dateFormatter.date(from: startDate.text!)
+                    }
+                    else {
+                        quarter!.startDate = Date()
+                    }
+                    
+                    if endDate.text != "" {
+                        quarter!.endDate = dateFormatter.date(from: endDate.text!)
+                    }
+                    else {
+                        var components = DateComponents()
+                        components.setValue(2, for: .month)
+                        components.setValue(14, for: .day)
+                        quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
+                    }
+                    
+                    // Make sure no other quarter is set to current.
+                    if(currentSwitch.isOn) {
+                        let quarters = self.realm.objects(Quarter.self)
+                        
+                        for quarter in quarters {
+                            quarter.current = false
+                        }
+                    }
+                    
+                    quarter!.current = currentSwitch.isOn
+                }
+            }
+            
+            self.dismissKeyboard()
+            self.dismiss(animated: true, completion: nil)
         }
-        
-        self.dismissKeyboard()
-        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
