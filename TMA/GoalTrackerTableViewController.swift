@@ -10,8 +10,22 @@ import UIKit
 import EventKit
 import RealmSwift
 import UserNotifications
+import BEMCheckBox
 
-class GoalTrackerViewCell: UITableViewCell {
+class GoalTrackerAllocatedViewCell : UITableViewCell {
+    @IBOutlet weak var day: UILabel!
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var checkbox: BEMCheckBox!
+    
+    var buttonAction: ((_ sender: GoalTrackerAllocatedViewCell) -> Void)?
+    
+    @IBAction func toggled(_ sender: Any) {
+        self.buttonAction?(self)
+    }
+}
+
+class GoalTrackerFreeViewCell: UITableViewCell {
     @IBOutlet weak var day: UILabel!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -195,35 +209,113 @@ class GoalTrackerTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerCell", for: indexPath) as! GoalTrackerViewCell
-
-        var event: Event
         
-        if segmentController.selectedSegmentIndex == ALLOCATED_TIMES {
-            event = allocatedTimes[indexPath.section][indexPath.row]
-            cell.title?.text = event.title
-        }
-        else {
-            event = freeTimes[indexPath.section][indexPath.row]
+        if self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerAllocatedCell", for: indexPath) as! GoalTrackerAllocatedViewCell
+            
+            let event = allocatedTimes[indexPath.section][indexPath.row]
+            
             cell.title?.text = "Free"
-        }
-        
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEEE"
-        cell.day?.text = dayFormatter.string(from: event.date )
-        
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
-        timeFormatter.timeZone = TimeZone.current
-        
-        if(event.duration == 24.0) {
-            cell.time?.text = "All Day"
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            cell.checkbox.on = event.checked
+            cell.checkbox.boxType = BEMBoxType.square
+            cell.checkbox.onAnimationType = BEMAnimationType.fill
+            cell.buttonAction = { (_ sender: GoalTrackerAllocatedViewCell) -> Void in
+                
+                var path: IndexPath = self.tableView.indexPath(for: sender)!
+                
+                let event = self.allocatedTimes[path.section][path.row]
+                
+                if(event.checked) { // About to be unchecked.
+                    if let log = event.log {
+                        try! self.realm.write {
+                            self.realm.delete(log)
+                            event.log = nil
+                        }
+                    }
+                }
+                else { // About to be checked.
+                    
+                    let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+                    
+                    alert.addTextField { (textField) in
+                        textField.keyboardType = .decimalPad
+                    }
+                    
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+                        let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+                        
+                        if textField.text != "" {
+                            let log = Log()
+                            
+                            log.title = event.title
+                            log.duration = Float(textField.text!)!
+                            log.date = event.date
+                            log.course = event.course
+                            log.type = event.type
+                            
+                            Helpers.DB_insert(obj: log)
+                            
+                            try! self.realm.write {
+                                event.log = log
+                            }
+                        }
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+                    
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                try! self.realm.write {
+                    self.allocatedTimes[path.section][path.row].checked = !self.allocatedTimes[path.section][path.row].checked
+                }
+            }
+            
+            return cell
         }
         else {
-            cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TrackerFreeCell", for: indexPath) as! GoalTrackerFreeViewCell
+
+            let event = freeTimes[indexPath.section][indexPath.row]
+            
+            cell.title?.text = "Free"
+            
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE"
+            cell.day?.text = dayFormatter.string(from: event.date )
+            
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            timeFormatter.timeZone = TimeZone.current
+            
+            if(event.duration == 24.0) {
+                cell.time?.text = "All Day"
+            }
+            else {
+                cell.time?.text = timeFormatter.string(from: event.date ) + " - " + timeFormatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+            }
+            
+            return cell
         }
         
-        return cell
+        return UITableViewCell()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -232,13 +324,18 @@ class GoalTrackerTableViewController: UITableViewController {
         self.performSegue(withIdentifier: "manageEvent", sender: nil)
     }
     
-    /*
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES {
+            return true
+        }
+        return false
+    }
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
-        
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
-            let event = self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES ? self.allocatedTimes[index.section][index.row] : self.freeTimes[index.section][index.row]
+            let event = self.allocatedTimes[index.section][index.row]
             
             let optionMenu = UIAlertController(title: nil, message: "\"\(event.title!)\" will be deleted forever.", preferredStyle: .actionSheet)
             
@@ -275,6 +372,8 @@ class GoalTrackerTableViewController: UITableViewController {
                     
                     self.realm.delete(event)
                 }
+                
+                self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
             
@@ -290,14 +389,14 @@ class GoalTrackerTableViewController: UITableViewController {
         
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             
-            self.selectedEvent = self.segmentController.selectedSegmentIndex == self.ALLOCATED_TIMES ? self.allocatedTimes[index.section][index.row] : self.freeTimes[index.section][index.row]
+            self.selectedEvent = self.allocatedTimes[index.section][index.row]
             
             self.performSegue(withIdentifier: "manageEvent", sender: nil)
         }
         edit.backgroundColor = .blue
         
         return [delete, edit]
-    }*/
+    }
 
     // MARK: - Navigation
 

@@ -87,12 +87,12 @@ class ManageEventTableViewController: UITableViewController {
                     let delegate = UIApplication.shared.delegate as? AppDelegate
                     delegate?.scheduleNotifcation(at: event.date!, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
+            }
+            
+            // Edit Calendar Entry.
+            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                 
-                // Edit Calendar Entry.
-                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
-                    
-                    editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
-                }
+                editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
             }
         }
         
