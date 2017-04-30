@@ -334,7 +334,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                deleteEventFromCalendar(withID: event.calEventID)
+                deleteEventFromCalendar(withID: event.calEventID!)
                 
                 try! self.realm.write {
                     let event: Event = self.events[index.row]

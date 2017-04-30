@@ -203,7 +203,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 
                 // Edit Calendar Entry.
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
-                    
                     editEventInCalendar(event: event!, toCalendar: calendarIdentifier as! String)
                 }
             }

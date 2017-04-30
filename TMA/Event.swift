@@ -14,7 +14,7 @@ class Event: Item {
     dynamic var checked: Bool = false
     dynamic var reminderID: String!
     dynamic var reminderDate: Date? = nil
-    dynamic var calEventID: String!
+    dynamic var calEventID: String? = nil
     
     dynamic var log: Log?
 }

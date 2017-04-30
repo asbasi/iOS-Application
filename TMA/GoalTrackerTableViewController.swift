@@ -54,27 +54,43 @@ class GoalTrackerTableViewController: UITableViewController {
     private func populateFreeTimes() {
         freeTimes = [[Event]]()
         
-        if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
-            if let calendar = getCalendar(withIdentifier: identifier as! String) {
-                //let calendars = eventStore.calendars(for: .event)
+        for offset in 0...6 {
             
-                for offset in 0...6 {
-                    
-                    var components = DateComponents()
-                    components.day = offset
-                    let date = Calendar.current.date(byAdding: components, to: Date())!
-                    
-                    //let calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
-                    let calEvents = getCalendarEvents(forDate: date, fromCalendars: [calendar])
-                    
-                    let events = findFreeTimes(onDate: date, withEvents: calEvents)
-                    
-                    if(events.count > 0) {
-                        freeTimes.append(events)
-                    }
+            var components = DateComponents()
+            components.day = offset
+            let date = Calendar.current.date(byAdding: components, to: Date())!
+            
+            var calEvents: [EKEvent] = []
+            
+            if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+                let calendars = eventStore.calendars(for: .event)
+                calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
+            }
+            else {
+                
+                let startDate = Calendar.current.startOfDay(for: date)
+                
+                var dateComponents = DateComponents()
+                dateComponents.day = 1
+                let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
+                
+                let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [startDate, endDate]).sorted(byKeyPath: "date", ascending: true)
+                
+                for event in inAppEvents {
+                    let item = EKEvent(eventStore: eventStore)
+                    item.startDate = event.date
+                    item.endDate = event.endDate
+                    calEvents.append(item)
                 }
             }
+            
+            let events = findFreeTimes(onDate: date, withEvents: calEvents)
+            
+            if(events.count > 0) {
+                freeTimes.append(events)
+            }
         }
+
     }
     
     private func populateAllocatedTimes() {
