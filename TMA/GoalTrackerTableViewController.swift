@@ -98,7 +98,7 @@ class GoalTrackerTableViewController: UITableViewController {
                 }
             }
             
-            let events = findFreeTimes(onDate: date, withEvents: calEvents)
+            let events = findFreeTimes(onDate: (offset == 0 ? date : Calendar.current.startOfDay(for: date)), withEvents: calEvents)
             
             if(events.count > 0) {
                 freeTimes.append(events)

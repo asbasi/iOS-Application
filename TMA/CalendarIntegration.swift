@@ -300,6 +300,8 @@ func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]
 
 func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
     
+    // NOTE: This function ignores free times for the date if it's before the current time.
+    
     let startDate = Calendar.current.startOfDay(for: date)
     
     var dateComponents = DateComponents()
@@ -312,9 +314,16 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
     // Initialize each of the 30-minute blocks to unallocated.
     var initial: Date = startDate
     while initial != endDate {
+        
         var dateComponents = DateComponents()
         dateComponents.minute = 30
         let final = Calendar.current.date(byAdding: dateComponents, to: initial)!
+        
+        if initial < date
+        {
+            initial = final
+            continue
+        }
         
         freeTimes.append(value: TimeBlock(start: initial, end: final, allocated: false))
         
