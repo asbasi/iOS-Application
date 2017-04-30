@@ -107,9 +107,11 @@ class ManageEventTableViewController: UITableViewController {
         
         endDatePicker.date = event.endDate
         endDateLabel.text = dateFormatter.string(from: event.endDate)
-            
-        startDatePicker.minimumDate = event.date
-        endDatePicker.maximumDate = event.endDate
+        
+        if type == "free" {
+            startDatePicker.minimumDate = event.date
+            endDatePicker.maximumDate = event.endDate
+        }
         
         startDatePicker.isHidden = true
         endDatePicker.isHidden = true
