@@ -13,21 +13,62 @@ import RealmSwift
 class CourseStatsViewController: UIViewController {
     
     @IBOutlet weak var pieChart: PieChartView!
+    @IBOutlet weak var lineChart: LineChartView!
     let realm = try! Realm()
     var course: Course!
     
+    weak var axisFormatDelegate: IAxisValueFormatter?
     
     // ****************************************************************
     // **                 populateGraphs from the database           **
     // ****************************************************************
     func populateGraphs(){
         
-        var studyHours = [Double]()
         pieChart.descriptionText = ""
+        pieChart.noDataText = "No Data."
         pieChart.legend.enabled = false
         let types = ["Study", "Homework", "Project", "Lab", "Other"]
         
-        // Get a list of all the log for the course from the database
+        lineChart.descriptionText = ""
+        lineChart.noDataText = "No Data."
+        
+        //get all the logs and events for the course
+        
+        let startDay = course.quarter.startDate
+        var endDay = Date()
+        if(Date.daysBetween(start: endDay, end: course.quarter.startDate) > 0)
+        {
+            endDay = course.quarter.endDate
+        }
+        let days = Date.daysBetween(start: startDay!, end: endDay)
+        
+        let allLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)'")
+        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)'")
+        
+        var logHours = [Double]()
+        var eventHours = [Double]()
+        
+        
+        for i in 0...days {
+            var lhours = 0.0
+            var ehours = 0.0
+            for log in allLogs {
+                if(Date.daysBetween(start: startDay!, end: log.date) == i) {
+                    lhours += Double(log.duration)
+                }
+            }
+            for event in allEvents {
+                if(Date.daysBetween(start: startDay!, end: event.date) == i) {
+                    ehours += Double(event.duration)
+                }
+            }
+            logHours.append(lhours)
+            eventHours.append(ehours)
+        }
+        
+        setLineChart(values1: logHours, values2: eventHours)
+        
+        // Get a list of all the log for the course from the database #pieChart
         var sumOfLogHours = [Double]()
         for i in 0...types.count-1 {
             let logs = self.realm.objects(Log.self).filter("type = \(i) AND course.identifier = '\(self.course.identifier!)'")
@@ -35,11 +76,12 @@ class CourseStatsViewController: UIViewController {
             for log in logs {
                 sum += Double(log.duration)
             }
+            
             sumOfLogHours.append(sum)
         }
         
         
-        //filter types and sumOfLogHours so we don't have 0's
+        //filter types and sumOfLogHours so we don't have 0's #pieChart
         var filteredTypes = [String]()
         var filteredSumOfLogHours = [Double]()
         for i in 0...types.count-1 {
@@ -49,22 +91,14 @@ class CourseStatsViewController: UIViewController {
             }
         }
         
-        
-        // dummy values will be deleted
+        setPieChart(dataPoints: filteredTypes, values: filteredSumOfLogHours)
 //        let unitSold = [20.0, 4.0, 6.0, 3.0, 12.0]
+//        setPieChart(dataPoints: types, values: unitSold)
+    }
+    
+    func setPieChart(dataPoints: [String], values: [Double]) {
         
-        setChart(dataPoints: filteredTypes, values: filteredSumOfLogHours)
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        populateGraphs()
-    }
-    
-    func setChart(dataPoints: [String], values: [Double]) {
         pieChart.entryLabelColor = UIColor.black
-        
         
         var dataEntries: [PieChartDataEntry] = []
         
@@ -79,8 +113,37 @@ class CourseStatsViewController: UIViewController {
         
         
         pieChartDataSet.colors = ChartColorTemplates.joyful()
+
+    }
+    
+    func setLineChart(values1: [Double], values2: [Double]) {
+        var dataEntries1: [ChartDataEntry] = []
+        var dataEntries2: [ChartDataEntry] = []
+        for i in 0..<values1.count {
+            let dataEntry1 = ChartDataEntry(x: Double(i), y: values1[i])
+            dataEntries1.append(dataEntry1)
+            let dataEntry2 = ChartDataEntry(x: Double(i), y: values2[i])
+            dataEntries2.append(dataEntry2)
+        }
         
-        
+        let logDataSet = LineChartDataSet(values: dataEntries1, label: "Log Hours")
+        logDataSet.axisDependency = .left
+        logDataSet.setColor(UIColor.green)
+        logDataSet.setCircleColor(UIColor.green)
+        let eventDataSet = LineChartDataSet(values: dataEntries2, label: "Event Hours")
+        eventDataSet.axisDependency = .left
+        eventDataSet.setColor(UIColor.red)
+        eventDataSet.setCircleColor(UIColor.red)
+        let dataSets: [LineChartDataSet] = [logDataSet, eventDataSet]
+        let lineData: LineChartData = LineChartData(dataSets: dataSets)
+        self.lineChart.data = lineData
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //axisFormatDelegate = self as! IAxisValueFormatter
+        populateGraphs()
     }
     
     override func didReceiveMemoryWarning() {
