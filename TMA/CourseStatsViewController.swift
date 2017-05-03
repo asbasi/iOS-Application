@@ -42,6 +42,13 @@ class CourseStatsViewController: UIViewController {
         }
         let days = Date.daysBetween(start: startDay!, end: endDay)
         
+        var dayString = [String]()
+        var oneDay = startDay
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "M/d"
+        
+        
         let allLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)'")
         let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)'")
         
@@ -52,6 +59,8 @@ class CourseStatsViewController: UIViewController {
         for i in 0...days {
             var lhours = 0.0
             var ehours = 0.0
+            dayString.append(formatter.string(from:oneDay!))
+            oneDay = oneDay?.addingTimeInterval(86400)
             for log in allLogs {
                 if(Date.daysBetween(start: startDay!, end: log.date) == i) {
                     lhours += Double(log.duration)
@@ -66,7 +75,7 @@ class CourseStatsViewController: UIViewController {
             eventHours.append(ehours)
         }
         
-        setLineChart(values1: logHours, values2: eventHours)
+        setLineChart(dataPoints: dayString, values1: logHours, values2: eventHours)
         
         // Get a list of all the log for the course from the database #pieChart
         var sumOfLogHours = [Double]()
@@ -116,7 +125,7 @@ class CourseStatsViewController: UIViewController {
 
     }
     
-    func setLineChart(values1: [Double], values2: [Double]) {
+    func setLineChart(dataPoints: [String], values1: [Double], values2: [Double]) {
         var dataEntries1: [ChartDataEntry] = []
         var dataEntries2: [ChartDataEntry] = []
         for i in 0..<values1.count {
@@ -125,18 +134,29 @@ class CourseStatsViewController: UIViewController {
             let dataEntry2 = ChartDataEntry(x: Double(i), y: values2[i])
             dataEntries2.append(dataEntry2)
         }
-        
-        let logDataSet = LineChartDataSet(values: dataEntries1, label: "Log Hours")
+        self.lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
+        self.lineChart.xAxis.granularity = 1
+        let logDataSet = LineChartDataSet(values: dataEntries1, label: "Studied Hours")
         logDataSet.axisDependency = .left
         logDataSet.setColor(UIColor.green)
         logDataSet.setCircleColor(UIColor.green)
-        let eventDataSet = LineChartDataSet(values: dataEntries2, label: "Event Hours")
+        logDataSet.circleRadius = 0.5
+        logDataSet.lineWidth = 2.3
+        logDataSet.drawValuesEnabled = false
+        let eventDataSet = LineChartDataSet(values: dataEntries2, label: "Allocated Hours")
         eventDataSet.axisDependency = .left
         eventDataSet.setColor(UIColor.red)
+        eventDataSet.circleRadius = 0.5
+        eventDataSet.lineWidth = 2.3
+        eventDataSet.drawValuesEnabled = false
         eventDataSet.setCircleColor(UIColor.red)
         let dataSets: [LineChartDataSet] = [logDataSet, eventDataSet]
         let lineData: LineChartData = LineChartData(dataSets: dataSets)
         self.lineChart.data = lineData
+        self.lineChart.doubleTapToZoomEnabled = false
+        self.lineChart.drawGridBackgroundEnabled = false
+        self.lineChart.drawBordersEnabled = true
+        
     }
     
     
