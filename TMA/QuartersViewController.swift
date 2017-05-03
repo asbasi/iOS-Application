@@ -178,11 +178,13 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let quarters = self.realm.objects(Quarter.self)
                 
-                /*
+                
                 if segue.identifier! == "showOverview" {
+                    let quarterStatsViewController = segue.destination as! QuarterStatsViewController
+                    quarterStatsViewController.quarter = quarters[indexPath.row]
                 }
                     
-                else */ if segue.identifier! == "listCourses" {
+                else  if segue.identifier! == "listCourses" {
                     let courseViewController = segue.destination as! CourseViewController
                     courseViewController.quarter = quarters[indexPath.row]
                 }
@@ -199,6 +201,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
                 quartersAddViewController.operation = "edit"
                 quartersAddViewController.quarter = quarterToEdit
             }
+            
         }
     }
     
