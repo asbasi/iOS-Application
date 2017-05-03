@@ -151,7 +151,7 @@ class CourseStatsViewController: UIViewController {
         eventDataSet.lineWidth = 2.3
         eventDataSet.drawValuesEnabled = false
         eventDataSet.setCircleColor(UIColor.red)
-        let dataSets: [LineChartDataSet] = [logDataSet, eventDataSet]
+        let dataSets: [LineChartDataSet] = [eventDataSet, logDataSet]
         let lineData: LineChartData = LineChartData(dataSets: dataSets)
         self.lineChart.data = lineData
         self.lineChart.doubleTapToZoomEnabled = false
