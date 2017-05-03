@@ -159,7 +159,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.quarterToEdit = self.quarters[indexPath.row]
-        self.performSegue(withIdentifier: "editQuarter", sender: nil)
+        self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
     }
     
     // MARK: - Navigation
@@ -169,26 +169,9 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "listCourses" || segue.identifier! == "showOverview" {
-            
-            if let button = sender as? UIButton {
-                let cell = button.superview?.superview as! UITableViewCell
-                
-                let indexPath: IndexPath = self.tableView.indexPath(for: cell)!
-                
-                let quarters = self.realm.objects(Quarter.self)
-                
-                
-                if segue.identifier! == "showOverview" {
-                    let quarterStatsViewController = segue.destination as! QuarterStatsViewController
-                    quarterStatsViewController.quarter = quarters[indexPath.row]
-                }
-                    
-                else  if segue.identifier! == "listCourses" {
-                    let courseViewController = segue.destination as! CourseViewController
-                    courseViewController.quarter = quarters[indexPath.row]
-                }
-            }
+        if segue.identifier == "QuarterStatePage"{
+            let quarterStatsViewController = segue.destination as! QuarterStatsViewController
+            quarterStatsViewController.quarter = quarterToEdit
         }
         else {
             let navigation: UINavigationController = segue.destination as! UINavigationController

@@ -29,7 +29,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     
-    var quarter: Quarter!
+    var quarter: Quarter?
     var courseToEdit: Course!
     var courses: Results<Course>!
 
@@ -37,17 +37,41 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.performSegue(withIdentifier: "addCourse", sender: nil)
     }
     
+    private func verify() {
+        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
+        if currentQuarters.count != 1 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+        verify()
+
+        let currQuarter = self.realm.objects(Quarter.self).filter("current = true")
+        
+        if currQuarter.count == 1 {
+            self.quarter = currQuarter[0]
+        }
+        else {
+            self.quarter = nil
+        }
+
+        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
         self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+
         //self.tableView.tableFooterView = UIView()
     }
 
@@ -124,8 +148,8 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.instructor!.text = course.instructor
         cell.units!.text = "\(course.units) units"
 
-        let all_logs = self.realm.objects(Log.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
-        let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter.title!)' AND course.identifier = '\(course.identifier!)'")
+        let all_logs = self.realm.objects(Log.self).filter("course.quarter.title = '\(self.quarter?.title! ?? "1337")' AND course.identifier = '\(course.identifier!)'")
+        let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter?.title! ?? "1337")' AND course.identifier = '\(course.identifier!)'")
         
         let numerator = Helpers.add_duration(events: all_logs)
         let denominator = Helpers.add_duration(events: all_planner)
@@ -197,7 +221,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
 
-            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
             self.courseToEdit = courses[index.row]
             
             self.performSegue(withIdentifier: "editCourse", sender: nil)
@@ -208,7 +232,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+        let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
         self.courseToEdit = courses[indexPath.row]
         
         self.performSegue(withIdentifier: "editCourse", sender: nil)
@@ -226,7 +250,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
                 let indexPath: IndexPath = self.tableView.indexPath(for: cell)!
             
-                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter.title!)'")
+                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
 
                 if segue.identifier! == "showStats" {
                     let courseDetailViewController = segue.destination as! CourseStatsViewController
