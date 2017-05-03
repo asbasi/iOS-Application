@@ -14,6 +14,8 @@ class QuarterTableViewCell: UITableViewCell {
     @IBOutlet weak var dates: UILabel!
     @IBOutlet weak var numCourses: UILabel!
     @IBOutlet weak var current: UIImageView!
+    @IBOutlet weak var viewCourses: UIButton!
+    @IBOutlet weak var viewStats: UIButton!
 }
 
 class QuartersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -45,32 +47,6 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        if segue.identifier == "listCourses" {
-            let courseViewController = segue.destination as! CourseViewController
-            courseViewController.quarter = quarterToEdit
-        }
-        else {
-            let navigation: UINavigationController = segue.destination as! UINavigationController
-            let quartersAddViewController = navigation.viewControllers[0] as! QuarterAddTableViewController
-            
-            if segue.identifier == "addQuarter" {
-                quartersAddViewController.operation = "add"
-            }
-            else if segue.identifier == "editQuarter" {
-                quartersAddViewController.operation = "edit"
-                quartersAddViewController.quarter = quarterToEdit
-            }
-        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -183,6 +159,47 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.quarterToEdit = self.quarters[indexPath.row]
-        self.performSegue(withIdentifier: "listCourses", sender: nil)
+        self.performSegue(withIdentifier: "editQuarter", sender: nil)
     }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "listCourses" || segue.identifier! == "showOverview" {
+            
+            if let button = sender as? UIButton {
+                let cell = button.superview?.superview as! UITableViewCell
+                
+                let indexPath: IndexPath = self.tableView.indexPath(for: cell)!
+                
+                let quarters = self.realm.objects(Quarter.self)
+                
+                /*
+                if segue.identifier! == "showOverview" {
+                }
+                    
+                else */ if segue.identifier! == "listCourses" {
+                    let courseViewController = segue.destination as! CourseViewController
+                    courseViewController.quarter = quarters[indexPath.row]
+                }
+            }
+        }
+        else {
+            let navigation: UINavigationController = segue.destination as! UINavigationController
+            let quartersAddViewController = navigation.viewControllers[0] as! QuarterAddTableViewController
+            
+            if segue.identifier == "addQuarter" {
+                quartersAddViewController.operation = "add"
+            }
+            else if segue.identifier == "editQuarter" {
+                quartersAddViewController.operation = "edit"
+                quartersAddViewController.quarter = quarterToEdit
+            }
+        }
+    }
+    
 }

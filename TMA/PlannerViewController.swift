@@ -281,6 +281,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
 
                 alert.addTextField { (textField) in
                     textField.keyboardType = .decimalPad
+                    textField.text = "\(event.duration)"
                 }
 
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
