@@ -5,10 +5,10 @@ target 'TMA' do
   use_frameworks!
   
   # Pods for TMA
-  pod 'RealmSwift'
-  pod 'Charts'
+  pod 'RealmSwift', '~> 2.6.2'
+  pod 'Charts', '~> 3.0.2'
   pod 'BEMCheckBox'
-  pod 'KDCircularProgress'
+  pod 'KDCircularProgress', '~> 1.5.2'
   pod 'FSCalendar'
   pod 'PureLayout'
   pod 'Alamofire', '~> 4.4'

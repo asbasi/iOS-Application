@@ -12,6 +12,7 @@ import RealmSwift
 
 class LoginTableViewController: UITableViewController {
 
+    var noCurrentQuarter = false
     let realm = try! Realm()
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -24,8 +25,49 @@ class LoginTableViewController: UITableViewController {
         self.view.addSubview(indicator)
     }
     
+    
+    
+    func getWeekDaysInEnglish() -> [String] {
+        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        calendar.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
+        return calendar.weekdaySymbols
+    }
+    
+    enum SearchDirection {
+        case Next
+        case Previous
+        
+        var calendarOptions: NSCalendar.Options {
+            switch self {
+            case .Next:
+                return .matchNextTime
+            case .Previous:
+                return [.searchBackwards, .matchNextTime]
+            }
+        }
+    }
+    
+    func get(direction: SearchDirection, _ dayName: String, fromDate: Date) -> NSDate {
+        let weekdaysName = getWeekDaysInEnglish()
+        
+        assert(weekdaysName.contains(dayName), "weekday symbol should be in form \(weekdaysName)")
+        
+        let nextWeekDayIndex = weekdaysName.index(of: dayName)! + 1 // weekday is in form 1 ... 7 where as index is 0 ... 6
+        
+        
+        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        
+        let nextDateComponent = NSDateComponents()
+        nextDateComponent.weekday = nextWeekDayIndex
+        
+        
+        let date = calendar.nextDate(after: fromDate, matching: nextDateComponent as DateComponents, options: direction.calendarOptions)
+        return date! as NSDate
+    }
+    
+    
     @IBAction func Done(_ sender: Any) {
-        let currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
+        var currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
         
         self.dismissKeyboard()
         self.navigationItem.rightBarButtonItem?.isEnabled = false;
@@ -34,7 +76,7 @@ class LoginTableViewController: UITableViewController {
         indicator.backgroundColor = UIColor.white
         
         
-        Alamofire.request("http://sahmudi.com/?username=\(usernameTextField.text!)&password=\(passwordTextField.text!)", method: .get, encoding: JSONEncoding.default)
+        Alamofire.request("http://192.241.206.161/?username=\(usernameTextField.text!)&password=\(passwordTextField.text!)", method: .get, encoding: JSONEncoding.default)
             .responseJSON { response in
                 if let status = response.response?.statusCode {
                     switch(status){
@@ -44,8 +86,24 @@ class LoginTableViewController: UITableViewController {
                         print(responseDict)
                         print("-------------------------------------------")
                         DispatchQueue.main.async {
-                            for crn in Array(responseDict.keys) {
-                                let courseDict = responseDict[crn] as! [String: NSObject]
+                            
+                            
+                            if self.noCurrentQuarter {
+                                let quarter = Quarter()
+                                let quarterDict = responseDict["quarter"] as! [String: String]
+                                quarter.title = quarterDict["title"]
+                                quarter.startDate = Helpers.get_date_from_string(strDate: quarterDict["start_date"]!)
+                                quarter.endDate = Helpers.get_date_from_string(strDate: quarterDict["end_date"]!)
+                                
+                                quarter.current = true
+                                Helpers.DB_insert(obj: quarter)
+                                currentQuarter = quarter
+                            }
+                            
+                            
+                            let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            for crn in Array(coursesDict.keys) {
+                                let courseDict = coursesDict[crn] as! [String: NSObject]
                             
                                 let course = Course()
                                 course.instructor = courseDict["instructor"] as! String
@@ -55,6 +113,70 @@ class LoginTableViewController: UITableViewController {
                                 course.quarter = currentQuarter
                                 course.color = "None"
                                 Helpers.DB_insert(obj: course)
+                                
+                                
+                                let classes = courseDict["classes"] as! [String: NSObject]
+                                //////////create events for course
+                                for classs in Array(classes.keys) { //Lecture/Discussion/Tutorial..
+                                    print("classs=\(classs)")
+                                    let currentClass = classes[classs] as! [String: NSObject]
+                                    if (currentClass["week_days"] as! String) == "" {
+                                        continue
+                                    }
+                                    let week_days = (currentClass["week_days"] as! String).components(separatedBy: ",")
+                                    print("week_days=\(week_days)")
+                                    print(currentClass)
+                                    let week_days_translation = ["M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday"]
+                                    for week_day in week_days {
+                                        
+                                        ////////////////////////////////////////////////////////////////////////
+                                        ///////////////////WTH is that?/////////////////////////////////////////
+                                        ///////////////////just trying to parse the begin_time//////////////////
+                                        ///////////////////and end_time into 2 ints each hrs & min//////////////
+                                        ////////////////////////////////////////////////////////////////////////
+                                        ///////////////////why?/////////////////////////////////////////////////
+                                        ///////////////////because I don't know how swift strings work//////////
+                                        ///////////////////if you do please fix it//////////////////////////////
+                                        ////////////////////////////////////////////////////////////////////////
+                                        
+                                        let s_t = (currentClass["begin_time"] as! String).characters
+                                        let e_t = (currentClass["end_time"] as! String).characters
+                                        let sh = String(Array(s_t)[0])+String(Array(s_t)[1])
+                                        let sm = String(Array(s_t)[2])+String(Array(s_t)[3])
+                                        let eh = String(Array(e_t)[0])+String(Array(e_t)[1])
+                                        let em = String(Array(e_t)[2])+String(Array(e_t)[3])
+                                        
+                                        let ish = Int(sh)! //integer start hour
+                                        let ism = Int(sm)! //integer start minute
+                                        let ieh = Int(eh)! //integer end hour
+                                        let iem = Int(em)! //integer end minute
+                                        ///////////////////////////////////////////////////
+                                        
+                                        var the_date = currentQuarter!.startDate!
+                                        while the_date < currentQuarter!.endDate {
+                                            the_date = self.get(direction: .Next, week_days_translation[week_day]!, fromDate: the_date) as Date
+                                            
+                                            the_date = Helpers.set_time(mydate: the_date as Date, h: ish, m: ism)
+
+//                                            addEventToCalendar()
+//                                            print("\t\tthe_date=: \(the_date)")
+                                            
+                                            
+                                            let ev = Event()
+                                            ev.title = "\(course.title!) - \(classs)"
+                                            ev.date = the_date
+                                            ev.endDate = Helpers.set_time(mydate: the_date as Date, h: ieh, m: iem)
+                                            ev.course = course
+                                            ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
+                                            Helpers.DB_insert(obj: ev)
+                                            
+                                            
+                                            //increment 1 day so we dont get the same date next time
+                                            the_date = Calendar.current.date(byAdding: .day, value: 1, to: the_date)!
+                                        }
+                                    }
+
+                                }
                             } // end for crn
                             
                             self.navigationItem.rightBarButtonItem?.isEnabled = true;
@@ -76,7 +198,7 @@ class LoginTableViewController: UITableViewController {
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
-                        }
+                        } //end dispatch main queue
                         
                         print("-------------------------------------------")
                     default:
@@ -112,11 +234,7 @@ class LoginTableViewController: UITableViewController {
         
         let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
         if currentQuarters.count != 1 {
-            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {action in
-                self.dismiss(animated: true, completion: nil)
-            }))
-            self.present(alert, animated: true, completion: nil)
+            noCurrentQuarter = true
         }
         
         

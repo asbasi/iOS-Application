@@ -12,7 +12,7 @@ import RealmSwift
 
 let colorMappings: [String: UIColor] = ["None": UIColor.clear, "Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue]
 
-class Helpers{
+class Helpers {
     static let realm = try! Realm()
     
     static func DB_insert(obj: Object){
@@ -35,6 +35,29 @@ class Helpers{
             sum += x.duration
         }
         return sum
+    }
+    
+    static func get_date_from_string(strDate: String) -> Date {
+        let formatter = DateFormatter()
+        
+        let a = strDate.components(separatedBy: " ")
+        let b = a[0]+" "+a[1]+" "+a[2]
+        
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "MMM, dd yyyy"
+        
+        let x = formatter.date(from: b)
+        return x!
+    }
+    
+    static func set_time(mydate: Date, h: Int, m: Int) -> Date{
+        let gregorian = Calendar(identifier: .gregorian)
+        var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: mydate)
+        components.hour = h
+        components.minute = m
+        components.second = 0
+        
+        return gregorian.date(from: components)!
     }
 }
 

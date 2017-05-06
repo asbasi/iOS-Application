@@ -106,7 +106,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             
             let optionMenu = UIAlertController(title: nil, message: "\"\(quarter.title!)\" and all associated items will be deleted forever.", preferredStyle: .actionSheet)
             
-            let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
+            let deleteAction = UIAlertAction(title: "Delete Quarter", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
                 try! self.realm.write {
