@@ -109,24 +109,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             let deleteAction = UIAlertAction(title: "Delete Quarter", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                try! self.realm.write {
-                    let courses = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
-                    
-                    for course in courses {
-                        let logsToDelete = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
-                        self.realm.delete(logsToDelete)
-                    
-                        let eventsToDelete = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
-                        self.realm.delete(eventsToDelete)
-                    
-                        let goalsToDelete = self.realm.objects(Goal.self).filter("course.identifier = '\(course.identifier!)'")
-                        self.realm.delete(goalsToDelete)
-                        
-                        self.realm.delete(course)
-                    }
-                    
-                    self.realm.delete(quarter)
-                }
+                quarter.delete(realm: self.realm)
                 self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);

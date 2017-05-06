@@ -193,18 +193,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
 
-                try! self.realm.write {
-                    let logsToDelete = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
-                    self.realm.delete(logsToDelete)
-                    
-                    let eventsToDelete = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
-                    self.realm.delete(eventsToDelete)
-                    
-                    let goalsToDelete = self.realm.objects(Goal.self).filter("course.identifier = '\(course.identifier!)'")
-                    self.realm.delete(goalsToDelete)
-                    
-                    self.realm.delete(course)
-                }
+                course.delete(realm: self.realm)
                 self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);

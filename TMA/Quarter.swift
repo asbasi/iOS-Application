@@ -14,5 +14,17 @@ class Quarter: Object {
     dynamic var startDate: Date!
     dynamic var endDate: Date!
     dynamic var current: Bool = false
+    
+    func delete(realm: Realm) {
+        try! realm.write {
+            let courses = realm.objects(Course.self).filter("quarter.title = '\(self.title!)'")
+            
+            for course in courses {
+                course.delete(realm: realm)
+            }
+            
+            realm.delete(self)
+        }
+    }
 }
 
