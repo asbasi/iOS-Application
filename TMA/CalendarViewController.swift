@@ -308,6 +308,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
         }
         
+        cell.checkbox.isHidden = false
+        if event.isSchedule {
+            cell.checkbox.isHidden = true
+        }
+        
         if Calendar.current.isDateInToday(date) // Today.
         {
             cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)

@@ -12,6 +12,7 @@ import RealmSwift
 
 class LoginTableViewController: UITableViewController {
 
+//    let parent_self = self()
     var noCurrentQuarter = false
     let realm = try! Realm()
     @IBOutlet weak var passwordTextField: UITextField!
@@ -161,16 +162,17 @@ class LoginTableViewController: UITableViewController {
 //                                            addEventToCalendar()
 //                                            print("\t\tthe_date=: \(the_date)")
                                             
-                                            
+                                            // add to realm
                                             let ev = Event()
                                             ev.title = "\(course.title!) - \(classs)"
                                             ev.date = the_date
                                             ev.endDate = Helpers.set_time(mydate: the_date as Date, h: ieh, m: iem)
                                             ev.course = course
                                             ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
+                                            ev.isSchedule = true
                                             Helpers.DB_insert(obj: ev)
                                             
-                                            
+                                            checkCalendarAuthorizationStatus()
                                             //increment 1 day so we dont get the same date next time
                                             the_date = Calendar.current.date(byAdding: .day, value: 1, to: the_date)!
                                         }
@@ -215,9 +217,6 @@ class LoginTableViewController: UITableViewController {
     } //end Done()
     
     
-    @IBAction func Cancel(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
     @IBAction func usernameTextFieldChanged(_ sender: Any) {
         checkAllTextFields()
     }

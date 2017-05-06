@@ -91,18 +91,24 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let activeEvents = allEvents.filter("checked = false").sorted(byKeyPath: "date", ascending: true)
         let finishedEvents = allEvents.filter("checked = true").sorted(byKeyPath: "date", ascending: true)
-
-        let rawEvents = [activeEvents, finishedEvents, allEvents]
         
-        self.segmentController.setTitle("Active (\(activeEvents.count))", forSegmentAt: 0)
-        self.segmentController.setTitle("Finished (\(finishedEvents.count))", forSegmentAt: 1)
-        self.segmentController.setTitle("All (\(allEvents.count))", forSegmentAt: 2)
+        let segmentEventsArray = [activeEvents, finishedEvents, allEvents]
+        
+        self.segmentController.setTitle("Active (\(activeEvents.filter("isSchedule = false").count))", forSegmentAt: 0)
+        self.segmentController.setTitle("Finished (\(finishedEvents.filter("isSchedule = false").count))", forSegmentAt: 1)
+        self.segmentController.setTitle("All (\(allEvents.filter("isSchedule = false").count))", forSegmentAt: 2)
+        
+        var components = DateComponents()
+        
+        let todayDate =  cal.startOfDay(for: Date())
+        components.day = 7
+        let weekFromTodayDate = Calendar.current.date(byAdding: components, to: todayDate)!
         
         for segment in 0...2
         {
-            var events = [[Event]]()
+            self.allTypesOfEvents[segment] = [[Event]]()
             var allDates = [Date]()
-            for event in rawEvents[segment]
+            for event in segmentEventsArray[segment]
             {
                 let date = cal.startOfDay(for: event.date as Date)
                 if !allDates.contains(date)  {
@@ -110,27 +116,25 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
             
+            components.day = 1
             for dateBegin in allDates
             {
-                var components = DateComponents()
-                components.day = 1
                 let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
                 
-                if(segment == 0) // Active
-                {
-                    events.append(Array(activeEvents.filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                if segment == 2 && dateBegin >= todayDate && dateBegin <= weekFromTodayDate { //only show scheduled events in all events segment and when its today or the next 7 days
+                    self.allTypesOfEvents[segment].append(Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
                 }
-                else if(segment == 1) // Finished
-                {
-                    events.append(Array(finishedEvents.filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                else {
+                    self.allTypesOfEvents[segment].append(Array(segmentEventsArray[segment].filter("isSchedule = false AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
                 }
-                else if(segment == 2) // All
-                {
-                    events.append(Array(allEvents.filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                
+                let last_element = self.allTypesOfEvents[segment][self.allTypesOfEvents[segment].count-1]
+                if last_element.count == 0 {
+                    self.allTypesOfEvents[segment].removeLast()
                 }
             }
             
-            self.allTypesOfEvents[segment] = events
+            
         }
         
         self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
@@ -179,6 +183,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "EEEE, MMMM d"
+        
         let date = self.events[section][0].date! as Date
         let strDate = formatter.string(from: date)
         if Calendar.current.isDateInToday(date) {
@@ -196,6 +201,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         if self.events.count > 0 {
             self.myTableView.backgroundView = nil
             self.myTableView.separatorStyle = .singleLine
+            
             return self.events.count
         }
         
@@ -206,15 +212,15 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
-        footerView.backgroundColor = UIColor.clear
-        
-        return footerView
-    }
-    
-    func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
-        return 20.0
-    }*/
+     let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+     footerView.backgroundColor = UIColor.clear
+     
+     return footerView
+     }
+     
+     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
+     return 20.0
+     }*/
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
@@ -278,27 +284,27 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             else { // About to be checked.
                 
                 let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-
+                
                 alert.addTextField { (textField) in
                     textField.keyboardType = .decimalPad
                     textField.text = "\(event.duration)"
                 }
-
+                
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-
+                    
                     if textField.text != "" {
                         let log = Log()
-
+                        
                         log.title = event.title
                         log.duration = Float(textField.text!)!
                         log.date = event.date
                         log.endDate = event.endDate
                         log.course = event.course
                         log.type = event.type
-
+                        
                         Helpers.DB_insert(obj: log)
-
+                        
                         try! self.realm.write {
                             event.log = log
                         }
@@ -309,30 +315,30 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 self.present(alert, animated: true, completion: nil)
                 /*
-                // Try to create a Log.
-                
-                // set the studyhours = assigned hours and unchecked
-                if let log = event.log{
-                    // effecting the change inside the realm database
-                    try! self.realm.write {
-                        log.duration = event.duration
-                    }
-                }
-                // no log has been put
-                else{
-                    let log = Log()
-                    // insert the log var that doesn't exist in db into the db
-                    log.title = event.title
-                    log.date = event.date
-                    log.course = event.course
-                    log.type = event.type
-                    log.duration = event.duration
-
-                    Helpers.DB_insert(obj: log)
-                    try! self.realm.write {
-                        event.log = log
-                    }
-                }*/
+                 // Try to create a Log.
+                 
+                 // set the studyhours = assigned hours and unchecked
+                 if let log = event.log{
+                 // effecting the change inside the realm database
+                 try! self.realm.write {
+                 log.duration = event.duration
+                 }
+                 }
+                 // no log has been put
+                 else{
+                 let log = Log()
+                 // insert the log var that doesn't exist in db into the db
+                 log.title = event.title
+                 log.date = event.date
+                 log.course = event.course
+                 log.type = event.type
+                 log.duration = event.duration
+                 
+                 Helpers.DB_insert(obj: log)
+                 try! self.realm.write {
+                 event.log = log
+                 }
+                 }*/
                 
             }
             
@@ -360,6 +366,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             self.animatedRemove(at: path, type: "checkboxToggle")
         }
         
+        cell.checkbox.isHidden = false
+        if event.isSchedule {
+            cell.checkbox.isHidden = true
+        }
+        
         if Calendar.current.isDateInToday(date) // Today.
         {
             cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
@@ -385,42 +396,42 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         /*
-        print("did select row at")
-        
-        // the row to add log in
-        let event = self.events[indexPath.section][indexPath.row]
-
-        // popup
-        let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-        
-        alert.addTextField { (textField) in
-            textField.keyboardType = .decimalPad
-        }
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-            let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-            
-            if textField.text != "" {
-                let log = Log()
-                
-                log.title = event.title
-                log.duration = Float(textField.text!)!
-                log.date = event.date
-                log.course = event.course
-                log.type = event.type
-                
-                Helpers.DB_insert(obj: log)
-                
-                try! self.realm.write {
-                    event.log = log
-                }
-            }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-        
-        self.present(alert, animated: true, completion: nil)
-        */
+         print("did select row at")
+         
+         // the row to add log in
+         let event = self.events[indexPath.section][indexPath.row]
+         
+         // popup
+         let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+         
+         alert.addTextField { (textField) in
+         textField.keyboardType = .decimalPad
+         }
+         
+         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+         let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+         
+         if textField.text != "" {
+         let log = Log()
+         
+         log.title = event.title
+         log.duration = Float(textField.text!)!
+         log.date = event.date
+         log.course = event.course
+         log.type = event.type
+         
+         Helpers.DB_insert(obj: log)
+         
+         try! self.realm.write {
+         event.log = log
+         }
+         }
+         }))
+         
+         alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+         
+         self.present(alert, animated: true, completion: nil)
+         */
         self.eventToEdit = self.events[indexPath.section][indexPath.row]
         self.performSegue(withIdentifier: "showEvent", sender: nil)
     }
@@ -454,7 +465,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     if let log = event.log {
                         self.realm.delete(log)
                     }
-
+                    
                     self.realm.delete(event)
                 }
                 
