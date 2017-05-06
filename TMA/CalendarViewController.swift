@@ -285,7 +285,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                         let log = Log()
                         
                         log.title = event.title
-                        log.duration = Float(textField.text!)!
+                        log.duration = (Float(textField.text!)!)/60
+                        print (log.duration)
                         log.date = event.date
                         log.course = event.course
                         log.type = event.type

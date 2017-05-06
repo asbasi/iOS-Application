@@ -297,7 +297,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         let log = Log()
                         
                         log.title = event.title
-                        log.duration = Float(textField.text!)!
+                        log.duration = (Float(textField.text!)!)/60
+                        print (log.duration)
                         log.date = event.date
                         log.endDate = event.endDate
                         log.course = event.course
