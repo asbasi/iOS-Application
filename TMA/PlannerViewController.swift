@@ -196,27 +196,32 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
                 
                 /********************** GET FREE TIMES *****************/
-                var calEvents: [EKEvent] = []
                 
-                if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
-                    let calendars = eventStore.calendars(for: .event)
-                    calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
-                }
-                else {
-                    var dateComponents = DateComponents()
-                    dateComponents.day = 1
-                    let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+                var freeTimes: [Event] = []
+                
+                if(dateBegin >= todayDate && segment != 1) {
+                    var calEvents: [EKEvent] = []
                     
-                    let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
-                    
-                    for event in inAppEvents {
-                        let item = EKEvent(eventStore: eventStore)
-                        item.startDate = event.date
-                        item.endDate = event.endDate
-                        calEvents.append(item)
+                    if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+                        let calendars = eventStore.calendars(for: .event)
+                        calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
                     }
+                    else {
+                        var dateComponents = DateComponents()
+                        dateComponents.day = 1
+                        let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+                        
+                        let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
+                        
+                        for event in inAppEvents {
+                            let item = EKEvent(eventStore: eventStore)
+                            item.startDate = event.date
+                            item.endDate = event.endDate
+                            calEvents.append(item)
+                        }
+                    }
+                    freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
                 }
-                let freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
                 
                 let allEvents = (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
                 
@@ -328,7 +333,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.populateSegments()
     }
     
-    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if self.events[indexPath.section][indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.section][indexPath.row].type != FREE_TIME_EVENT {
+            return true
+        }
+        return false
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
@@ -380,12 +390,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return cell
     }
     
-    // Override to support conditional editing of the table view.
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let event = self.events[indexPath.section][indexPath.row]
@@ -424,7 +428,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 try! self.realm.write {
                     
                     self.events[index.section].remove(at: index.row)
-                    
                     if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
                     }
@@ -436,7 +439,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.realm.delete(event)
                 }
                 
-                self.animatedRemove(at: index, type: "delete")
+                //self.animatedRemove(at: index, type: "delete")
+                self.populateSegments()
+                self.myTableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
             

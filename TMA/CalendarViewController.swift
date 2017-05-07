@@ -80,8 +80,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         //self.calendar.today = nil // Get rid of the today circle.
         self.calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
         
-        /*let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
-        self.calendar.addGestureRecognizer(scopeGesture) */
+        let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
+        self.calendar.addGestureRecognizer(scopeGesture)
         
         let currentDate: Date = Date()
         let dateFormatter = DateFormatter()
@@ -101,6 +101,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         verify()
         checkCalendarAuthorizationStatus()
+        self.events = getEventsForDate(selectedDate)
         
         self.calendar.reloadData()
         self.myTableView.reloadData()
@@ -307,6 +308,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return cell
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if self.events[indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.row].type != FREE_TIME_EVENT {
+            return true
+        }
+        return false
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
@@ -325,12 +333,16 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 try! self.realm.write {
                     let event: Event = self.events[index.row]
                     
+                    self.events.remove(at: index.row)
+                    
                     if let log = event.log {
                         self.realm.delete(log)
                     }
                     
                     self.realm.delete(event)
                 }
+                
+                self.events = self.getEventsForDate(self.selectedDate)
                 
                 self.calendar.reloadData()
                 self.myTableView.reloadData()
