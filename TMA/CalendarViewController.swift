@@ -6,10 +6,12 @@
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
+
 import UIKit
 import RealmSwift
-import FSCalendar
 import BEMCheckBox
+import UserNotifications
+import FSCalendar
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
@@ -262,6 +264,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             let event = self.events[path.row]
             
             if(event.checked) { // About to be unchecked.
+                
+                if let date = event.reminderDate {
+                    // Event is getting unchecked so schedule another notification.
+                    let delegate = UIApplication.shared.delegate as? AppDelegate
+                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
+                }
+                
                 if let log = event.log {
                     try! self.realm.write {
                         self.realm.delete(log)
@@ -282,27 +291,18 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
                     
                     if textField.text != "" {
-                        let log = Log()
-                        
-                        log.title = event.title
-                        log.duration = (Float(textField.text!)!)/60
-                        print (log.duration)
-                        log.date = event.date
-                        log.course = event.course
-                        log.type = event.type
-                        
-                        Helpers.DB_insert(obj: log)
-                        
-                        try! self.realm.write {
-                            event.log = log
-                        }
+                        Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: self.realm)
                     }
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
                 
                 self.present(alert, animated: true, completion: nil)
-            }
+                
+            } //else about to be checked
+            
+            // About to check off the event so remove any pending notifications.
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
             
             try! self.realm.write {
                 self.events[path.row].checked = !self.events[path.row].checked

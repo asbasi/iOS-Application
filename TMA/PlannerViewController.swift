@@ -274,6 +274,13 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             let event = self.events[path.section][path.row]
             
             if(event.checked) { // About to be unchecked.
+                
+                if let date = event.reminderDate {
+                    // Event is getting unchecked so schedule another notification.
+                    let delegate = UIApplication.shared.delegate as? AppDelegate
+                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
+                }
+                
                 if let log = event.log {
                     try! self.realm.write {
                         self.realm.delete(log)
@@ -294,66 +301,18 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
                     
                     if textField.text != "" {
-                        let log = Log()
-                        
-                        log.title = event.title
-                        log.duration = (Float(textField.text!)!)/60
-                        print (log.duration)
-                        log.date = event.date
-                        log.endDate = event.endDate
-                        log.course = event.course
-                        log.type = event.type
-                        
-                        Helpers.DB_insert(obj: log)
-                        
-                        try! self.realm.write {
-                            event.log = log
-                        }
+                        Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: self.realm)
                     }
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
                 
                 self.present(alert, animated: true, completion: nil)
-                /*
-                 // Try to create a Log.
-                 
-                 // set the studyhours = assigned hours and unchecked
-                 if let log = event.log{
-                 // effecting the change inside the realm database
-                 try! self.realm.write {
-                 log.duration = event.duration
-                 }
-                 }
-                 // no log has been put
-                 else{
-                 let log = Log()
-                 // insert the log var that doesn't exist in db into the db
-                 log.title = event.title
-                 log.date = event.date
-                 log.course = event.course
-                 log.type = event.type
-                 log.duration = event.duration
-                 
-                 Helpers.DB_insert(obj: log)
-                 try! self.realm.write {
-                 event.log = log
-                 }
-                 }*/
                 
-            }
+            } //else about to be checked
             
-            if !event.checked {
-                // About to check off the event so remove any pending notifications.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
-            }
-            else {
-                if let date = event.reminderDate {
-                    // Event is getting unchecked so schedule another notification.
-                    let delegate = UIApplication.shared.delegate as? AppDelegate
-                    delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
-                }
-            }
+            // About to check off the event so remove any pending notifications.
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
             
             try! self.realm.write {
                 self.events[path.section][path.row].checked = !self.events[path.section][path.row].checked
@@ -396,43 +355,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*
-         print("did select row at")
-         
-         // the row to add log in
-         let event = self.events[indexPath.section][indexPath.row]
-         
-         // popup
-         let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-         
-         alert.addTextField { (textField) in
-         textField.keyboardType = .decimalPad
-         }
-         
-         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-         let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-         
-         if textField.text != "" {
-         let log = Log()
-         
-         log.title = event.title
-         log.duration = Float(textField.text!)!
-         log.date = event.date
-         log.course = event.course
-         log.type = event.type
-         
-         Helpers.DB_insert(obj: log)
-         
-         try! self.realm.write {
-         event.log = log
-         }
-         }
-         }))
-         
-         alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-         
-         self.present(alert, animated: true, completion: nil)
-         */
         self.eventToEdit = self.events[indexPath.section][indexPath.row]
         self.performSegue(withIdentifier: "showEvent", sender: nil)
     }

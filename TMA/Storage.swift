@@ -9,6 +9,6 @@
 import Foundation
 import RealmSwift
 
-class Storage: Item {
+class Storage {
     dynamic var value: String = ""
 }
