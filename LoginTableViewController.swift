@@ -185,10 +185,11 @@ class LoginTableViewController: UITableViewController {
                                             ev.type = SCHEDULE_EVENT
                                             Helpers.DB_insert(obj: ev)
                                             
-                                            checkCalendarAuthorizationStatus()
                                             //increment 1 day so we dont get the same date next time
                                             the_date = Calendar.current.date(byAdding: .day, value: 1, to: the_date)!
                                         }
+                                        
+                                        checkCalendarAuthorizationStatus()
                                     }
 
                                 }

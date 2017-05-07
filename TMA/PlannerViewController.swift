@@ -29,6 +29,7 @@ class PlannerViewCell: UITableViewCell {
     func setUI(event: Event) {
         self.title?.text = event.title
         self.checkbox.on = event.checked
+        self.course?.text = ""
         
         if let course = event.course { // not all events have a course (some are free times)
             self.course?.text = course.identifier
@@ -146,24 +147,40 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.segmentController.setTitle("Active (\(allEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 2)
         
         var components = DateComponents()
+        components.day = 1
         
         let todayDate =  cal.startOfDay(for: Date())
-        components.day = 7
-        let weekFromTodayDate = Calendar.current.date(byAdding: components, to: todayDate)!
         
         for segment in 0...2
         {
             self.allTypesOfEvents[segment] = [[Event]]()
             var allDates = [Date]()
-            for event in segmentEventsArray[segment]
-            {
-                let date = cal.startOfDay(for: event.date as Date)
-                if !allDates.contains(date)  {
-                    allDates.append(date)
+            
+            var quarter: Quarter? = nil
+            let quarters = self.realm.objects(Quarter.self).filter("current = true")
+            if quarters.count != 0 {
+                quarter = quarters.first
+            }
+            
+            if quarter != nil {
+                var dateBegin = Calendar.current.startOfDay(for: quarter!.startDate)
+                let dateEnd = Calendar.current.startOfDay(for: quarter!.endDate)
+                
+                while(dateBegin <= dateEnd) {
+                    allDates.append(dateBegin)
+                    dateBegin = Calendar.current.date(byAdding: components, to: dateBegin)!
+                }
+            }
+            else {
+                for event in segmentEventsArray[segment]
+                {
+                    let date = cal.startOfDay(for: event.date as Date)
+                    if !allDates.contains(date)  {
+                        allDates.append(date)
+                    }
                 }
             }
             
-            components.day = 1
             for dateBegin in allDates
             {
                 let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
@@ -171,11 +188,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 var plannedEvents: [Event] = []
                 
-                if segment != 1 && dateBegin >= todayDate && dateBegin <= weekFromTodayDate { //only show scheduled events in all events segment and when its today or the next 7 days
+                if segment != 1 && dateBegin >= todayDate { //only show scheduled events in all events segment and when its today or the next 7 days
                     plannedEvents = Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 else {
-                    plannedEvents = Array(segmentEventsArray[segment].filter("type !=                     \(SCHEDULE_EVENT) AND date BETWEEN %@", [dateBegin,dateEnd]))
+                    plannedEvents = Array(segmentEventsArray[segment].filter("type != \(SCHEDULE_EVENT) AND date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 
                 /********************** GET FREE TIMES *****************/
@@ -199,9 +216,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         calEvents.append(item)
                     }
                 }
-                
                 let freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
-                
                 
                 let allEvents = (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
                 
@@ -373,7 +388,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let event = self.events[indexPath.section][indexPath.row]
         
         self.eventToEdit = event

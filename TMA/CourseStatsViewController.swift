@@ -15,6 +15,8 @@ class CourseStatsViewController: UIViewController {
     var course: Course!
     var courseIdentifier: String!
     
+    @IBOutlet weak var chart: VBPieChart!
+    
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
@@ -35,31 +37,34 @@ class CourseStatsViewController: UIViewController {
         
     }
     
-    let chart = VBPieChart()
-    
     func setPieChart() {
         self.view.addSubview(chart);
         
         let allLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true")
         
-        chart.frame = CGRect(x: 10, y: 50, width: 300, height: 300);
         chart.holeRadiusPrecent = 0.3;
         
         let total = Helpers.add_duration(events: allLogs)
-        print(total)
         
         let studyingLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(STUDY_EVENT)")
-        let studyingHours = Helpers.add_duration(events: studyingLogs) / total
-        print(studyingHours)
+        let studyingMins = Helpers.add_duration(events: studyingLogs)
         
-        let otherHours = (total - studyingHours ) / total
-        print(otherHours)
+        let homeworkLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(HOMEWORK_EVENT)")
+        let homeworkMins = Helpers.add_duration(events: homeworkLogs)
         
-        let chartValues = [ ["name":"Studying", "value": studyingHours, "color":UIColor.red],
-                         /*   ["name":"Homework", "value": 20, "color":UIColor.blue],
-                            ["name":"Projects", "value": 40, "color":UIColor.green],
-                            ["name":"Labs", "value": 70, "color":UIColor.cyan],*/
-                            ["name":"Other", "value": otherHours, "color":UIColor.lightGray]
+        let projectLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(PROJECT_EVENT)")
+        let projectMins = Helpers.add_duration(events: projectLogs)
+
+        let labLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(LAB_EVENT)")
+        let labMins = Helpers.add_duration(events: labLogs)
+        
+        let otherMins = total - studyingMins - homeworkMins - projectMins - labMins
+
+        let chartValues = [ ["name":"Studying", "value": (studyingMins / total) * 100.0, "color":UIColor.red],
+                            ["name":"Homework", "value": (homeworkMins / total) * 100.0, "color":UIColor.blue],
+                            ["name":"Projects", "value": (projectMins / total) * 100.0, "color":UIColor.green],
+                            ["name":"Labs", "value": (labMins / total) * 100.0, "color":UIColor.cyan],
+                            ["name":"Other", "value": (otherMins / total) * 100.0, "color":UIColor.lightGray]
         ];
         
         chart.setChartValues(chartValues as [AnyObject], animation:true);

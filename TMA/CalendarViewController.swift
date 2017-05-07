@@ -12,6 +12,7 @@ import RealmSwift
 import BEMCheckBox
 import UserNotifications
 import FSCalendar
+import EventKit
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
@@ -20,7 +21,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     let realm = try! Realm()
     
-    fileprivate var events: Results<Event>!
+    fileprivate var events: [Event] = []
     fileprivate var eventToEdit: Event!
     fileprivate var logToEdit: Log!
     fileprivate var selectedDate: Date = Date()
@@ -112,25 +113,50 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     /******************************* Calendar Functions *******************************/
     
-    func getEventsForDate(_ date: Date) -> Results<Event>
+    func getEventsForDate(_ date: Date) -> [Event]
     {
         var components = DateComponents()
         components.day = 1
         components.second = -1
         let dateBegin = date
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
+        
+        let plannedEvents: [Event] = Array(self.realm.objects(Event.self).filter("course.quarter.current = true AND date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true))
+        
+        /********************** GET FREE TIMES *****************/
+        var calEvents: [EKEvent] = []
+        
+        if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+            let calendars = eventStore.calendars(for: .event)
+            calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
+        }
+        else {
+            var dateComponents = DateComponents()
+            dateComponents.day = 1
+            let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+            
+            let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
+            
+            for event in inAppEvents {
+                let item = EKEvent(eventStore: eventStore)
+                item.startDate = event.date
+                item.endDate = event.endDate
+                calEvents.append(item)
+            }
+        }
+        let freeTimes = findFreeTimes(onDate: date, withEvents: calEvents)
 
-        return self.realm.objects(Event.self).filter("course.quarter.current = true AND date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)
+        return (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
     }
     
     // How many events are scheduled for that day?
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let numEvents = getEventsForDate(date).count
+        let numEvents = getEventsForDate(date).filter({(event: Event) -> Bool in return event.type != FREE_TIME_EVENT}).count
         
         if numEvents >= 1
         {
             // Put two dots if there's 3 or more events on that day
-            return numEvents >= 3 ? 2 : 1
+            return numEvents >= 5 ? 2 : 1
         }
         return 0
     }
@@ -275,9 +301,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 self.events[path.row].checked = !self.events[path.row].checked
             }
         }
-        
-        
-        
+    
         cell.setUI(event: event)
 
         return cell
@@ -333,8 +357,27 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.eventToEdit = self.events[indexPath.row]
-        self.performSegue(withIdentifier: "showEvent", sender: nil)
+        
+        let event = self.events[indexPath.row]
+        self.eventToEdit = event
+        
+        if(self.realm.objects(Quarter.self).filter("current = true").count != 1) {
+            let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
+        if(event.type == SCHEDULE_EVENT) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        else if (event.type == FREE_TIME_EVENT) {
+            self.performSegue(withIdentifier: "manageFreeTime", sender: nil)
+        }
+        else {
+            self.performSegue(withIdentifier: "editEvent", sender: nil)
+        }
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -360,6 +403,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
         else if segue.identifier! == "showEvent" {
             eventAddViewController.operation = "show"
+            eventAddViewController.event = eventToEdit!
+        }
+        else if segue.identifier! == "manageFreeTime" {
+            eventAddViewController.operation = "manage"
             eventAddViewController.event = eventToEdit!
         }
     }
