@@ -1,4 +1,4 @@
-
+    
 //
 //  PlannerTableViewController.swift
 //  TMA
@@ -171,7 +171,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 var plannedEvents: [Event] = []
                 
-                if segment == 2 && dateBegin >= todayDate && dateBegin <= weekFromTodayDate { //only show scheduled events in all events segment and when its today or the next 7 days
+                if segment != 1 && dateBegin >= todayDate && dateBegin <= weekFromTodayDate { //only show scheduled events in all events segment and when its today or the next 7 days
                     plannedEvents = Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 else {

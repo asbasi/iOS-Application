@@ -13,6 +13,7 @@ import RealmSwift
 class CourseStatsViewController: UIViewController {
     let realm = try! Realm()
     var course: Course!
+    var courseIdentifier: String!
     
     override func viewWillAppear(_ animated: Bool)
     {

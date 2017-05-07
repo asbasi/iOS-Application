@@ -38,6 +38,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     private func verify() {
+        
         let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
         if currentQuarters.count != 1 {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
