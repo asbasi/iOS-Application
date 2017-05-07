@@ -51,7 +51,7 @@ class CourseStatsViewController: UIViewController {
         
         
         let allLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)'")
-        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)'")
+        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND isSchedule = false")
         
         var logHours = [Double]()
         var eventHours = [Double]()

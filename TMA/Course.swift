@@ -21,4 +21,19 @@ class Course: Object {
     override static func ignoredProperties() -> [String] {
         return []
     }
+    
+    func delete(realm: Realm) {
+        try! realm.write {
+            let logsToDelete = realm.objects(Log.self).filter("course.identifier = '\(self.identifier!)'")
+            realm.delete(logsToDelete)
+            
+            let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)'")
+            realm.delete(eventsToDelete)
+            
+            let goalsToDelete = realm.objects(Goal.self).filter("course.identifier = '\(self.identifier!)'")
+            realm.delete(goalsToDelete)
+            
+            realm.delete(self)
+        }
+    }
 }

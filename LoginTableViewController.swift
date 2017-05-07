@@ -12,7 +12,8 @@ import RealmSwift
 
 class LoginTableViewController: UITableViewController {
 
-//    let parent_self = self()
+    
+
     var noCurrentQuarter = false
     let realm = try! Realm()
     @IBOutlet weak var passwordTextField: UITextField!
@@ -102,7 +103,9 @@ class LoginTableViewController: UITableViewController {
                             }
                             
                             
+                            let courses_in_realm = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title)'")
                             let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
                             
@@ -113,6 +116,19 @@ class LoginTableViewController: UITableViewController {
                                 course.title = courseDict["title"] as! String
                                 course.quarter = currentQuarter
                                 course.color = "None"
+                                
+                                /////// check if course already exists
+                                var already_exists = false
+                                for course_in_realm in courses_in_realm {
+                                    if course_in_realm.identifier == course.identifier {
+                                        already_exists = true
+                                    }
+                                }
+                                if already_exists {
+                                    continue
+                                }
+                                /////////////////////////////////////////////
+                                
                                 Helpers.DB_insert(obj: course)
                                 
                                 
@@ -158,9 +174,6 @@ class LoginTableViewController: UITableViewController {
                                             the_date = self.get(direction: .Next, week_days_translation[week_day]!, fromDate: the_date) as Date
                                             
                                             the_date = Helpers.set_time(mydate: the_date as Date, h: ish, m: ism)
-
-//                                            addEventToCalendar()
-//                                            print("\t\tthe_date=: \(the_date)")
                                             
                                             // add to realm
                                             let ev = Event()
@@ -191,9 +204,6 @@ class LoginTableViewController: UITableViewController {
                                 self.present(alert, animated: true, completion: nil)
                             }
                             else {
-                                let storage = Storage()
-                                storage.value = "imported_courses"
-                                Helpers.DB_insert(obj: storage)
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
                                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
                                 self.dismiss(animated: true, completion: nil)
@@ -228,6 +238,7 @@ class LoginTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.navigationItem.rightBarButtonItem?.isEnabled = false;
         
         
@@ -235,17 +246,6 @@ class LoginTableViewController: UITableViewController {
         if currentQuarters.count != 1 {
             noCurrentQuarter = true
         }
-        
-        
-        let imported_courses = self.realm.objects(Storage.self).filter("value = 'imported_courses'")
-        if imported_courses.count == 1 {
-            let alert = UIAlertController(title: "Courses Already Imported", message: "You can't reimport your courses.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {action in
-                self.dismiss(animated: true, completion: nil)
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
-        
     }
     
     
