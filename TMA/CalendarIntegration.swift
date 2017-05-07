@@ -362,6 +362,8 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
             found = false
             
             let event: Event = Event()
+            event.title = "Free Time"
+            event.type = FREE_TIME_EVENT
             event.date = start
             event.endDate = range.value.start
             event.duration = Date.getDifference(initial: start, final: range.value.start)

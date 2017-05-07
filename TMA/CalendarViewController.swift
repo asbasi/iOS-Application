@@ -309,21 +309,22 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
         
         cell.checkbox.isHidden = false
-        if event.isSchedule {
+        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
             cell.checkbox.isHidden = true
         }
         
-        if Calendar.current.isDateInToday(date) // Today.
+        if event.type == FREE_TIME_EVENT
         {
             cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
-        else if NSDate().compare(date) == .orderedDescending // Before Today.
+        else if event.type == SCHEDULE_EVENT
         {
-            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
         else // After Today.
         {
-            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+
         }
         
         return cell
