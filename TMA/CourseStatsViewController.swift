@@ -17,6 +17,7 @@ class CourseStatsViewController: UIViewController {
     
     let realm = try! Realm()
     var course: Course!
+    var courseIdentifier: String!
     
     weak var axisFormatDelegate: IAxisValueFormatter?
     
@@ -157,6 +158,16 @@ class CourseStatsViewController: UIViewController {
         self.lineChart.doubleTapToZoomEnabled = false
         self.lineChart.drawGridBackgroundEnabled = false
         self.lineChart.drawBordersEnabled = true
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        
+        let a = Array(self.realm.objects(Course.self).filter("identifier = \(course.identifier)"))
+        if a.count == 0 {
+            self.dismiss(animated: true, completion: nil)
+        }
         
     }
     
