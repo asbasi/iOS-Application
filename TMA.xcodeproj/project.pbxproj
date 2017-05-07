@@ -20,12 +20,10 @@
 		00DF402E1E47DDF70095B2FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402D1E47DDF70095B2FD /* Log.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
 		1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DD1E9C57F100A85134 /* Goal.swift */; };
-		1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602BFBD91E641A58006FED32 /* CalendarViewController.swift */; };
 		604DFBE91EAB079300AD0656 /* CourseStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604DFBE81EAB079300AD0656 /* CourseStatsViewController.swift */; };
-		605724741E4800AC00B6BC8B /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605724731E4800AC00B6BC8B /* LogViewController.swift */; };
 		606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */; };
 		60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */; };
 		607A78501E983DE100177692 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607A784F1E983DE100177692 /* Keys.swift */; };
@@ -78,13 +76,11 @@
 		00DF402D1E47DDF70095B2FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = TMA/Helpers.swift; sourceTree = "<group>"; };
 		1118E6DD1E9C57F100A85134 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
-		1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAddTableViewController.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		602BFBD91E641A58006FED32 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		604DFBE81EAB079300AD0656 /* CourseStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseStatsViewController.swift; sourceTree = "<group>"; };
-		605724731E4800AC00B6BC8B /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuarterAddTableViewController.swift; sourceTree = "<group>"; };
 		60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarIntegration.swift; path = TMA/CalendarIntegration.swift; sourceTree = "<group>"; };
 		607A784F1E983DE100177692 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = TMA/Keys.swift; sourceTree = "<group>"; };
@@ -146,10 +142,8 @@
 				8F2CCA0D1EA770300068B942 /* Tutorial Pages */,
 				6015DC001E9F7566005C8009 /* General */,
 				6015DBFF1E9F754B005C8009 /* Settings Pages */,
-				6015DBFE1E9F753A005C8009 /* Goal Pages */,
 				6015DBFD1E9F751F005C8009 /* Course Pages */,
 				6015DBFC1E9F750D005C8009 /* Quarters Pages */,
-				6015DBFB1E9F74FB005C8009 /* Log Pages */,
 				6015DBF91E9F74B8005C8009 /* Planner Pages */,
 				6015DBF61E9F7406005C8009 /* Helpers */,
 				00AA39051E47EA0800D819DD /* Models */,
@@ -213,15 +207,6 @@
 			name = "Planner Pages";
 			sourceTree = "<group>";
 		};
-		6015DBFB1E9F74FB005C8009 /* Log Pages */ = {
-			isa = PBXGroup;
-			children = (
-				1AB3B1EA1E7611A3009CEFEB /* LogAddTableViewController.swift */,
-				605724731E4800AC00B6BC8B /* LogViewController.swift */,
-			);
-			name = "Log Pages";
-			sourceTree = "<group>";
-		};
 		6015DBFC1E9F750D005C8009 /* Quarters Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,13 +223,6 @@
 				009C4E2B1E42DD2800260378 /* CourseViewController.swift */,
 			);
 			name = "Course Pages";
-			sourceTree = "<group>";
-		};
-		6015DBFE1E9F753A005C8009 /* Goal Pages */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Goal Pages";
 			sourceTree = "<group>";
 		};
 		6015DBFF1E9F754B005C8009 /* Settings Pages */ = {
@@ -424,7 +402,6 @@
 				00416AD51E47E5DB00DA733D /* Course.swift in Sources */,
 				8F2CCA231EA7F4860068B942 /* Tutorial4ViewController.swift in Sources */,
 				60822B8C1E6B9A58009670EC /* PlannerAddTableViewController.swift in Sources */,
-				605724741E4800AC00B6BC8B /* LogViewController.swift in Sources */,
 				607A78501E983DE100177692 /* Keys.swift in Sources */,
 				60E4E9951E9603FC007EBEA4 /* ThemeTableViewController.swift in Sources */,
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
@@ -444,7 +421,6 @@
 				60FD5E351EA5789D00C73B9C /* TimeBlock.swift in Sources */,
 				609FB4821E6BF6DB00B09346 /* EmptyBackgroundView.swift in Sources */,
 				8F2CCA211EA7F47B0068B942 /* Tutorial3ViewController.swift in Sources */,
-				1AB3B1EB1E7611A3009CEFEB /* LogAddTableViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
