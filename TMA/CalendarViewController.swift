@@ -119,33 +119,39 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         var components = DateComponents()
         components.day = 1
         components.second = -1
-        let dateBegin = date
+        let dateBegin = Calendar.current.startOfDay(for: date)
         let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
         
         let plannedEvents: [Event] = Array(self.realm.objects(Event.self).filter("course.quarter.current = true AND date BETWEEN %@",[dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true))
         
         /********************** GET FREE TIMES *****************/
-        var calEvents: [EKEvent] = []
         
-        if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
-            let calendars = eventStore.calendars(for: .event)
-            calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
-        }
-        else {
-            var dateComponents = DateComponents()
-            dateComponents.day = 1
-            let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+        var freeTimes: [Event] = []
+        
+        if dateBegin >= Calendar.current.startOfDay(for: Date()) {
+            var calEvents: [EKEvent] = []
             
-            let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
-            
-            for event in inAppEvents {
-                let item = EKEvent(eventStore: eventStore)
-                item.startDate = event.date
-                item.endDate = event.endDate
-                calEvents.append(item)
+            if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+                let calendars = eventStore.calendars(for: .event)
+                calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
             }
+            else {
+                var dateComponents = DateComponents()
+                dateComponents.day = 1
+                let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+                
+                let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
+                
+                for event in inAppEvents {
+                    let item = EKEvent(eventStore: eventStore)
+                    item.startDate = event.date
+                    item.endDate = event.endDate
+                    calEvents.append(item)
+                }
+            }
+                
+            freeTimes = findFreeTimes(onDate: date, withEvents: calEvents)
         }
-        let freeTimes = findFreeTimes(onDate: date, withEvents: calEvents)
 
         return (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
     }
@@ -222,7 +228,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             return 1
         }
 
-        
+        /*
         let image = UIImage(named: "like")!
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
@@ -232,17 +238,20 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         self.myTableView.backgroundView = EmptyBackgroundView(image: image, top: topMessage, bottom: bottomMessage)
         self.myTableView.separatorStyle = .none
+        */
         
-        /*
         let rect = CGRect(x: 0, y: 0, width: self.myTableView.bounds.size.width, height: self.myTableView.bounds.size.height)
         let noDataLabel: UILabel = UILabel(frame: rect)
         
-        noDataLabel.text = "No events on selected day"
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "EEEE, MMMM d"
+        noDataLabel.text = "No events scheduled for \(formatter.string(from: selectedDate))"
         noDataLabel.textColor = UIColor.gray
         noDataLabel.textAlignment = NSTextAlignment.center
         self.myTableView.backgroundView = noDataLabel
         //self.myTableView.separatorStyle = .none
-        */
+        
         
         return 0
     }

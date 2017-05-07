@@ -16,13 +16,13 @@ class Quarter: Object {
     dynamic var current: Bool = false
     
     func delete(realm: Realm) {
+        let courses = realm.objects(Course.self).filter("quarter.title = '\(self.title!)'")
+        
+        for course in courses {
+            course.delete(realm: realm)
+        }
+        
         try! realm.write {
-            let courses = realm.objects(Course.self).filter("quarter.title = '\(self.title!)'")
-            
-            for course in courses {
-                course.delete(realm: realm)
-            }
-            
             realm.delete(self)
         }
     }
