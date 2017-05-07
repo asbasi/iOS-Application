@@ -19,7 +19,6 @@ func checkCalendarAuthorizationStatus() {
     
     switch(status) {
     case EKAuthorizationStatus.notDetermined:
-        requestAccessToCalendar()
         verifyCalendar()
         exportEvents(toCalendar: (getMainCalendar()?.calendarIdentifier)!)
     case EKAuthorizationStatus.authorized:

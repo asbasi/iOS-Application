@@ -25,9 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             {
                 print("User denied notifications")
             }
+            requestAccessToCalendar()
         }
         
-        requestAccessToCalendar() 
+        
         
         // Sets up the theme of the app.
         let theme = ThemeManager.currentTheme()
