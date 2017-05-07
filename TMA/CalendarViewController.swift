@@ -242,21 +242,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
         let event = self.events[indexPath.row]
         
-        cell.title?.text = event.title
-        cell.checkbox.on = event.checked
-        cell.course?.text = event.course.identifier
-        
-        cell.color.backgroundColor = colorMappings[event.course.color]
-        cell.color.layer.cornerRadius = 4.0
-        cell.color.clipsToBounds = true
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        let date = self.events[indexPath.row].date as Date
-        cell.time?.text = formatter.string(from: date)
-        
-        cell.checkbox.boxType = BEMBoxType.square
-        cell.checkbox.onAnimationType = BEMAnimationType.fill
         cell.buttonAction = { (_ sender: PlannerViewCell) -> Void in
             
             var path: IndexPath = self.myTableView.indexPath(for: sender)!
@@ -280,25 +265,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
             else { // About to be checked.
                 
-                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-                
-                alert.addTextField { (textField) in
-                    textField.keyboardType = .decimalPad
-                    textField.text = "\(event.duration)"
-                }
-                
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-                    
-                    if textField.text != "" {
-                        Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: self.realm)
-                    }
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-                
-                self.present(alert, animated: true, completion: nil)
-                
+                self.present(Helpers.getLogAlert(event: event, realm: self.realm), animated: true, completion: nil)
             } //else about to be checked
             
             // About to check off the event so remove any pending notifications.
@@ -309,25 +276,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
         }
         
-        cell.checkbox.isHidden = false
-        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
-            cell.checkbox.isHidden = true
-        }
         
-        if event.type == FREE_TIME_EVENT
-        {
-            cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
-        }
-        else if event.type == SCHEDULE_EVENT
-        {
-            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
-        }
-        else // After Today.
-        {
-            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        
+        cell.setUI(event: event)
 
-        }
-        
         return cell
     }
     

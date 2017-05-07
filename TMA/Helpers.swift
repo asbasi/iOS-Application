@@ -59,6 +59,26 @@ class Helpers {
         
         return gregorian.date(from: components)!
     }
+    
+    static func getLogAlert(event: Event, realm: Realm) -> UIAlertController {
+        let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.keyboardType = .decimalPad
+            textField.text = "\(event.duration)"
+        }
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
+            let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+            
+            if textField.text != "" {
+                Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: realm)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
+        return alert
+    }
 }
 
 extension Date {

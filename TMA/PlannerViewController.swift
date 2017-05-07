@@ -25,6 +25,53 @@ class PlannerViewCell: UITableViewCell {
     @IBAction func checkboxToggled(_ sender: AnyObject) {
         self.buttonAction?(self)
     }
+    
+    func setUI(event: Event) {
+        self.title?.text = event.title
+        self.checkbox.on = event.checked
+        
+        if let course = event.course { // not all events have a course (some are free times)
+            self.course?.text = course.identifier
+            
+            self.color.backgroundColor = colorMappings[course.color]
+            self.color.layer.cornerRadius = 4.0
+            self.color.clipsToBounds = true
+        }
+
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        
+        if(event.duration == 24.0) {
+            self.time?.text = "All Day"
+        }
+        else {
+            self.time?.text = formatter.string(from: event.date ) + " - " + formatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+        }
+
+        
+        self.checkbox.boxType = BEMBoxType.square
+        self.checkbox.onAnimationType = BEMAnimationType.fill
+        
+        
+        self.checkbox.isHidden = false
+        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
+            self.checkbox.isHidden = true
+        }
+        
+        if event.type == FREE_TIME_EVENT
+        {
+            self.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
+        }
+        else if event.type == SCHEDULE_EVENT
+        {
+            self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+        }
+        else // After Today.
+        {
+            self.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        }
+    }
 }
 
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -82,49 +129,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func addingEvent(_ sender: Any) {
         self.performSegue(withIdentifier: "addEvent", sender: nil)
     }
-    
-    /*
-    private func populateFreeTimes() {
-        freeTimes = [[Event]]()
-        
-        for offset in 0...6 {
-            
-            var components = DateComponents()
-            components.day = offset
-            let date = Calendar.current.date(byAdding: components, to: Date())!
-            
-            var calEvents: [EKEvent] = []
-            
-            if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
-                let calendars = eventStore.calendars(for: .event)
-                calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
-            }
-            else {
-                
-                let startDate = Calendar.current.startOfDay(for: date)
-                
-                var dateComponents = DateComponents()
-                dateComponents.day = 1
-                let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
-                
-                let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [startDate, endDate]).sorted(byKeyPath: "date", ascending: true)
-                
-                for event in inAppEvents {
-                    let item = EKEvent(eventStore: eventStore)
-                    item.startDate = event.date
-                    item.endDate = event.endDate
-                    calEvents.append(item)
-                }
-            }
-            
-            let events = findFreeTimes(onDate: (offset == 0 ? date : Calendar.current.startOfDay(for: date)), withEvents: calEvents)
-            
-            if(events.count > 0) {
-                freeTimes.append(events)
-            }
-        }
-    }
-    */
     
     func populateSegments()
     {
@@ -284,17 +288,6 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         return 0
     }
     
-    /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-     let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
-     footerView.backgroundColor = UIColor.clear
-     
-     return footerView
-     }
-     
-     func tableView(_ tableView: UITableView,  heightForFooterInSection section: Int) -> CGFloat {
-     return 20.0
-     }*/
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.events[section].count
     }
@@ -320,35 +313,13 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.populateSegments()
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
         
         let event = self.events[indexPath.section][indexPath.row]
         
-        cell.title?.text = event.title
-        cell.checkbox.on = event.checked
-        cell.course?.text = ""
-        
-        if let course = event.course {
-            cell.course?.text = course.identifier
-            
-            cell.color.backgroundColor = colorMappings[course.color]
-            cell.color.layer.cornerRadius = 4.0
-            cell.color.clipsToBounds = true
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        
-        if(event.duration == 24.0) {
-            cell.time?.text = "All Day"
-        }
-        else {
-            cell.time?.text = formatter.string(from: event.date ) + " - " + formatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
-        }
-        
-        cell.checkbox.boxType = BEMBoxType.square
-        cell.checkbox.onAnimationType = BEMAnimationType.fill
         cell.buttonAction = { (_ sender: PlannerViewCell) -> Void in
             
             var path: IndexPath = self.myTableView.indexPath(for: sender)!
@@ -371,25 +342,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
             else { // About to be checked.
-                
-                let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
-                
-                alert.addTextField { (textField) in
-                    textField.keyboardType = .decimalPad
-                    textField.text = "\(event.duration)"
-                }
-                
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-                    let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
-                    
-                    if textField.text != "" {
-                        Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: self.realm)
-                    }
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
-                
-                self.present(alert, animated: true, completion: nil)
+                self.present(Helpers.getLogAlert(event: event, realm: self.realm), animated: true, completion: nil)
             }
             
             // About to check off the event so remove any pending notifications.
@@ -407,25 +360,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             self.animatedRemove(at: path, type: "checkboxToggle")
         }
         
-        cell.checkbox.isHidden = false
-        
-        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
-            cell.checkbox.isHidden = true
-        }
-        
-        
-        if event.type == FREE_TIME_EVENT
-        {
-            cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
-        }
-        else if event.type == SCHEDULE_EVENT
-        {
-            cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
-        }
-        else // Allocated time.
-        {
-            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
-        }
+        cell.setUI(event: event)
         
         return cell
     }
