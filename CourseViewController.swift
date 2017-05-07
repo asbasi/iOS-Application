@@ -245,10 +245,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let courseDetailViewController = segue.destination as! CourseStatsViewController
                     courseDetailViewController.course = courses[indexPath.row]
                 }
-                else if segue.identifier! == "showGoals" {
-                    let courseGoalViewController = segue.destination as! GoalTableViewController
-                    courseGoalViewController.course = courses[indexPath.row]
-                }
             }
         }
         else {

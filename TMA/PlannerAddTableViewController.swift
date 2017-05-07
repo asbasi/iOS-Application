@@ -147,7 +147,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             //get the course
             let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
             
-            if(self.operation == "add") {
+            if(self.operation == "add" || self.operation == "manage") {
                 let event = Event()
                 
                 event.title = titleTextField.text
@@ -253,6 +253,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
             self.pageTitleTextField.title = "Add Event"
+        }
+        else if(self.operation == "manage") {
+            self.pageTitleTextField.title = "Manage Free Time"
+            self.datePicker.date = self.event!.date
+            self.dateLabel.text = dateFormatter.string(from: self.event!.date)
+            
+            self.endDatePicker.date = self.event!.endDate
+            self.endDateLabel.text = dateFormatter.string(from: self.event!.endDate)
         }
         else if (self.operation == "edit" || self.operation == "show") {
             self.pageTitleTextField.title = self.event!.title

@@ -47,7 +47,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     var bottomMessage: String = "You don't have any active events. All your active events will show up here."
     
     @IBAction func segmentChanged(_ sender: Any) {
-        self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
+        //self.events = allTypesOfEvents[segmentController.selectedSegmentIndex]
         self.populateSegments()
         bottomMessage = "You don't have any \(segmentMessage[segmentController.selectedSegmentIndex]) events. All your \(segmentMessage[segmentController.selectedSegmentIndex]) events will show up here."
         
@@ -83,6 +83,49 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.performSegue(withIdentifier: "addEvent", sender: nil)
     }
     
+    /*
+    private func populateFreeTimes() {
+        freeTimes = [[Event]]()
+        
+        for offset in 0...6 {
+            
+            var components = DateComponents()
+            components.day = offset
+            let date = Calendar.current.date(byAdding: components, to: Date())!
+            
+            var calEvents: [EKEvent] = []
+            
+            if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+                let calendars = eventStore.calendars(for: .event)
+                calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
+            }
+            else {
+                
+                let startDate = Calendar.current.startOfDay(for: date)
+                
+                var dateComponents = DateComponents()
+                dateComponents.day = 1
+                let endDate = Calendar.current.date(byAdding: dateComponents, to: startDate)
+                
+                let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [startDate, endDate]).sorted(byKeyPath: "date", ascending: true)
+                
+                for event in inAppEvents {
+                    let item = EKEvent(eventStore: eventStore)
+                    item.startDate = event.date
+                    item.endDate = event.endDate
+                    calEvents.append(item)
+                }
+            }
+            
+            let events = findFreeTimes(onDate: (offset == 0 ? date : Calendar.current.startOfDay(for: date)), withEvents: calEvents)
+            
+            if(events.count > 0) {
+                freeTimes.append(events)
+            }
+        }
+    }
+    */
+    
     func populateSegments()
     {
         let cal = Calendar(identifier: .gregorian)
@@ -94,9 +137,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let segmentEventsArray = [activeEvents, finishedEvents, allEvents]
         
-        self.segmentController.setTitle("Active (\(activeEvents.filter("isSchedule = false").count))", forSegmentAt: 0)
-        self.segmentController.setTitle("Finished (\(finishedEvents.filter("isSchedule = false").count))", forSegmentAt: 1)
-        self.segmentController.setTitle("All (\(allEvents.filter("isSchedule = false").count))", forSegmentAt: 2)
+        self.segmentController.setTitle("Active (\(activeEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 0)
+        self.segmentController.setTitle("Finished (\(finishedEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 1)
+        self.segmentController.setTitle("Active (\(allEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 2)
         
         var components = DateComponents()
         
@@ -121,20 +164,50 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             {
                 let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
                 
+                
+                var plannedEvents: [Event] = []
+                
                 if segment == 2 && dateBegin >= todayDate && dateBegin <= weekFromTodayDate { //only show scheduled events in all events segment and when its today or the next 7 days
-                    self.allTypesOfEvents[segment].append(Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                    plannedEvents = Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 else {
-                    self.allTypesOfEvents[segment].append(Array(segmentEventsArray[segment].filter("isSchedule = false AND date BETWEEN %@", [dateBegin,dateEnd]).sorted(byKeyPath: "date", ascending: true)))
+                    plannedEvents = Array(segmentEventsArray[segment].filter("type !=                     \(SCHEDULE_EVENT) AND date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 
-                let last_element = self.allTypesOfEvents[segment][self.allTypesOfEvents[segment].count-1]
+                /********************** GET FREE TIMES *****************/
+                var calEvents: [EKEvent] = []
+                
+                if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+                    let calendars = eventStore.calendars(for: .event)
+                    calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
+                }
+                else {
+                    var dateComponents = DateComponents()
+                    dateComponents.day = 1
+                    let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
+                    
+                    let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
+                    
+                    for event in inAppEvents {
+                        let item = EKEvent(eventStore: eventStore)
+                        item.startDate = event.date
+                        item.endDate = event.endDate
+                        calEvents.append(item)
+                    }
+                }
+                
+                let freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
+                
+                
+                let allEvents = (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
+                
+                self.allTypesOfEvents[segment].append(allEvents)
+                
+                let last_element = self.allTypesOfEvents[segment][self.allTypesOfEvents[segment].count - 1]
                 if last_element.count == 0 {
                     self.allTypesOfEvents[segment].removeLast()
                 }
             }
-            
-            
         }
         
         self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
@@ -251,19 +324,28 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         let cell = self.myTableView.dequeueReusableCell(withIdentifier: "PlannerCell", for: indexPath) as! PlannerViewCell
         
         let event = self.events[indexPath.section][indexPath.row]
-        let date = event.date as Date
         
         cell.title?.text = event.title
         cell.checkbox.on = event.checked
-        cell.course?.text = event.course.identifier
+        cell.course?.text = ""
         
-        cell.color.backgroundColor = colorMappings[event.course.color]
-        cell.color.layer.cornerRadius = 4.0
-        cell.color.clipsToBounds = true
+        if let course = event.course {
+            cell.course?.text = course.identifier
+            
+            cell.color.backgroundColor = colorMappings[course.color]
+            cell.color.layer.cornerRadius = 4.0
+            cell.color.clipsToBounds = true
+        }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        cell.time?.text = formatter.string(from: date)
+        
+        if(event.duration == 24.0) {
+            cell.time?.text = "All Day"
+        }
+        else {
+            cell.time?.text = formatter.string(from: event.date ) + " - " + formatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
+        }
         
         cell.checkbox.boxType = BEMBoxType.square
         cell.checkbox.onAnimationType = BEMAnimationType.fill
@@ -308,8 +390,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
                 
                 self.present(alert, animated: true, completion: nil)
-                
-            } //else about to be checked
+            }
             
             // About to check off the event so remove any pending notifications.
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
@@ -327,21 +408,23 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         
         cell.checkbox.isHidden = false
-        if event.isSchedule {
+        
+        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
             cell.checkbox.isHidden = true
         }
         
-        if Calendar.current.isDateInToday(date) // Today.
+        
+        if event.type == FREE_TIME_EVENT
         {
             cell.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
-        else if NSDate().compare(date) == .orderedDescending // Before Today.
-        {
-            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
-        }
-        else // After Today.
+        else if event.type == SCHEDULE_EVENT
         {
             cell.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
+        }
+        else // Allocated time.
+        {
+            cell.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
         }
         
         return cell
@@ -355,8 +438,20 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // a row has been selected in table view
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.eventToEdit = self.events[indexPath.section][indexPath.row]
-        self.performSegue(withIdentifier: "showEvent", sender: nil)
+        
+        let event = self.events[indexPath.section][indexPath.row]
+        
+        self.eventToEdit = event
+        
+        if(event.type == SCHEDULE_EVENT) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        else if (event.type == FREE_TIME_EVENT) {
+            self.performSegue(withIdentifier: "manageFreeTime", sender: nil)
+        }
+        else {
+            self.performSegue(withIdentifier: "editEvent", sender: nil)
+        }
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
@@ -435,6 +530,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         else if segue.identifier! == "editEvent" {
             eventAddViewController.operation = "edit"
+            eventAddViewController.event = eventToEdit!
+        }
+        else if segue.identifier! == "manageFreeTime" {
+            eventAddViewController.operation = "manage"
             eventAddViewController.event = eventToEdit!
         }
     }

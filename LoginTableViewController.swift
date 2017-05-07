@@ -182,7 +182,7 @@ class LoginTableViewController: UITableViewController {
                                             ev.endDate = Helpers.set_time(mydate: the_date as Date, h: ieh, m: iem)
                                             ev.course = course
                                             ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
-                                            ev.isSchedule = true
+                                            ev.type = SCHEDULE_EVENT
                                             Helpers.DB_insert(obj: ev)
                                             
                                             checkCalendarAuthorizationStatus()
