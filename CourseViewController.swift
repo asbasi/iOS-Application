@@ -224,7 +224,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
         self.courseToEdit = courses[indexPath.row]
         
-        self.performSegue(withIdentifier: "editCourse", sender: nil)
+        self.performSegue(withIdentifier: "showStats", sender: nil)
     }
     
    // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -232,20 +232,9 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier! == "showStats" || segue.identifier! == "showGoals" {
-            
-            if let button = sender as? UIButton {
-                let cell = button.superview?.superview as! UITableViewCell
-            
-                let indexPath: IndexPath = self.tableView.indexPath(for: cell)!
-            
-                let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
-
-                if segue.identifier! == "showStats" {
-                    let courseDetailViewController = segue.destination as! CourseStatsViewController
-                    courseDetailViewController.course = courses[indexPath.row]
-                }
-            }
+        if segue.identifier! == "showStats" {
+            let courseDetailViewController = segue.destination as! CourseStatsViewController
+            courseDetailViewController.course = courseToEdit!
         }
         else {
             let navigation: UINavigationController = segue.destination as! UINavigationController

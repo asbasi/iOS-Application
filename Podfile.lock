@@ -12,6 +12,7 @@ PODS:
   - Realm/Headers (2.6.2)
   - RealmSwift (2.6.2):
     - Realm (= 2.6.2)
+  - VBPieChart (1.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
@@ -21,6 +22,7 @@ DEPENDENCIES:
   - KDCircularProgress (~> 1.5.2)
   - PureLayout
   - RealmSwift (~> 2.6.2)
+  - VBPieChart
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -31,7 +33,8 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Realm: 29222766425b9f831228f81b63f0e38a97a4d700
   RealmSwift: d161a80f96cb91ae88391a7d5a9cf08024a7bc8e
+  VBPieChart: 7d46553bcb9de13afee366acb84d3afcda536929
 
-PODFILE CHECKSUM: c6cf254c0e665e703994301a8ee7a1373a065efe
+PODFILE CHECKSUM: c40641960a1f23a23ea40e6a38c5a2ed65fe4c4a
 
 COCOAPODS: 1.2.0

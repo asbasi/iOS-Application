@@ -265,7 +265,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aZw-ft-Tyt" id="HTg-ob-jfk">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkj-go-540">
@@ -1205,6 +1205,32 @@
             </objects>
             <point key="canvasLocation" x="2788" y="310.79460269865069"/>
         </scene>
+        <!--Stats-->
+        <scene sceneID="u9g-AZ-Rts">
+            <objects>
+                <viewController id="BQc-cb-GuF" customClass="CourseStatsViewController" customModule="TMA" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6iR-Kx-uG7"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bwb-bX-eXa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r8P-63-k8H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2J8-md-jPk" customClass="PieChartView" customModule="TMA">
+                                <rect key="frame" x="16" y="72" width="343" height="257"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Stats" id="8xU-VU-Cxn"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6B0-nK-yuC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3788" y="658.92053973013503"/>
+        </scene>
         <!--Add Quarter-->
         <scene sceneID="NvY-sY-9jH">
             <objects>
@@ -1395,7 +1421,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NaS-6x-04Q" id="N6o-je-UqQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="81.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="82"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="History" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2m-ed-pne">
@@ -1468,6 +1494,7 @@
                         <outlet property="tableView" destination="cYa-mo-fcZ" id="hKn-V9-0TF"/>
                         <segue destination="Okw-r8-vMW" kind="presentation" identifier="addCourse" id="VgT-gx-cUX"/>
                         <segue destination="Okw-r8-vMW" kind="presentation" identifier="editCourse" id="vpM-11-6Pv"/>
+                        <segue destination="BQc-cb-GuF" kind="show" identifier="showStats" id="6mn-FP-Cnp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGp-xI-emD" userLabel="First Responder" sceneMemberID="firstResponder"/>
