@@ -83,12 +83,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
         self.calendar.addGestureRecognizer(scopeGesture)
         
-        let currentDate: Date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        self.events = getEventsForDate(dateFormatter.date(from: dateFormatter.string(from: currentDate))!)
-        selectedDate = currentDate
+        selectedDate = Date()
         
         self.myTableView.frame.origin.y = self.calendar.frame.maxY
         //self.myTableView.tableFooterView = UIView()

@@ -12,6 +12,6 @@ target 'TMA' do
   pod 'FSCalendar'
   pod 'PureLayout'
   pod 'Alamofire', '~> 4.4'
-  pod 'VBPieChart'
+  pod 'PieCharts'
 
 end

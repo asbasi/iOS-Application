@@ -22,7 +22,7 @@ class Helpers {
     }
     
     static func add_duration(events: Results<Event>) -> Float{
-        var sum: Float = 0
+        var sum: Float = 0.0
         for x in events {
             sum += x.duration
         }
@@ -30,7 +30,7 @@ class Helpers {
     }
     
     static func add_duration(events: Results<Log>) -> Float{
-        var sum: Float = 0
+        var sum: Float = 0.0
         for x in events {
             sum += x.duration
         }
@@ -65,14 +65,14 @@ class Helpers {
         
         alert.addTextField { (textField) in
             textField.keyboardType = .decimalPad
-            textField.text = "\(event.duration)"
+            textField.text = "\(event.duration * 60)"
         }
         
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
             let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
             
             if textField.text != "" {
-                Log.add(event: event, duration: (Float(textField.text!)!)/60, realm: realm)
+                Log.add(event: event, duration: (Float(textField.text!)!) / 60, realm: realm)
             }
         }))
         

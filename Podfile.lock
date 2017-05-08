@@ -6,13 +6,13 @@ PODS:
   - Charts/Core (3.0.2)
   - FSCalendar (2.7.4)
   - KDCircularProgress (1.5.2)
+  - PieCharts (0.0.5)
   - PureLayout (3.0.2)
   - Realm (2.6.2):
     - Realm/Headers (= 2.6.2)
   - Realm/Headers (2.6.2)
   - RealmSwift (2.6.2):
     - Realm (= 2.6.2)
-  - VBPieChart (1.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
@@ -20,9 +20,9 @@ DEPENDENCIES:
   - Charts (~> 3.0.2)
   - FSCalendar
   - KDCircularProgress (~> 1.5.2)
+  - PieCharts
   - PureLayout
   - RealmSwift (~> 2.6.2)
-  - VBPieChart
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -30,11 +30,11 @@ SPEC CHECKSUMS:
   Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
   FSCalendar: e95995a746acae531c4a7dd636b8393233125ec5
   KDCircularProgress: 12f677b2deb02409ab48c6cae1898d146b8ad549
+  PieCharts: a0fb4784a3460088c8ba7dfb00b89784ddaa7e70
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Realm: 29222766425b9f831228f81b63f0e38a97a4d700
   RealmSwift: d161a80f96cb91ae88391a7d5a9cf08024a7bc8e
-  VBPieChart: 7d46553bcb9de13afee366acb84d3afcda536929
 
-PODFILE CHECKSUM: c40641960a1f23a23ea40e6a38c5a2ed65fe4c4a
+PODFILE CHECKSUM: e4562f0d12b4a47b348d23fd5e4beca9c6d9fd54
 
 COCOAPODS: 1.2.0

@@ -142,7 +142,8 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.quarterToEdit = self.quarters[indexPath.row]
-        self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
+        //self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
+        self.performSegue(withIdentifier: "editQuarter", sender: nil)
     }
     
     // MARK: - Navigation
