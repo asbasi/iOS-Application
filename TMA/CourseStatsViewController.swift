@@ -55,42 +55,19 @@ class CourseStatsViewController: UIViewController, PieChartDelegate {
         
         if total != 0.0 {
             var models: [PieSliceModel] = [PieSliceModel]()
-                
-            let studyingLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(STUDY_EVENT)")
-            let studyingMins = Helpers.add_duration(events: studyingLogs)
-            if studyingMins > 0.0 {
-                models.append(PieSliceModel(value: Double((studyingMins / total) * 100), color: UIColor.red.withAlphaComponent(alpha)))
-                labels.append("Studying")
-            }
             
-            let homeworkLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(HOMEWORK_EVENT)")
-            let homeworkMins = Helpers.add_duration(events: homeworkLogs)
-            if homeworkMins > 0.0 {
-                models.append(PieSliceModel(value: Double((homeworkMins / total) * 100), color: UIColor.blue.withAlphaComponent(alpha)))
-                labels.append("Homework")
-            }
-        
-            let projectLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(PROJECT_EVENT)")
-            let projectMins = Helpers.add_duration(events: projectLogs)
-            if projectMins > 0.0 {
-                models.append(PieSliceModel(value: Double((projectMins / total) * 100), color: UIColor.green.withAlphaComponent(alpha)))
-                labels.append("Projects")
-            }
+            let colors: [UIColor] = [UIColor.red.withAlphaComponent(alpha), UIColor.blue.withAlphaComponent(alpha), UIColor.green.withAlphaComponent(alpha), UIColor.purple.withAlphaComponent(alpha), UIColor.lightGray.withAlphaComponent(alpha)]
             
-            let labLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(LAB_EVENT)")
-            let labMins = Helpers.add_duration(events: labLogs)
-            if labMins > 0.0 {
-                models.append(PieSliceModel(value: Double((labMins / total) * 100), color: UIColor.purple.withAlphaComponent(alpha)))
-                labels.append("Labs")
-            }
+            let tags: [String] = ["Studying", "Homework", "Projects", "Labs", "Other"]
             
-            let otherLogs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(OTHER_EVENT)")
-            let otherMins = Helpers.add_duration(events: otherLogs)
-            if otherMins > 0.0 {
-                models.append(PieSliceModel(value: Double((otherMins / total) * 100), color: UIColor.lightGray.withAlphaComponent(alpha)))
-                labels.append("Other")
+            for type in 0...4 {
+                let logs = self.realm.objects(Log.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(type)")
+                let mins = Helpers.add_duration(events: logs)
+                if mins > 0.0 {
+                    models.append(PieSliceModel(value: Double((mins / total) * 100), color: colors[type]))
+                    labels.append(tags[type])
+                }
             }
-
             pieChart.models = models
         }
         else {
