@@ -8,3 +8,4 @@
 
 let calendarKey: String = "PrimaryCalendar"
 let selectedThemeKey: String = "SelectedTheme"
+let firstTimeKey: String = "FirstTime"
