@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+
 class Course: Object {
     dynamic var title: String!
     dynamic var identifier: String!

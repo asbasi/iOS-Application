@@ -115,7 +115,7 @@ class LoginTableViewController: UITableViewController {
                                 course.identifier = courseDict["identifier"] as! String
                                 course.title = courseDict["title"] as! String
                                 course.quarter = currentQuarter
-                                course.color = "None"
+                                course.color = ["Red", "Green", "Blue"][Int(arc4random_uniform(3))]
                                 
                                 /////// check if course already exists
                                 var already_exists = false
