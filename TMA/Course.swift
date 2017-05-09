@@ -24,9 +24,6 @@ class Course: Object {
     
     func delete(realm: Realm) {
         try! realm.write {
-            let logsToDelete = realm.objects(Log.self).filter("course.identifier = '\(self.identifier!)'")
-            realm.delete(logsToDelete)
-            
             let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)'")
             realm.delete(eventsToDelete)
             

@@ -23,7 +23,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     fileprivate var events: [Event] = []
     fileprivate var eventToEdit: Event!
-    fileprivate var logToEdit: Log!
     fileprivate var selectedDate: Date = Date()
     
     fileprivate lazy var scopeGesture: UIPanGestureRecognizer = {
@@ -287,12 +286,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
                 
-                if let log = event.log {
-                    try! self.realm.write {
-                        self.realm.delete(log)
-                        event.log = nil
-                    }
-                }
+                event.durationStudied = 0.0
             }
             else { // About to be checked.
                 
@@ -339,9 +333,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     
                     self.events.remove(at: index.row)
                     
-                    if let log = event.log {
-                        self.realm.delete(log)
-                    }
+                    event.durationStudied = 0.0
                     
                     self.realm.delete(event)
                 }

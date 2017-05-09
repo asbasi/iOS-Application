@@ -15,5 +15,5 @@ class Event: Item {
     dynamic var reminderID: String!
     dynamic var reminderDate: Date? = nil
     dynamic var calEventID: String? = nil
-    dynamic var log: Log?
+    dynamic var durationStudied: Float = 0.0 //hours
 }

@@ -67,10 +67,6 @@ func exportEvents(toCalendar calendar: String)
             }
             else { // Event was deleted from calendar.
                 try! realm.write {
-                    if let log = event.log {
-                        realm.delete(log)
-                    }
-                    
                     realm.delete(event)
                 }
             }

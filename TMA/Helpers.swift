@@ -29,10 +29,10 @@ class Helpers {
         return sum
     }
     
-    static func add_duration(events: Results<Log>) -> Float{
+    static func add_duration_studied(events: Results<Event>) -> Float{
         var sum: Float = 0.0
         for x in events {
-            sum += x.duration
+            sum += x.durationStudied
         }
         return sum
     }
@@ -72,7 +72,9 @@ class Helpers {
             let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
             
             if textField.text != "" {
-                Log.add(event: event, duration: (Float(textField.text!)!) / 60, realm: realm)
+                try! self.realm.write {
+                    event.durationStudied = (Float(textField.text!)!) / 60
+                }
             }
         }))
         

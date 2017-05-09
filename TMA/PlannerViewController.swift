@@ -359,11 +359,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
                 
-                if let log = event.log {
-                    try! self.realm.write {
-                        self.realm.delete(log)
-                        event.log = nil
-                    }
+                try! self.realm.write {
+                    event.durationStudied = 0.0
                 }
             }
             else { // About to be checked.
@@ -432,9 +429,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         self.events.remove(at: index.section)
                     }
                     
-                    if let log = event.log {
-                        self.realm.delete(log)
-                    }
+                    event.durationStudied = 0.0
                     
                     self.realm.delete(event)
                 }

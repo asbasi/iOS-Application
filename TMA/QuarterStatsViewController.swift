@@ -30,10 +30,10 @@ class QuarterStatsViewController: UIViewController {
         for course in courses {
             courseTitles.append(course.identifier)
             
-            let logs = self.realm.objects(Log.self).filter("course.identifier = '\(course.identifier!)'")
+            let events = self.realm.objects(Event.self).filter("course.identifier = '\(course.identifier!)'")
             var sum = 0.0
-            for log in logs {
-                sum += Double(log.duration)
+            for event in events {
+                sum += Double(event.durationStudied)
             }
             sumOfLogHours.append(sum)
         }
