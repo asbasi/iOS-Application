@@ -27,7 +27,13 @@ class PlannerViewCell: UITableViewCell {
     }
     
     func setUI(event: Event) {
-        self.title?.text = event.title
+        
+        if(event.type == SCHEDULE_EVENT) {
+            self.title?.text = "\(event.title!) (\(event.course.title!))"
+        }
+        else {
+            self.title?.text = event.title
+        }
         self.checkbox.on = event.checked
         self.course?.text = ""
         
