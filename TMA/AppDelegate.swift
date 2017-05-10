@@ -13,9 +13,13 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let rootViewController = storyboard.instantiateViewController(withIdentifier: UserDefaults.standard.bool(forKey: "showed") ? "tabBarID" : "firstRootID")
+        
+        window?.rootViewController = rootViewController
         
         UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
             if granted {
@@ -83,5 +87,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+
 }
 

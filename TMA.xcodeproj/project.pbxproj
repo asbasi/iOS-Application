@@ -34,6 +34,7 @@
 		60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9961E96174B007EBEA4 /* Theme.swift */; };
 		60FD5E331EA5724600C73B9C /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD5E321EA5724600C73B9C /* LinkedList.swift */; };
 		60FD5E351EA5789D00C73B9C /* TimeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD5E341EA5789D00C73B9C /* TimeBlock.swift */; };
+		8F018A0A1EC28D790006F06B /* FirstLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F018A091EC28D790006F06B /* FirstLaunchViewController.swift */; };
 		8F23F73C1EB9ED47009F64F5 /* QuarterStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F23F73B1EB9ED47009F64F5 /* QuarterStatsViewController.swift */; };
 		8F2CCA191EA7F42C0068B942 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */; };
 		8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */; };
@@ -43,6 +44,7 @@
 		8F2CCA231EA7F4860068B942 /* Tutorial4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */; };
 		8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */; };
 		8F2CCA271EA7F49A0068B942 /* Tutorial6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */; };
+		8F57D1F71EC2E4F60037731F /* FirstLoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F57D1F61EC2E4F60037731F /* FirstLoginTableViewController.swift */; };
 		B2D58E2ACE30D0B2C026AF6B /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9980388F43AECB0582C67FE /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +92,7 @@
 		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = TMA/Theme.swift; sourceTree = "<group>"; };
 		60FD5E321EA5724600C73B9C /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		60FD5E341EA5789D00C73B9C /* TimeBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeBlock.swift; sourceTree = "<group>"; };
+		8F018A091EC28D790006F06B /* FirstLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstLaunchViewController.swift; sourceTree = "<group>"; };
 		8F23F73B1EB9ED47009F64F5 /* QuarterStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuarterStatsViewController.swift; sourceTree = "<group>"; };
 		8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +102,7 @@
 		8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial4ViewController.swift; sourceTree = "<group>"; };
 		8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial5ViewController.swift; sourceTree = "<group>"; };
 		8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial6ViewController.swift; sourceTree = "<group>"; };
+		8F57D1F61EC2E4F60037731F /* FirstLoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirstLoginTableViewController.swift; path = FirstLaunch/FirstLoginTableViewController.swift; sourceTree = "<group>"; };
 		B4E549B66F7D6B6754BD5852 /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
 		D9980388F43AECB0582C67FE /* Pods_TMA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -136,6 +140,7 @@
 		009C4E121E42D37D00260378 /* TMA */ = {
 			isa = PBXGroup;
 			children = (
+				8F57D1F91EC2E52D0037731F /* FirstLaunch */,
 				604DFBE71EAB06EC00AD0656 /* Stats Pages */,
 				8F2CCA0D1EA770300068B942 /* Tutorial Pages */,
 				6015DC001E9F7566005C8009 /* General */,
@@ -267,6 +272,15 @@
 			name = "Tutorial Pages";
 			sourceTree = "<group>";
 		};
+		8F57D1F91EC2E52D0037731F /* FirstLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				8F57D1F61EC2E4F60037731F /* FirstLoginTableViewController.swift */,
+				8F018A091EC28D790006F06B /* FirstLaunchViewController.swift */,
+			);
+			name = FirstLaunch;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -385,7 +399,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -403,6 +417,7 @@
 				60E4E9951E9603FC007EBEA4 /* ThemeTableViewController.swift in Sources */,
 				00DF40301E47E0700095B2FD /* Helpers.swift in Sources */,
 				8F2CCA271EA7F49A0068B942 /* Tutorial6ViewController.swift in Sources */,
+				8F018A0A1EC28D790006F06B /* FirstLaunchViewController.swift in Sources */,
 				60FD5E331EA5724600C73B9C /* LinkedList.swift in Sources */,
 				60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */,
 				009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */,
@@ -419,6 +434,7 @@
 				8F2CCA211EA7F47B0068B942 /* Tutorial3ViewController.swift in Sources */,
 				60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */,
 				00DF402C1E47DC930095B2FD /* Event.swift in Sources */,
+				8F57D1F71EC2E4F60037731F /* FirstLoginTableViewController.swift in Sources */,
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
 				8F2CCA1D1EA7F45B0068B942 /* Tutorial1ViewController.swift in Sources */,

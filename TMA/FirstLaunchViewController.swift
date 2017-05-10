@@ -1,23 +1,22 @@
 //
-//  TutorialViewController.swift
+//  FirstLaunchViewController.swift
 //  TMA
 //
-//  Created by Minjie Tan on 4/19/17.
+//  Created by Minjie Tan on 5/9/17.
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
 import UIKit
 
-class TutorialViewController: UIViewController {
+class FirstLaunchViewController: UIViewController {
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var pageControl: UIPageControl!
     
-    
-    
     var tutorialPageViewController: TutorialPageViewController? {
         didSet {
             tutorialPageViewController?.tutorialDelegate = self
+           
         }
     }
     
@@ -38,10 +37,10 @@ class TutorialViewController: UIViewController {
     func didChangePageControlValue() {
         tutorialPageViewController?.scrollToViewController(index: pageControl.currentPage)
     }
-
+    
 }
 
-extension TutorialViewController: TutorialPageViewControllerDelegate {
+extension FirstLaunchViewController: TutorialPageViewControllerDelegate {
     
     func tutorialPageViewController(_ tutorialPageViewController: TutorialPageViewController,
                                     didUpdatePageCount count: Int) {
@@ -54,3 +53,4 @@ extension TutorialViewController: TutorialPageViewControllerDelegate {
     }
     
 }
+
