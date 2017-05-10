@@ -185,7 +185,9 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
         let newEvent = EKEvent(eventStore: eventStore)
         
         newEvent.calendar = calendarForEvent
+        
         newEvent.title = "\(event.title!) (\(event.course.title!))"
+        
         newEvent.startDate = event.date
         
         var components = DateComponents()

@@ -173,7 +173,7 @@ class FirstLoginTableViewController: UITableViewController {
                                             
                                             // add to realm
                                             let ev = Event()
-                                            ev.title = "\(course.title!) - \(classs)"
+                                            ev.title = "\(classs)"
                                             ev.date = the_date
                                             ev.endDate = Helpers.set_time(mydate: the_date as Date, h: ieh, m: iem)
                                             ev.course = course
