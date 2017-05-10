@@ -103,7 +103,7 @@ class LoginTableViewController: UITableViewController {
                             }
                             
                             
-                            let courses_in_realm = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title)'")
+                            let courses_in_realm = self.realm.objects(Course.self)
                             let coursesDict = responseDict["courses"] as! [String: NSObject]
                             
                             for crn in Array(coursesDict.keys) {
@@ -199,7 +199,7 @@ class LoginTableViewController: UITableViewController {
                             self.indicator.stopAnimating()
                             self.indicator.hidesWhenStopped = true
                     
-                            if Array(responseDict.keys).count == 0 {
+                            if Array(coursesDict.keys).count == 0 {
                                 let alert = UIAlertController(title: "Incorrect Credentials", message: "Incorrect username or password.", preferredStyle: UIAlertControllerStyle.alert)
                                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                                 self.present(alert, animated: true, completion: nil)
