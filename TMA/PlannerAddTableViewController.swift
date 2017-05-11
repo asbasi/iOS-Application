@@ -361,7 +361,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
             //set  maximum time
             if (endDateLabel.text?.isEmpty)! == false {
-                datePicker.maximumDate = endDatePicker.date.addingTimeInterval(-minTimeDifference)
+                //datePicker.maximumDate = endDatePicker.date.addingTimeInterval(-minTimeDifference)
             }
             
             if (dateLabel.text?.isEmpty)! {
@@ -391,7 +391,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 
             else{
                 //set minimum time
-                endDatePicker.minimumDate = datePicker.date.addingTimeInterval(minTimeDifference)
+                //endDatePicker.minimumDate = datePicker.date.addingTimeInterval(minTimeDifference)
                 
                 endDatePicker.isHidden = !endDatePicker.isHidden
                 
