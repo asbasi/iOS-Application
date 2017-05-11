@@ -27,10 +27,6 @@ class Course: Object {
         try! realm.write {
             let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)'")
             realm.delete(eventsToDelete)
-            
-            let goalsToDelete = realm.objects(Goal.self).filter("course.identifier = '\(self.identifier!)'")
-            realm.delete(goalsToDelete)
-            
             realm.delete(self)
         }
     }

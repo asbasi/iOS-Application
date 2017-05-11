@@ -18,7 +18,6 @@
 		009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009C4E2B1E42DD2800260378 /* CourseViewController.swift */; };
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
-		1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118E6DD1E9C57F100A85134 /* Goal.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602BFBD91E641A58006FED32 /* CalendarViewController.swift */; };
@@ -75,7 +74,6 @@
 		009C4E2B1E42DD2800260378 /* CourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseViewController.swift; path = ../CourseViewController.swift; sourceTree = "<group>"; };
 		00DF402B1E47DC930095B2FD /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = TMA/Helpers.swift; sourceTree = "<group>"; };
-		1118E6DD1E9C57F100A85134 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		506942A4975D9D963D2626DA /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 			children = (
 				60B325BA1E8AE59F00CE6164 /* Quarter.swift */,
 				601962CC1E4EE780001EAAC0 /* Item.swift */,
-				1118E6DD1E9C57F100A85134 /* Goal.swift */,
 				00416AD41E47E5DB00DA733D /* Course.swift */,
 				00DF402B1E47DC930095B2FD /* Event.swift */,
 				007EE6F41EB0506A00E4CC30 /* Storage.swift */,
@@ -439,7 +436,6 @@
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
 				8F2CCA1D1EA7F45B0068B942 /* Tutorial1ViewController.swift in Sources */,
 				8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */,
-				1118E6DE1E9C57F100A85134 /* Goal.swift in Sources */,
 				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
