@@ -89,6 +89,18 @@ class LoginTableViewController: UITableViewController {
                         print("-------------------------------------------")
                         DispatchQueue.main.async {
                             
+                            let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            
+                            if Array(coursesDict.keys).count == 0 {
+                                self.navigationItem.rightBarButtonItem?.isEnabled = true;
+                                self.indicator.stopAnimating()
+                                self.indicator.hidesWhenStopped = true
+                                let alert = UIAlertController(title: "Incorrect Credentials", message: "Incorrect username or password.", preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                                return
+                            }
+                            
                             
                             if self.noCurrentQuarter {
                                 let quarter = Quarter()
@@ -104,7 +116,7 @@ class LoginTableViewController: UITableViewController {
                             
                             
                             let courses_in_realm = self.realm.objects(Course.self)
-                            let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            
                             
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
@@ -199,12 +211,7 @@ class LoginTableViewController: UITableViewController {
                             self.indicator.stopAnimating()
                             self.indicator.hidesWhenStopped = true
                     
-                            if Array(coursesDict.keys).count == 0 {
-                                let alert = UIAlertController(title: "Incorrect Credentials", message: "Incorrect username or password.", preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                                self.present(alert, animated: true, completion: nil)
-                            }
-                            else {
+                            if Array(coursesDict.keys).count != 0 {
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
                                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
                                 self.dismiss(animated: true, completion: nil)

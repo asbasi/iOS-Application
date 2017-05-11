@@ -285,8 +285,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     let delegate = UIApplication.shared.delegate as? AppDelegate
                     delegate?.scheduleNotifcation(at: date, title: event.title, body: "Reminder!", identifier: event.reminderID)
                 }
-                
-                event.durationStudied = 0.0
+                try! self.realm.write {
+                    event.durationStudied = 0.0
+                }
             }
             else { // About to be checked.
                 
