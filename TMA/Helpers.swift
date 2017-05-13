@@ -21,6 +21,15 @@ class Helpers {
         }
     }
     
+    static func add_duration_studied(for course: Course, in quarter: Quarter) -> Float {
+        var sum: Float = 0.0
+        let events = self.realm.objects(Event.self).filter("course.title = '\(course.title!)' AND course.quarter.title = '\(quarter.title!)'")
+        for event in events {
+            sum += event.durationStudied
+        }
+        return sum
+    }
+    
     static func add_duration(events: Results<Event>) -> Float{
         var sum: Float = 0.0
         for x in events {
