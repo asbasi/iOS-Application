@@ -85,6 +85,17 @@ class FirstLoginTableViewController: UITableViewController {
                         print("-------------------------------------------")
                         DispatchQueue.main.async {
                             
+                            let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            
+                            if Array(coursesDict.keys).count == 0 {
+                                self.navigationItem.rightBarButtonItem?.isEnabled = true;
+                                self.indicator.stopAnimating()
+                                self.indicator.hidesWhenStopped = true
+                                let alert = UIAlertController(title: "Incorrect Credentials", message: "Incorrect username or password.", preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                                return
+                            }
                             
                             if self.noCurrentQuarter {
                                 let quarter = Quarter()
@@ -99,8 +110,8 @@ class FirstLoginTableViewController: UITableViewController {
                             }
                             
                             
-                            let courses_in_realm = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title)'")
-                            let coursesDict = responseDict["courses"] as! [String: NSObject]
+                            let courses_in_realm = self.realm.objects(Course.self)
+
                             
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
@@ -195,12 +206,7 @@ class FirstLoginTableViewController: UITableViewController {
                             self.indicator.stopAnimating()
                             self.indicator.hidesWhenStopped = true
                             
-                            if Array(responseDict.keys).count == 0 {
-                                let alert = UIAlertController(title: "Incorrect Credentials", message: "Incorrect username or password.", preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                                self.present(alert, animated: true, completion: nil)
-                            }
-                            else {
+                            if Array(responseDict.keys).count != 0 {
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
                                 
                                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
