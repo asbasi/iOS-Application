@@ -55,26 +55,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            quarterJSON["courses"] = coursesJSON
 //            quartersJSON.append(quarterJSON)
 //        }
-//
+//        
 //        
 //        let parameters: Parameters = ["quarters": quartersJSON]
-//        print(parameters)
+//        //        print(parameters)
 //        Alamofire.request("http://192.241.206.161/chart", method: .post, parameters: parameters, encoding: JSONEncoding.default)
 //            .responseJSON { response in
 //                if let status = response.response?.statusCode {
 //                    print("status=\(status)")
 //                    switch(status){
-//                        case 200:
-//                            let chart_url = response.result.value as! String
-//                            print(chart_url)
-//                            break
-//                        default:
-//                            
-//                            break
+//                    case 200:
+//                        let chart_url = response.result.value as! [String: String]
+//                        print(chart_url["url"]!)
+//                        break
+//                    default:
+//                        
+//                        break
 //                    }
 //                }
 //        }
-
+//        
     
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
