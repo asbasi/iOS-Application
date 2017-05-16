@@ -97,6 +97,39 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
             }
         }
         else {
+            
+            var start: Date
+            var end: Date
+            
+            if startDate.text != "" {
+                start = dateFormatter.date(from: startDate.text!)!
+            }
+            else {
+                start = Date()
+            }
+            
+            if endDate.text != "" {
+                end = dateFormatter.date(from: endDate.text!)!
+            }
+            else {
+                var components = DateComponents()
+                components.setValue(2, for: .month)
+                end = Calendar.current.date(byAdding: components, to: start)!
+            }
+            
+            if(start >= end) {
+                let alert = UIAlertController(title: "Alert", message: "Invalid Quarter dates. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+                
+                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                
+                tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                
+                return
+            }
+            
             if operation == "add" {
                 if isDuplicate() {
                     return
@@ -105,34 +138,9 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 self.quarter = Quarter()
                 quarter!.title = quarterTitle.text!
                 
-                if startDate.text != "" {
-                    quarter!.startDate = dateFormatter.date(from: startDate.text!)
-                }
-                else {
-                    quarter!.startDate = Date()
-                }
-                
-                if endDate.text != "" {
-                    quarter!.endDate = dateFormatter.date(from: endDate.text!)
-                }
-                else {
-                    var components = DateComponents()
-                    components.setValue(2, for: .month)
-                    quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
-                }
-                
-                if(quarter!.startDate >= quarter!.endDate) {
-                    let alert = UIAlertController(title: "Alert", message: "Invalid Quarter dates. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    
-                    tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
-                    
-                    tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
-                    
-                    return
-                }
+                quarter!.startDate = start
+     
+                quarter!.endDate = end
                 
                 quarter!.current = currentSwitch.isOn
                 
@@ -164,22 +172,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                         }
                     }
                     
-                    if startDate.text != "" {
-                        quarter!.startDate = dateFormatter.date(from: startDate.text!)
-                    }
-                    else {
-                        quarter!.startDate = Date()
-                    }
-                    
-                    if endDate.text != "" {
-                        quarter!.endDate = dateFormatter.date(from: endDate.text!)
-                    }
-                    else {
-                        var components = DateComponents()
-                        components.setValue(2, for: .month)
-                        components.setValue(14, for: .day)
-                        quarter!.endDate = Calendar.current.date(byAdding: components, to: quarter!.startDate)
-                    }
+                    quarter!.startDate = start
+                    quarter!.endDate = end
                     
                     // Make sure no other quarter is set to current.
                     if(currentSwitch.isOn) {
