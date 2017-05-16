@@ -142,7 +142,15 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
         }
-        
+        else if(datePicker.date >= endDatePicker.date) {
+            let alert = UIAlertController(title: "Alert", message: "Invalid dates selected. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            
+            tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+        }
         else {
             //get the course
             let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
