@@ -96,7 +96,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     var allTypesOfEvents = [[[Event]](), [[Event]](), [[Event]]()] //0: Active, 1: Finished, 2: All
     
     let segmentMessage: [String] = ["active", "finished", "scheduled"]
-    let image = UIImage(named: "notebook")!
+    let image = UIImage(named: "plannerBackground")!
     let topMessage = "Planner"
     var bottomMessage: String = "You don't have any active events. All your active events will show up here."
     
@@ -273,6 +273,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     // MARK: - Table view data source
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20.0
+    }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {

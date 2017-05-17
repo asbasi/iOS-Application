@@ -153,7 +153,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             return 1
         }
 
-        let image = UIImage(named: "overview")!
+        let image = UIImage(named: "quarterBackground")!
         let topMessage = "Quarters"
         let bottomMessage = "You haven't created any quarters. All your quarters will show up here."
         
@@ -235,8 +235,8 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.quarterToEdit = self.quarters[indexPath.row]
-        self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
-        //self.performSegue(withIdentifier: "editQuarter", sender: nil)
+        //self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
+        self.performSegue(withIdentifier: "editQuarter", sender: nil)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
