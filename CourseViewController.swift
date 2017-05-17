@@ -120,7 +120,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.separatorStyle = .none
         */
         
-        let image = UIImage(named: "bar-chart")!
+        let image = UIImage(named: "course")!
         let topMessage = "Courses"
         let bottomMessage = "You haven't created any courses. All your courses will show up here."
         
