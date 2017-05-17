@@ -18,8 +18,7 @@ class TutorialPageViewController: UIPageViewController {
                 self.newNumViewController("2"),
                 self.newNumViewController("3"),
                 self.newNumViewController("4"),
-                self.newNumViewController("5"),
-                self.newNumViewController("6")]
+                self.newNumViewController("5")]
     }()
     
     override func viewDidLoad() {
