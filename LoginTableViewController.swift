@@ -213,9 +213,7 @@ class LoginTableViewController: UITableViewController {
                     
                             if Array(coursesDict.keys).count != 0 {
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
-                                self.dismiss(animated: true, completion: nil)
-                                }))
+                                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         } //end dispatch main queue
@@ -223,9 +221,7 @@ class LoginTableViewController: UITableViewController {
                         print("-------------------------------------------")
                     default:
                         let alert = UIAlertController(title: "Internet Error", message: "Something is wrong with the server.", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
-                            self.dismiss(animated: true, completion: nil)
-                        }))
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                         
                         print("error with response status: \(status)")

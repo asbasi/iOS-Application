@@ -70,7 +70,7 @@ class Helpers {
     }
     
     static func getLogAlert(event: Event, realm: Realm) -> UIAlertController {
-        let alert = UIAlertController(title: "Enter Time", message: "How much time (as a decimal number) did you spend studying?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter Time", message: "How much time (in minutes) did you spend studying?", preferredStyle: .alert)
         
         alert.addTextField { (textField) in
             textField.keyboardType = .decimalPad

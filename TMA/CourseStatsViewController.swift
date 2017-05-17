@@ -8,6 +8,7 @@
 
 import UIKit
 import PieCharts
+import Charts
 import RealmSwift
 
 class CourseStatsViewController: UIViewController, PieChartDelegate {
@@ -34,7 +35,56 @@ class CourseStatsViewController: UIViewController, PieChartDelegate {
     
     func populateCharts()
     {
-        // Do any additional setup after loading the view.
+     
+        /*
+        lineChart.descriptionText = ""
+        lineChart.noDataText = "No Data."
+        
+        //get all the logs and events for the course
+        
+        let startDay = course.quarter.startDate
+        var endDay = Date()
+        if(Date.daysBetween(start: endDay, end: course.quarter.startDate) > 0)
+        {
+            endDay = course.quarter.endDate
+        }
+        let days = Date.daysBetween(start: startDay!, end: endDay)
+        
+        var dayString = [String]()
+        var oneDay = startDay
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "M/d"
+        
+        
+        let allLogs = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)'")
+        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND isSchedule = false")
+        
+        var logHours = [Double]()
+        var eventHours = [Double]()
+        
+        
+        for i in 0...days {
+            var lhours = 0.0
+            var ehours = 0.0
+            dayString.append(formatter.string(from:oneDay!))
+            oneDay = oneDay?.addingTimeInterval(86400)
+            for log in allLogs {
+                if(Date.daysBetween(start: startDay!, end: log.date) == i) {
+                    lhours += Double(log.duration)
+                }
+            }
+            for event in allEvents {
+                if(Date.daysBetween(start: startDay!, end: event.date) == i) {
+                    ehours += Double(event.duration)
+                }
+            }
+            logHours.append(lhours)
+            eventHours.append(ehours)
+        }
+        
+        setLineChart(dataPoints: dayString, values1: logHours, values2: eventHours)*/
+        
         
         setPieChart();
         
@@ -111,4 +161,40 @@ class CourseStatsViewController: UIViewController, PieChartDelegate {
         lineTextLayer.settings = lineTextLayerSettings
         return lineTextLayer
     }
+    
+    /*
+    func setLineChart(dataPoints: [String], values1: [Double], values2: [Double]) {
+        var dataEntries1: [ChartDataEntry] = []
+        var dataEntries2: [ChartDataEntry] = []
+        for i in 0..<values1.count {
+            let dataEntry1 = ChartDataEntry(x: Double(i), y: values1[i])
+            dataEntries1.append(dataEntry1)
+            let dataEntry2 = ChartDataEntry(x: Double(i), y: values2[i])
+            dataEntries2.append(dataEntry2)
+        }
+        self.lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(values:dataPoints)
+        self.lineChart.xAxis.granularity = 1
+        let logDataSet = LineChartDataSet(values: dataEntries1, label: "Studied Hours")
+        logDataSet.axisDependency = .left
+        logDataSet.setColor(UIColor.green)
+        logDataSet.setCircleColor(UIColor.green)
+        logDataSet.circleRadius = 0.5
+        logDataSet.lineWidth = 2.3
+        logDataSet.drawValuesEnabled = false
+        let eventDataSet = LineChartDataSet(values: dataEntries2, label: "Allocated Hours")
+        eventDataSet.axisDependency = .left
+        eventDataSet.setColor(UIColor.red)
+        eventDataSet.circleRadius = 0.5
+        eventDataSet.lineWidth = 2.3
+        eventDataSet.drawValuesEnabled = false
+        eventDataSet.setCircleColor(UIColor.red)
+        let dataSets: [LineChartDataSet] = [eventDataSet, logDataSet]
+        let lineData: LineChartData = LineChartData(dataSets: dataSets)
+        self.lineChart.data = lineData
+        self.lineChart.doubleTapToZoomEnabled = false
+        self.lineChart.drawGridBackgroundEnabled = false
+        self.lineChart.drawBordersEnabled = true
+        
+    }
+    */
 }

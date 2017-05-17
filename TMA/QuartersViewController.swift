@@ -31,8 +31,6 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
 
         
     @IBAction func generateStats(_ sender: Any) {
-        print("Entered")
-        
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
 
@@ -69,8 +67,6 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             quarterJSON["courses"] = coursesJSON
             quartersJSON.append(quarterJSON)
         }
-
-        print("Hello World!")
 
         let parameters: Parameters = ["quarters": quartersJSON]
         print(parameters)
@@ -109,11 +105,9 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
                         break
                     default:
                         let alert = UIAlertController(title: "Error", message: "There was an error with the request.", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
-                            self.dismiss(animated: true, completion: nil)
-                        }))
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
-                        
+        
                         break
                     }
                 }

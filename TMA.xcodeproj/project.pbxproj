@@ -566,7 +566,7 @@
 				INFOPLIST_FILE = TMA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu;
+				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -582,7 +582,7 @@
 				INFOPLIST_FILE = TMA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu;
+				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
