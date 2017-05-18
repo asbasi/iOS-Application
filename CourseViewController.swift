@@ -139,9 +139,9 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath) as! CourseTableViewCell
         
         let course = self.courses[indexPath.row]
+        
         // changed the alpha component of the course color to 0.5
-        let theColor = colorMappings[course.color]?.withAlphaComponent(0.5)
-        cell.color.backgroundColor = theColor
+        cell.color.backgroundColor = colorMappings[course.color]?.withAlphaComponent(0.5)
         cell.color.layer.cornerRadius = 4.0
         cell.color.clipsToBounds = true
         
