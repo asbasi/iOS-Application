@@ -21,10 +21,12 @@ func checkCalendarAuthorizationStatus() {
     case EKAuthorizationStatus.notDetermined:
         verifyCalendar()
         exportEvents(toCalendar: (getMainCalendar()?.calendarIdentifier)!)
+        sync()
     case EKAuthorizationStatus.authorized:
         print("Access Granted")
         verifyCalendar()
         exportEvents(toCalendar: getMainCalendar()!.calendarIdentifier)
+        sync()
     case EKAuthorizationStatus.denied:
         print("Access Denied")
     default:
@@ -50,6 +52,38 @@ func verifyCalendar() {
     {
         if let calendar = createCalendar(withTitle: "Back On Track Application") {
             exportEvents(toCalendar: calendar)
+        }
+    }
+}
+
+// Removes any events that have exist in the BoT Calendar, but not in-app.
+func sync() {
+    if let calendar = getMainCalendar() {
+
+        var components = DateComponents()
+        components.year = -1
+        let startDate = Calendar.current.date(byAdding: components, to: Date())
+        
+        components.year = 1
+        let endDate = Calendar.current.date(byAdding: components, to: Date())
+        
+        let eventsPredicate = eventStore.predicateForEvents(withStart: startDate!, end: endDate!, calendars: [calendar])
+        
+        let events = eventStore.events(matching: eventsPredicate)
+        
+        for event in events {
+            if(realm.objects(Event.self).filter("calEventID = '\(event.eventIdentifier)'").count == 0) { // Doesn't exist in-app.
+                do {
+                    try eventStore.remove(event, span: .thisEvent, commit: true)
+                }
+                catch {
+                    let alert = UIAlertController(title: "Event could not be deleted from calendar", message: (error as Error).localizedDescription, preferredStyle: .alert)
+                    let OKAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alert.addAction(OKAction)
+                    
+                    UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                }
+            }
         }
     }
 }
