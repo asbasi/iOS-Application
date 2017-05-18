@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 
-let colorMappings: [String: UIColor] = ["None": UIColor.clear, "Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue]
+let colorMappings: [String: UIColor] = ["Yellow": UIColor.yellow, "Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue, "Purple": UIColor.purple, "Cyan": UIColor.cyan, "Brown": UIColor.brown, "Black": UIColor.black]
 
 class Helpers {
     static let realm = try! Realm()

@@ -14,7 +14,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     
     let eventStore = EKEventStore();
     
-    let colorPickerData = [["None", "Red", "Green", "Blue"]]
+    let colorPickerData = [["Yellow", "Red", "Green", "Blue", "Purple", "Cyan", "Brown", "Grey"]]
     
     /*
     func checkAllTextFields() {
