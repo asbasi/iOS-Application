@@ -144,6 +144,15 @@ func createCalendar(withTitle title: String) -> String? {
         }
     }
     
+    if(!foundSource) {
+        for source in sourcesInEventStore {
+            if(source.sourceType == EKSourceType.subscribed) {
+                newCalendar.source = source
+                foundSource = true
+            }
+        }
+    }
+    
     // Otherwise use the local source.
     if(!foundSource) {
         for source in sourcesInEventStore {

@@ -70,20 +70,34 @@ class Helpers {
     }
     
     static func getLogAlert(event: Event, realm: Realm) -> UIAlertController {
-        let alert = UIAlertController(title: "Enter Time", message: "How much time (in minutes) did you spend studying?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter Time", message: "How much time (in hours and minutes) did you spend studying?", preferredStyle: .alert)
         
         alert.addTextField { (textField) in
             textField.keyboardType = .decimalPad
-            textField.text = "\(event.duration * 60)"
+            textField.text = "\(floor(event.duration))"
+        }
+        
+        alert.addTextField { (textField) in
+            textField.keyboardType = .decimalPad
+            textField.text = "\((event.duration - floor(event.duration)) * 60)"
         }
         
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
-            let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+            let hoursField = alert!.textFields![0]
+            let minsField = alert!.textFields![1]
             
-            if textField.text != "" {
-                try! self.realm.write {
-                    event.durationStudied = (Float(textField.text!)!) / 60
-                }
+            var durationStudied: Float = 0.0
+            
+            if hoursField.text != "" {
+                durationStudied += (Float(hoursField.text!)!)
+            }
+            
+            if minsField.text != "" {
+                durationStudied += (Float(minsField.text!)!) / 60
+            }
+            
+            try! self.realm.write {
+                event.durationStudied = durationStudied
             }
         }))
         
