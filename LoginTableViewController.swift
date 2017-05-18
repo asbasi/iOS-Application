@@ -195,6 +195,7 @@ class LoginTableViewController: UITableViewController {
                                             ev.course = course
                                             ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
                                             ev.type = SCHEDULE_EVENT
+                                            
                                             Helpers.DB_insert(obj: ev)
                                             
                                             //increment 1 day so we dont get the same date next time

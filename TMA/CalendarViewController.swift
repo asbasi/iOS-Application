@@ -87,18 +87,14 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.myTableView.frame.origin.y = self.calendar.frame.maxY
         //self.myTableView.tableFooterView = UIView()
         
-        // setGradientBackground(view: self.view, colorTop: UIColor.blue, colorBottom: UIColor.lightGray)
+        // set observer for UIApplicationWillEnterForeground to refresh the app when app wakes up.
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         
-        verify()
-        checkCalendarAuthorizationStatus()
-        self.events = getEventsForDate(selectedDate)
-        
-        self.calendar.reloadData()
-        self.myTableView.reloadData()
+        refresh()
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,6 +103,15 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     /******************************* Calendar Functions *******************************/
+    
+    func refresh() {
+        verify()
+        checkCalendarAuthorizationStatus()
+        self.events = getEventsForDate(selectedDate)
+        
+        self.calendar.reloadData()
+        self.myTableView.reloadData()
+    }
     
     func getEventsForDate(_ date: Date) -> [Event]
     {
@@ -146,8 +151,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 
             freeTimes = findFreeTimes(onDate: date, withEvents: calEvents)
         }
+        
+        let calendarEvents: [Event] = importEvents(for: dateBegin)
 
-        return (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
+        return (freeTimes + plannedEvents + calendarEvents).sorted(by: { $0.date < $1.date })
     }
     
     // How many events are scheduled for that day?
@@ -308,7 +315,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if self.events[indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.row].type != FREE_TIME_EVENT {
+        if self.events[indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.row].type != FREE_TIME_EVENT && self.events[indexPath.row].type != CALENDAR_EVENT {
             return true
         }
         return false

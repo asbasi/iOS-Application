@@ -62,7 +62,7 @@ class PlannerViewCell: UITableViewCell {
         
         
         self.checkbox.isHidden = false
-        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT {
+        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT || event.type == CALENDAR_EVENT {
             self.checkbox.isHidden = true
         }
         
@@ -70,11 +70,11 @@ class PlannerViewCell: UITableViewCell {
         {
             self.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
-        else if event.type == SCHEDULE_EVENT
+        else if event.type == SCHEDULE_EVENT || event.type == CALENDAR_EVENT
         {
             self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
-        else // After Today.
+        else
         {
             self.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
         }
@@ -204,6 +204,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 /********************** GET FREE TIMES *****************/
                 
                 var freeTimes: [Event] = []
+                var calendarEvents: [Event] = []
                 
                 if(dateBegin >= todayDate && segment != 1) {
                     var calEvents: [EKEvent] = []
@@ -227,9 +228,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         }
                     }
                     freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
+                    calendarEvents = importEvents(for: dateBegin)
                 }
                 
-                let allEvents = (freeTimes + plannedEvents).sorted(by: { $0.date < $1.date })
+                let allEvents = (freeTimes + plannedEvents + calendarEvents).sorted(by: { $0.date < $1.date })
                 
                 self.allTypesOfEvents[segment].append(allEvents)
                 
@@ -243,8 +245,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         self.events = self.allTypesOfEvents[segmentController.selectedSegmentIndex]
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func refresh() {
         populateSegments()
         verify()
         checkCalendarAuthorizationStatus()
@@ -261,10 +262,19 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        refresh();
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.myTableView.tableFooterView = UIView()
+        
+        // set observer for UIApplicationWillEnterForeground to refresh the app when app wakes up.
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -344,7 +354,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if self.events[indexPath.section][indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.section][indexPath.row].type != FREE_TIME_EVENT {
+        if self.events[indexPath.section][indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.section][indexPath.row].type != FREE_TIME_EVENT && self.events[indexPath.section][indexPath.row].type != CALENDAR_EVENT {
             return true
         }
         return false

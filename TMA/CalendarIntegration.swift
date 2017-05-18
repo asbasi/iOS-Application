@@ -80,26 +80,33 @@ func exportEvents(toCalendar calendar: String)
     }
 }
 
-/*
-func importEvents(fromCalendar identifier: String) {
+
+func importEvents(for date: Date) -> [Event] {
+    var events: [Event] = []
     
-    // There is a current quarter.
-    if realm.objects(Quarter.self).filter("current = true").count == 1 {
-        let quarter = realm.objects(Quarter.self).filter("current = true")[0]
-
-        let calendar = getCalendar(withIdentifier: identifier)!
+    if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+        let calendars = eventStore.calendars(for: .event)
+        let calEvents = getCalendarEvents(forDate: date, fromCalendars: calendars)
         
-        let eventsPredicate = eventStore.predicateForEvents(withStart: quarter.startDate, end: quarter.endDate, calendars: [calendar])
-        let calEvents = eventStore.events(matching: eventsPredicate)
-        
-        for event in calEvents
-        {
-
-            
+        // Filter out the events that are already stored in-app.
+        for calEvent in calEvents {
+            if(realm.objects(Event.self).filter("calEventID == '\(calEvent.eventIdentifier)'").count == 0) {
+                
+                let event: Event = Event()
+                
+                event.title = calEvent.title
+                event.type = CALENDAR_EVENT
+                event.date = calEvent.startDate
+                event.endDate = calEvent.endDate
+                event.duration = Date.getDifference(initial: calEvent.startDate, final: calEvent.endDate)
+                
+                events.append(event)
+            }
         }
     }
+    return events
 }
-*/
+
 
 func requestAccessToCalendar() {
     eventStore.requestAccess(to: .event, completion:
