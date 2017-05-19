@@ -122,8 +122,18 @@ class FirstLoginTableViewController: UITableViewController {
                                 course.identifier = courseDict["identifier"] as! String
                                 course.title = courseDict["title"] as! String
                                 course.quarter = currentQuarter
-                                course.color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
-
+                                
+                                var count: Int = 1
+                                var color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
+                                
+                                while(self.realm.objects(Course.self).filter("color = '\(color)' AND quarter.currect = true").count != 0 && count <= colorMappings.count ) {
+                                    
+                                    color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
+                                    count += 1
+                                }
+                                
+                                course.color = color
+                                
                                 /////// check if course already exists
                                 var already_exists = false
                                 for course_in_realm in courses_in_realm {
@@ -132,16 +142,6 @@ class FirstLoginTableViewController: UITableViewController {
                                     }
                                 }
                                 if already_exists {
-                                    continue
-                                }
-                                /////////////////////////////////////////////
-                                var color_already_picked = false
-                                for course_in_realm in courses_in_realm {
-                                    if course_in_realm.color == course.color {
-                                        color_already_picked = true
-                                    }
-                                }
-                                if color_already_picked {
                                     continue
                                 }
                                 /////////////////////////////////////////////
