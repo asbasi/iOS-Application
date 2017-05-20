@@ -24,8 +24,15 @@ class FirstLaunchViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let tutorialPageViewController = segue.destination as? TutorialPageViewController {
-            self.tutorialPageViewController = tutorialPageViewController
+        
+        if segue.identifier == "loginPage" {
+            let loginPageViewController = segue.destination as? LoginTableViewController
+            loginPageViewController?.isTutorial = true
+        }
+        else {
+            if let tutorialPageViewController = segue.destination as? TutorialPageViewController {
+                self.tutorialPageViewController = tutorialPageViewController
+            }
         }
     }
     

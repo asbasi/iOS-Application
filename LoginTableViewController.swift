@@ -1,9 +1,9 @@
 //
 //  LoginTableViewController.swift
-//  
+//  TMA
 //
-//  Created by Abdulrahman Sahmoud on 4/23/17.
-//
+//  Created by Arvinder Basi on 5/20/17.
+//  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
 import UIKit
@@ -11,13 +11,13 @@ import Alamofire
 import RealmSwift
 
 class LoginTableViewController: UITableViewController {
-
     
-
     var noCurrentQuarter = false
     let realm = try! Realm()
-    @IBOutlet weak var passwordTextField: UITextField!
+    var isTutorial: Bool = false
+    
     @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     var indicator = UIActivityIndicatorView()
     
     func activityIndicator() {
@@ -26,8 +26,6 @@ class LoginTableViewController: UITableViewController {
         indicator.center = self.view.center
         self.view.addSubview(indicator)
     }
-    
-    
     
     func getWeekDaysInEnglish() -> [String] {
         let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
@@ -67,7 +65,6 @@ class LoginTableViewController: UITableViewController {
         return date! as NSDate
     }
     
-    
     @IBAction func Done(_ sender: Any) {
         var currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
         
@@ -101,7 +98,6 @@ class LoginTableViewController: UITableViewController {
                                 return
                             }
                             
-                            
                             if self.noCurrentQuarter {
                                 let quarter = Quarter()
                                 let quarterDict = responseDict["quarter"] as! [String: String]
@@ -120,18 +116,18 @@ class LoginTableViewController: UITableViewController {
                             
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
-                            
+                                
                                 let course = Course()
                                 course.instructor = courseDict["instructor"] as! String
                                 course.units = courseDict["units"] as! Float
                                 course.identifier = courseDict["identifier"] as! String
                                 course.title = courseDict["title"] as! String
                                 course.quarter = currentQuarter
-
+                                
                                 var count: Int = 1
                                 var color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
                                 
-                                while(self.realm.objects(Course.self).filter("color = '\(color)' AND quarter.currect = true").count != 0 && count <= colorMappings.count ) {
+                                while(self.realm.objects(Course.self).filter("color = '\(color)' AND quarter.current = true").count != 0 && count <= colorMappings.count ) {
                                     
                                     color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
                                     count += 1
@@ -205,7 +201,6 @@ class LoginTableViewController: UITableViewController {
                                             ev.course = course
                                             ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
                                             ev.type = SCHEDULE_EVENT
-                                            
                                             Helpers.DB_insert(obj: ev)
                                             
                                             //increment 1 day so we dont get the same date next time
@@ -214,25 +209,48 @@ class LoginTableViewController: UITableViewController {
                                         
                                         checkCalendarAuthorizationStatus()
                                     }
-
+                                    
                                 }
                             } // end for crn
                             
                             self.navigationItem.rightBarButtonItem?.isEnabled = true;
                             self.indicator.stopAnimating()
                             self.indicator.hidesWhenStopped = true
-                    
-                            if Array(coursesDict.keys).count != 0 {
+                            
+                            if Array(responseDict.keys).count != 0 {
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                                
+                                if self.isTutorial {
+                                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
+                                        self.dismiss(animated: true, completion: nil)
+                                        UserDefaults.standard.set(true, forKey: "showed")
+                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        let controller = storyboard.instantiateViewController(withIdentifier: "tabBarID")
+                                        self.present(controller, animated: true, completion: {
+                                            ()-> Void in
+                                        })
+                                    }))
+                                }
+                                else {
+                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                                }
                                 self.present(alert, animated: true, completion: nil)
+                                
+                                //                                UserDefaults.standard.set(true, forKey: "showed")
+                                //                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                //                                let controller = storyboard.instantiateViewController(withIdentifier: "tabBarID") as! UIViewController
+                                //                                self.present(controller, animated: false, completion: {
+                                //                                    ()-> Void in
+                                //                                })
                             }
                         } //end dispatch main queue
                         
                         print("-------------------------------------------")
                     default:
                         let alert = UIAlertController(title: "Internet Error", message: "Something is wrong with the server.", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
+                            self.dismiss(animated: true, completion: nil)
+                        }))
                         self.present(alert, animated: true, completion: nil)
                         
                         print("error with response status: \(status)")
@@ -241,29 +259,23 @@ class LoginTableViewController: UITableViewController {
         } //end Alamofire.request
     } //end Done()
     
-    
     @IBAction func usernameTextFieldChanged(_ sender: Any) {
         checkAllTextFields()
+    }
+    
+    @IBAction func Cancel(_ sender: Any) {
+        
+        UserDefaults.standard.set(true, forKey: "showed")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "tabBarID")
+        self.present(controller, animated: true, completion: {
+            ()-> Void in
+        })
     }
     
     @IBAction func passwordTextFieldChanged(_ sender: Any) {
         checkAllTextFields()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        self.navigationItem.rightBarButtonItem?.isEnabled = false;
-        
-        
-        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-        if currentQuarters.count != 1 {
-            noCurrentQuarter = true
-        }
-    }
-    
-    
     
     func checkAllTextFields() {
         if ((usernameTextField.text?.isEmpty)! || (passwordTextField.text?.isEmpty)!) {
@@ -274,11 +286,24 @@ class LoginTableViewController: UITableViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        if !isTutorial {
+            self.navigationItem.leftBarButtonItem = nil
+        }
+        
+        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
+        if currentQuarters.count != 1 {
+            noCurrentQuarter = true
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
 }
