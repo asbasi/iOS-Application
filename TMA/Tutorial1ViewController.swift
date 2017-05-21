@@ -14,7 +14,7 @@ class Tutorial1ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.Photo.image = UIImage(named: "welcome3")
+        self.Photo.image = UIImage(named: "welcome")
     }
 
     override func didReceiveMemoryWarning() {
