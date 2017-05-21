@@ -171,6 +171,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                         ///////////////////into 2 ints each hrs & min///////////////////////////
                                         ////////////////////////////////////////////////////////////////////////
                                         
+                                        
                                         let s_t = (currentClass["begin_time"] as! String).characters
                                         let e_t = (currentClass["end_time"] as! String).characters
                                         let sh = String(Array(s_t)[0])+String(Array(s_t)[1])
@@ -184,11 +185,17 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                         let iem = Int(em)! //integer end minute
                                         ///////////////////////////////////////////////////
                                         
-                                        var the_date = currentQuarter!.startDate!
+                                        let currentClassStartDate = Helpers.get_date_from_string(strDate: currentClass["start_date"]! as! String)
+                                        let currentClassEndDate = Helpers.get_date_from_string(strDate: currentClass["end_date"]! as! String)
+                                        
+                                        var the_date = currentClassStartDate
                                         the_date = Calendar.current.date(byAdding: .day, value: -1, to: the_date)!
                                         //subtract 1 day because self.get() starts from the day after
-                                        while the_date < currentQuarter!.endDate {
+                                        while the_date < currentClassEndDate {
                                             the_date = self.get(direction: .Next, week_days_translation[week_day]!, fromDate: the_date) as Date
+                                            if(the_date >= currentClassEndDate){
+                                                break;
+                                            }
                                             
                                             the_date = Helpers.set_time(mydate: the_date as Date, h: ish, m: ism)
                                             
