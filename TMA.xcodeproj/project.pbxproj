@@ -309,7 +309,7 @@
 					Cancel,
 				);
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Abdulrahman Sahmoud";
 				TargetAttributes = {
 					009C4E0F1E42D37D00260378 = {
@@ -565,7 +565,7 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack2.ucdavis.edu.test.arv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos10.3;
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -583,7 +583,7 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack2.ucdavis.edu.test.arv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos10.3;
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

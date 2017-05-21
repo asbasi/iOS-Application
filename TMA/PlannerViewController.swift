@@ -413,7 +413,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.eventToEdit = event
         
-        if(event.type == SCHEDULE_EVENT) {
+        if(event.type == SCHEDULE_EVENT || event.type == CALENDAR_EVENT) {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         else if (event.type == FREE_TIME_EVENT) {
