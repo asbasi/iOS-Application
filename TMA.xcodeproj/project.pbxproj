@@ -314,7 +314,7 @@
 				TargetAttributes = {
 					009C4E0F1E42D37D00260378 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 5Q9R8P3N9V;
+						DevelopmentTeam = 9RRT4Z72LX;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -558,12 +558,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 5Q9R8P3N9V;
+				DEVELOPMENT_TEAM = 9RRT4Z72LX;
 				INFOPLIST_FILE = TMA/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack1.ucdavis.edu;
+				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu.test.arv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos10.3;
 				SWIFT_VERSION = 3.0;
@@ -576,12 +576,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 5Q9R8P3N9V;
+				DEVELOPMENT_TEAM = 9RRT4Z72LX;
 				INFOPLIST_FILE = TMA/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack1.ucdavis.edu;
+				PRODUCT_BUNDLE_IDENTIFIER = BackOnTrack.ucdavis.edu.test.arv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos10.3;
 				SWIFT_VERSION = 3.0;

@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import RealmSwift
 
-class LoginTableViewController: UITableViewController {
+class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     
     var noCurrentQuarter = false
     let realm = try! Realm()
@@ -291,6 +291,9 @@ class LoginTableViewController: UITableViewController {
         
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
+        self.passwordTextField.delegate = self
+        self.usernameTextField.delegate = self
+        
         if !isTutorial {
             self.navigationItem.leftBarButtonItem = nil
         }
@@ -301,9 +304,15 @@ class LoginTableViewController: UITableViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if(passwordTextField.text != "" && usernameTextField.text != "") {
+            Done(self)
+        }
+        return true
+    }
 }

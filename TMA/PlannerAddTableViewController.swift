@@ -288,14 +288,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         
         // Ensure that the keyboard disappears when the user taps elsewhere.
         self.hideKeyboardWhenTapped()
-        
-        // Hide the save button.
-        //self.checkAllTextFields()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table view data source
@@ -338,9 +330,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         let endDateIndexPath = IndexPath(row: 2, section: 1)
         let reminderIndexPath = IndexPath(row: 0, section: 2)
         
-        //minimum study time = 15 mins
-        let minTimeDifference : TimeInterval = 60
-        
         if courseIndexPath == indexPath {
             coursePicker.isHidden = !coursePicker.isHidden
             
@@ -367,13 +356,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             if tableView.cellForRow(at: dateIndexPath)!.backgroundColor != UIColor.white {
                 tableView.cellForRow(at: dateIndexPath)!.backgroundColor = UIColor.white
             }
-            //set  maximum time
-            if (endDateLabel.text?.isEmpty)! == false {
-                //datePicker.maximumDate = endDatePicker.date.addingTimeInterval(-minTimeDifference)
-            }
             
             if (dateLabel.text?.isEmpty)! {
-                datePicker.date = (Date())
+                datePicker.date = Date()
                 dateLabel.text = dateFormatter.string(from: datePicker.date)
 
                 if ((dateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
@@ -388,36 +373,23 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
         }
         else if endDateIndexPath == indexPath {
-            //force user to pick a start time first
-            if (dateLabel.text?.isEmpty)! {
-                let dateAlert = UIAlertController(title: "Alert", message: "Please Select Your Start Time.", preferredStyle: UIAlertControllerStyle.alert)
-                dateAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                self.present(dateAlert, animated: true, completion: nil)
                 
-                tableView.cellForRow(at: dateIndexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            endDatePicker.isHidden = !endDatePicker.isHidden
+            
+            
+            if (endDateLabel.text?.isEmpty)! {
+                endDatePicker.date = datePicker.date.addingTimeInterval(900)
+                endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
+                
+                if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
+                    tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+                }
             }
-                
-            else{
-                //set minimum time
-                //endDatePicker.minimumDate = datePicker.date.addingTimeInterval(minTimeDifference)
-                
-                endDatePicker.isHidden = !endDatePicker.isHidden
-                
-                
-                if (endDateLabel.text?.isEmpty)! {
-                    endDatePicker.date = datePicker.date.addingTimeInterval(900)
-                    endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
-                    
-                    if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
-                        tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
-                    }
-                }
-                
-                if !endDatePicker.isHidden {
-                    coursePicker.isHidden = true
-                    datePicker.isHidden = true
-                    reminderPicker.isHidden = true
-                }
+            
+            if !endDatePicker.isHidden {
+                coursePicker.isHidden = true
+                datePicker.isHidden = true
+                reminderPicker.isHidden = true
             }
         }
             
