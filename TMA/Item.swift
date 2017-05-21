@@ -17,6 +17,7 @@ let OTHER_EVENT = 4
 let SCHEDULE_EVENT = 5
 let CALENDAR_EVENT = 6
 let FREE_TIME_EVENT = 7
+let DEADLINE_EVENT = 8
 
 let eventType: [String] = ["Study", "Homework", "Project", "Lab", "Other"]
 
