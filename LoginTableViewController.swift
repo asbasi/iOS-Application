@@ -74,8 +74,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         indicator.startAnimating()
         indicator.backgroundColor = UIColor.white
         
-        let encodedUsername = usernameTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        let encodedPassword = passwordTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        let encodedUsername = usernameTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let encodedPassword = passwordTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         
         Alamofire.request("http://192.241.206.161/?username=\(encodedUsername)&password=\(encodedPassword)", method: .get, encoding: JSONEncoding.default)
             .responseJSON { response in
