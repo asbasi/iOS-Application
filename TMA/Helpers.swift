@@ -6,9 +6,10 @@
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import RealmSwift
-
+import Alamofire
 
 let colorMappings: [String: UIColor] = ["None": UIColor.clear, "Yellow": UIColor.yellow, "Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue, "Purple": UIColor.purple, "Cyan": UIColor.cyan, "Brown": UIColor.brown, "Black": UIColor.black]
 
@@ -103,6 +104,50 @@ class Helpers {
         
         alert.addAction(UIAlertAction(title: "Skip", style: .cancel, handler: nil))
         return alert
+    }
+    
+    static func export_data_to_server(responseHandler: @escaping (DataResponse<Any>) -> Void) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        
+        let allQuarters = realm.objects(Quarter.self)
+        var quartersJSON = [Dictionary<String, Any>]()
+        for quarter in allQuarters {
+            var quarterJSON = quarter.toDictionary() as! Dictionary<String, Any>
+            quarterJSON["startDate"] = formatter.string(from: quarterJSON["startDate"] as! Date)
+            quarterJSON["endDate"] = formatter.string(from: quarterJSON["endDate"] as! Date)
+            var coursesJSON = [[String: Any]]()
+            
+            let courses = realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
+            for course in courses {
+                var courseJSON = course.toDictionary() as! Dictionary<String, Any>
+                courseJSON.removeValue(forKey: "quarter")
+                var eventsJSON = [[String: Any]]()
+                
+                let events = realm.objects(Event.self).filter("course.title = '\(course.title!)'")
+                for event in events {
+                    var eventJSON = event.toDictionary() as! Dictionary<String, Any>
+                    eventJSON["date"] = formatter.string(from: eventJSON["date"] as! Date)
+                    eventJSON["endDate"] = formatter.string(from: eventJSON["endDate"] as! Date)
+                    eventJSON.removeValue(forKey: "course")
+                    eventJSON.removeValue(forKey: "calEventID")
+                    eventJSON.removeValue(forKey: "reminderDate")
+                    eventJSON.removeValue(forKey: "reminderID")
+                    eventsJSON.append(eventJSON)
+                }
+                
+                courseJSON["events"] = eventsJSON
+                coursesJSON.append(courseJSON)
+            }
+            
+            quarterJSON["courses"] = coursesJSON
+            quartersJSON.append(quarterJSON)
+        }
+        
+        let parameters: Parameters = ["quarters": quartersJSON]
+        
+        Alamofire.request("http://192.241.206.161/chart?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON (completionHandler: responseHandler)
     }
 }
 
