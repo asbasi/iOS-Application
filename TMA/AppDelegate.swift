@@ -15,67 +15,11 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
+    func responseHandler(response: DataResponse<Any>) {
+        
+    }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        var formatter = DateFormatter()
-//        formatter.dateFormat = "MM-dd-yyyy"
-//        
-//        let realm = try! Realm()
-//        
-//        let allQuarters = realm.objects(Quarter.self)
-//        var quartersJSON = [Dictionary<String, Any>]()
-//        for quarter in allQuarters {
-//            var quarterJSON = quarter.toDictionary() as! Dictionary<String, Any>
-//            quarterJSON["startDate"] = formatter.string(from: quarterJSON["startDate"] as! Date)
-//            quarterJSON["endDate"] = formatter.string(from: quarterJSON["endDate"] as! Date)
-//            var coursesJSON = [[String: Any]]()
-//            
-//            let courses = realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
-//            for course in courses {
-//                var courseJSON = course.toDictionary() as! Dictionary<String, Any>
-//                courseJSON.removeValue(forKey: "quarter")
-//                var eventsJSON = [[String: Any]]()
-//                
-//                let events = realm.objects(Event.self).filter("course.title = '\(course.title!)'")
-//                for event in events {
-//                    var eventJSON = event.toDictionary() as! Dictionary<String, Any>
-//                    eventJSON["date"] = formatter.string(from: eventJSON["date"] as! Date)
-//                    eventJSON["endDate"] = formatter.string(from: eventJSON["endDate"] as! Date)
-//                    eventJSON.removeValue(forKey: "course")
-//                    eventJSON.removeValue(forKey: "calEventID")
-//                    eventJSON.removeValue(forKey: "reminderDate")
-//                    eventJSON.removeValue(forKey: "reminderID")
-//                    eventsJSON.append(eventJSON)
-//                }
-//                
-//                courseJSON["events"] = eventsJSON
-//                coursesJSON.append(courseJSON)
-//            }
-//            
-//            quarterJSON["courses"] = coursesJSON
-//            quartersJSON.append(quarterJSON)
-//        }
-//        
-//        
-//        let parameters: Parameters = ["quarters": quartersJSON]
-//        //        print(parameters)
-//        Alamofire.request("http://192.241.206.161/chart", method: .post, parameters: parameters, encoding: JSONEncoding.default)
-//            .responseJSON { response in
-//                if let status = response.response?.statusCode {
-//                    print("status=\(status)")
-//                    switch(status){
-//                    case 200:
-//                        let chart_url = response.result.value as! [String: String]
-//                        print(chart_url["url"]!)
-//                        break
-//                    default:
-//                        
-//                        break
-//                    }
-//                }
-//        }
-//        
-    
+        Helpers.export_data_to_server(responseHandler: responseHandler)
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         let rootViewController = storyboard.instantiateViewController(withIdentifier: UserDefaults.standard.bool(forKey: "showed") ? "tabBarID" : "firstRootID")
