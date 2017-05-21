@@ -124,7 +124,7 @@ func importEvents(for date: Date) -> [Event] {
         
         // Filter out the events that are already stored in-app.
         for calEvent in calEvents {
-            if(realm.objects(Event.self).filter("calEventID == '\(calEvent.eventIdentifier)'").count == 0) {
+            if(realm.objects(Event.self).filter("calEventID == '\(calEvent.eventIdentifier)'").count == 0 && !calEvent.isAllDay) {
                 
                 let event: Event = Event()
                 
