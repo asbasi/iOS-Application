@@ -74,8 +74,10 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         indicator.startAnimating()
         indicator.backgroundColor = UIColor.white
         
+        let encodedUsername = usernameTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        let encodedPassword = passwordTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         
-        Alamofire.request("http://192.241.206.161/?username=\(usernameTextField.text!)&password=\(passwordTextField.text!)", method: .get, encoding: JSONEncoding.default)
+        Alamofire.request("http://192.241.206.161/?username=\(encodedUsername)&password=\(encodedPassword)", method: .get, encoding: JSONEncoding.default)
             .responseJSON { response in
                 if let status = response.response?.statusCode {
                     switch(status){
@@ -165,13 +167,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                     for week_day in week_days {
                                         
                                         ////////////////////////////////////////////////////////////////////////
-                                        ///////////////////WTH is that?/////////////////////////////////////////
-                                        ///////////////////just trying to parse the begin_time//////////////////
-                                        ///////////////////and end_time into 2 ints each hrs & min//////////////
-                                        ////////////////////////////////////////////////////////////////////////
-                                        ///////////////////why?/////////////////////////////////////////////////
-                                        ///////////////////because I don't know how swift strings work//////////
-                                        ///////////////////if you do please fix it//////////////////////////////
+                                        ///////////////////just parsing the begin_time and end_time/////////////
+                                        ///////////////////into 2 ints each hrs & min///////////////////////////
                                         ////////////////////////////////////////////////////////////////////////
                                         
                                         let s_t = (currentClass["begin_time"] as! String).characters
@@ -188,6 +185,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                         ///////////////////////////////////////////////////
                                         
                                         var the_date = currentQuarter!.startDate!
+                                        the_date = Calendar.current.date(byAdding: .day, value: -1, to: the_date)!
+                                        //subtract 1 day because self.get() starts from the day after
                                         while the_date < currentQuarter!.endDate {
                                             the_date = self.get(direction: .Next, week_days_translation[week_day]!, fromDate: the_date) as Date
                                             
