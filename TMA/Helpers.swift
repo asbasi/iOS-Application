@@ -108,7 +108,7 @@ class Helpers {
         return alert
     }
     
-    static func export_data_to_server(responseHandler: @escaping (DataResponse<Any>) -> Void) {
+    static func export_data_to_server(action: String, responseHandler: @escaping (DataResponse<Any>) -> Void) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         
@@ -148,7 +148,7 @@ class Helpers {
         
         let parameters: Parameters = ["quarters": quartersJSON]
         
-        Alamofire.request("http://192.241.206.161/chart?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+        Alamofire.request("http://192.241.206.161/\(action)?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseJSON (completionHandler: responseHandler)
     }
 }

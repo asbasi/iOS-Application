@@ -70,7 +70,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     }
         
     @IBAction func generateStats(_ sender: Any) {
-        Helpers.export_data_to_server(responseHandler: responseHandler)
+        Helpers.export_data_to_server(action: "exportforchart", responseHandler: responseHandler)
     }
     
     @IBAction func add(_ sender: Any) {
