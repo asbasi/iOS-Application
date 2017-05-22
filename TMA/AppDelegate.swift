@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        Helpers.export_data_to_server(action: "exportdata", responseHandler: responseHandler)
+        Helpers.export_data_to_server(action: "export_data", responseHandler: responseHandler)
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         let rootViewController = storyboard.instantiateViewController(withIdentifier: UserDefaults.standard.bool(forKey: "showed") ? "tabBarID" : "firstRootID")
