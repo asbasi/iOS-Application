@@ -336,6 +336,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     deleteEventFromCalendar(withID: id)
                 }
                 
+                // Remove any pending notifications for the event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
+                
                 try! self.realm.write {
                     let event: Event = self.events[index.row]
                     
@@ -343,6 +346,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     
                     event.durationStudied = 0.0
                     
+                    deleteEventFromCalendar(withID: event.calEventID!)
                     self.realm.delete(event)
                 }
                 
