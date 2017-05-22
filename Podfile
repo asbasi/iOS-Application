@@ -7,11 +7,11 @@ target 'TMA' do
   # Pods for TMA
   pod 'RealmSwift', '~> 2.6.2'
   pod 'Charts', '~> 3.0.2'
-  pod 'BEMCheckBox'
+  pod 'BEMCheckBox', '~> 1.4.1'
   pod 'KDCircularProgress', '~> 1.5.2'
-  pod 'FSCalendar'
-  pod 'PureLayout'
+  pod 'FSCalendar', '~> 2.7.7'
+  pod 'PureLayout', '~> 3.0.2'
   pod 'Alamofire', '~> 4.4'
-  pod 'PieCharts'
+  pod 'PieCharts', '~> 0.0.5'
 
 end
