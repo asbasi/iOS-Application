@@ -75,12 +75,14 @@ class Helpers {
         
         alert.addTextField { (textField) in
             textField.keyboardType = .decimalPad
-            textField.text = "\(floor(event.duration))"
+            textField.placeholder = "Hours"
+            //textField.text = "\(floor(event.duration))"
         }
         
         alert.addTextField { (textField) in
             textField.keyboardType = .decimalPad
-            textField.text = "\((event.duration - floor(event.duration)) * 60)"
+            textField.placeholder = "Minutes"
+            //textField.text = "\((event.duration - floor(event.duration)) * 60)"
         }
         
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak alert] (_) in
