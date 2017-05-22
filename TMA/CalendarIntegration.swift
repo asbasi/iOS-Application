@@ -99,7 +99,7 @@ func exportEvents(toCalendar calendar: String)
             if let _ = eventStore.event(withIdentifier: identifier) {
                 editEventInCalendar(event: event, toCalendar: calendar) // Restore the event to what it was in-app.
             }
-            else { // Event was deleted from calendar.
+            else if (event.type != SCHEDULE_EVENT){ // Event was deleted from calendar (and isn't a schedule event).
                 try! realm.write {
                     realm.delete(event)
                 }
@@ -386,7 +386,13 @@ func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
     for event in events {
         if !event.isAllDay { // Filter out all day events.
             for range in freeTimes {
-                if !range.value.allocated && range.value.start >= event.startDate && range.value.start <= event.endDate  {
+                var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: event.startDate)
+                let start = Calendar.current.date(from: components)!
+                
+                components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: event.endDate)
+                let end = Calendar.current.date(from: components)!
+
+                if !range.value.allocated && start < range.value.end && range.value.start < end  {
                     range.value.allocated = true
                 }
             }
