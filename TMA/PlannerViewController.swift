@@ -49,7 +49,10 @@ class PlannerViewCell: UITableViewCell {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         
-        if(event.duration == 24.0) {
+        if(event.type == DEADLINE_EVENT){
+            self.time?.text = "Deadline: " + formatter.string(from: event.date)
+        }
+        else if(event.duration == 24.0) {
             self.time?.text = "All Day"
         }
         else {
@@ -62,7 +65,7 @@ class PlannerViewCell: UITableViewCell {
         
         
         self.checkbox.isHidden = false
-        if event.type == SCHEDULE_EVENT || event.type == FREE_TIME_EVENT || event.type == CALENDAR_EVENT {
+        if event.type > OTHER_EVENT {
             self.checkbox.isHidden = true
         }
         
@@ -70,13 +73,16 @@ class PlannerViewCell: UITableViewCell {
         {
             self.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
         }
+        else if event.type == DEADLINE_EVENT {
+            self.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        }
         else if event.type == SCHEDULE_EVENT || event.type == CALENDAR_EVENT
         {
             self.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.1)
         }
         else
         {
-            self.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.1)
+            self.backgroundColor = UIColor(red: 1.0, green: 0.8, blue: 0.0, alpha: 0.1)
         }
     }
 }

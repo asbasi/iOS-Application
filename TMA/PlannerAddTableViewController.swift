@@ -84,14 +84,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     @IBAction func eventTitleChanged(_ sender: Any) {
         if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.white
+            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
         }
         
     }
     
     @IBAction func courseLabelChanged(_ sender: Any) {
         if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+            tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
         }
     }
     
@@ -127,11 +127,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.present(alert, animated: true, completion: nil)
             
             if (self.titleTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
             if (self.courseLabel.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
             if (self.dateLabel.text?.isEmpty)! {
@@ -258,6 +258,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         self.reminderSwitch.isOn = false
         self.reminderPicker.isHidden = true
         
+        // Deadline switch.
+        self.deadlineSwitch.isOn = false
+        
         // Do any additional setup after loading the view.
         if(self.operation == "add") {
             self.pageTitleTextField.title = "Add Event"
@@ -273,10 +276,16 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         else if (self.operation == "edit" || self.operation == "show") {
             self.pageTitleTextField.title = self.event!.title
             self.titleTextField.text = self.event!.title
-            self.dateLabel.text = dateFormatter.string(from: self.event!.date)
-            self.endDateLabel.text = dateFormatter.string(from: self.event!.endDate)
             self.courseLabel.text = self.event!.course.identifier
-            self.segmentController.selectedSegmentIndex = self.event!.type
+            self.dateLabel.text = dateFormatter.string(from: self.event!.date)
+            
+            if(self.event!.type == DEADLINE_EVENT) {
+                self.deadlineSwitch.isOn = true
+            }
+            else {
+                self.endDateLabel.text = dateFormatter.string(from: self.event!.endDate)
+                self.segmentController.selectedSegmentIndex = self.event!.type
+            }
             
             //self.coursePicker.selectedRow(inComponent: self.coursePicker.index)
             if let date = self.event!.reminderDate {
@@ -300,7 +309,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             
         //}
         
-        if(indexPath.section == 0 && indexPath.row == 3)
+        if(indexPath.section == 0 && indexPath.row == 4)
         {
             let height: CGFloat = coursePicker.isHidden ? 0.0 : 217
             return height
@@ -331,7 +340,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let courseIndexPath = IndexPath(row: 2, section: 0)
+        let courseIndexPath = IndexPath(row: 3, section: 0)
         let dateIndexPath = IndexPath(row: 0, section: 1)
         let endDateIndexPath = IndexPath(row: 2, section: 1)
         let reminderIndexPath = IndexPath(row: 0, section: 2)
@@ -345,8 +354,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     courseLabel.text = courses[0].identifier
                 }
                 
-                if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
-                    tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+                if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
+                    tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
                 }
             }
             

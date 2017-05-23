@@ -100,7 +100,7 @@ class CourseStatsViewController: UIViewController, PieChartDelegate {
 
         var labels: [String] = []
         
-        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true")
+        let allEvents = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.title = '\(self.course.quarter.title!)'")
         let total = Helpers.add_duration_studied(events: allEvents)
         
         if total != 0.0 {
@@ -111,7 +111,7 @@ class CourseStatsViewController: UIViewController, PieChartDelegate {
             let tags: [String] = ["Studying", "Homework", "Projects", "Labs", "Other"]
             
             for type in 0...4 {
-                let events = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.current = true AND type == \(type)")
+                let events = self.realm.objects(Event.self).filter("course.identifier = '\(self.course.identifier!)' AND course.quarter.title = '\(self.course.quarter.title!)' AND type == \(type)")
                 let mins = Helpers.add_duration_studied(events: events)
                 if mins > 0.0 {
                     models.append(PieSliceModel(value: Double((mins / total) * 100), color: colors[type]))
