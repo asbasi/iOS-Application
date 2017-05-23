@@ -34,28 +34,18 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var courses: Results<Course>!
 
     @IBAction func add(_ sender: Any) {
-        self.performSegue(withIdentifier: "addCourse", sender: nil)
-    }
-    
-    private func verify() {
-        
-        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-        if currentQuarters.count != 1 {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false
+        if self.realm.objects(Quarter.self).filter("current = true").count != 1 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
+            self.performSegue(withIdentifier: "addCourse", sender: nil)
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        verify()
 
         let currQuarter = self.realm.objects(Quarter.self).filter("current = true")
         

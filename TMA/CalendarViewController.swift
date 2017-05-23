@@ -34,32 +34,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return panGesture
     }()
     
-    private func verify() {
-        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-        if currentQuarters.count != 1 {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false
+    @IBAction func addingEvent(_ sender: Any) {
+        if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        else {
-            let currentQuarter = currentQuarters[0]
-            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter.title!)'")
-            
-            if courses.count == 0 {
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
-                let alert = UIAlertController(title: "No Courses Error", message: "You must have at least one course in the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-            else {
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
-            }
-        }
-    }
-    
-    @IBAction func addingEvent(_ sender: Any) {
-        if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
+        else if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
             let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -107,7 +88,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     /******************************* Calendar Functions *******************************/
     
     func refresh() {
-        verify()
         checkCalendarAuthorizationStatus()
         self.events = getEventsForDate(selectedDate)
         
@@ -320,6 +300,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         if self.events[indexPath.row].type != SCHEDULE_EVENT && self.events[indexPath.row].type != FREE_TIME_EVENT && self.events[indexPath.row].type != CALENDAR_EVENT {
             return true
         }
+        
         return false
     }
     
@@ -383,12 +364,21 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let event = self.events[indexPath.row]
         self.eventToEdit = event
         
-        if(self.realm.objects(Quarter.self).filter("current = true").count != 1) {
+        if self.realm.objects(Quarter.self).filter("current = true").count != 1 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
             tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
+        else if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
+            let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         }
         
         if(event.type == SCHEDULE_EVENT || event.type == CALENDAR_EVENT) {
