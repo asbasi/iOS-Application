@@ -15,6 +15,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     let realm = try! Realm()
     let eventStore = EKEventStore()
     
+    @IBOutlet weak var deadlineSwitch: UISwitch!
+    
     @IBOutlet weak var segmentController: UISegmentedControl!
     
     @IBOutlet weak var titleTextField: UITextField!
@@ -29,6 +31,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var endDateLabel: UITextField!
     @IBOutlet weak var endDatePicker: UIDatePicker!
     
+    @IBOutlet weak var reminderSwitch: UISwitch!
+    @IBOutlet weak var reminderLabel: UILabel!
+    @IBOutlet weak var reminderPicker: UIDatePicker!
+    
+    @IBAction func toggledDuration(_ sender: Any) {
+        if(deadlineSwitch.isOn) { // Turned on.
+            
+        }
+        else { // Turned off.
+            
+        }
+    }
+    
     @IBAction func setDate(_ sender: UIDatePicker) {
         
         dateLabel.text = dateFormatter.string(from: datePicker.date)
@@ -39,10 +54,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
     }
     
-    
-    @IBOutlet weak var reminderSwitch: UISwitch!
-    @IBOutlet weak var reminderLabel: UILabel!
-    @IBOutlet weak var reminderPicker: UIDatePicker!
     @IBAction func toggleReminderPicker(_ sender: Any) {
         reminderSwitch.isOn = !reminderSwitch.isOn
         
@@ -70,17 +81,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             reminderLabel.text = dateFormatter.string(from: reminderPicker.date)
         }
     }
-    
-    /*
-    private func checkAllTextFields() {
-        
-        if ((titleTextField.text?.isEmpty)! || (courseLabel.text?.isEmpty)! || (dateLabel.text?.isEmpty)! || (endDateLabel.text?.isEmpty)!) {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false;
-        }
-        else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true;
-        }
-    }*/
     
     @IBAction func eventTitleChanged(_ sender: Any) {
         if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
@@ -293,6 +293,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        
+        //if(deadlineSwitch.isOn) {
+            // Hide type and end date.
+            
+        //}
         
         if(indexPath.section == 0 && indexPath.row == 3)
         {
