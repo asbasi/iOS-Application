@@ -1127,7 +1127,7 @@
                             <tableViewSection headerTitle="Alamofire" id="WEL-kJ-YfW">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="tfS-6E-RgI">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tfS-6E-RgI" id="5Px-cm-Rtl">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1148,7 +1148,7 @@
                             <tableViewSection headerTitle="FSCalendar" id="OyR-75-Dfj">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="al3-ad-cMl">
-                                        <rect key="frame" x="0.0" y="155.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="156" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="al3-ad-cMl" id="IVe-wj-IbA">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1169,7 +1169,7 @@
                             <tableViewSection headerTitle="BEMCheckBox" id="mk3-H9-zUw">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="1k9-sE-giV">
-                                        <rect key="frame" x="0.0" y="255.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="256" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1k9-sE-giV" id="Py9-3c-zEN">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1190,7 +1190,7 @@
                             <tableViewSection headerTitle="Charts" id="Rq3-bk-fng">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="SYt-re-Wuw">
-                                        <rect key="frame" x="0.0" y="355.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="356" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SYt-re-Wuw" id="Pzu-5Z-Bap">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1211,7 +1211,7 @@
                             <tableViewSection headerTitle="PieCharts" id="IKJ-fW-GNx">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="i83-Wq-5Fd">
-                                        <rect key="frame" x="0.0" y="455.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="456" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i83-Wq-5Fd" id="IeQ-vR-YxK">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1232,7 +1232,7 @@
                             <tableViewSection headerTitle="PureLayout" id="XWS-Lj-E7F">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="08t-0o-X5U">
-                                        <rect key="frame" x="0.0" y="555.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="556" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="08t-0o-X5U" id="z6a-ha-E6s">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1253,7 +1253,7 @@
                             <tableViewSection headerTitle="Realm" id="oA2-Vx-VaE">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="d4V-lW-Wjw">
-                                        <rect key="frame" x="0.0" y="655.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="656" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d4V-lW-Wjw" id="k5C-8C-Ms5">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
@@ -1274,7 +1274,7 @@
                             <tableViewSection headerTitle="RealmSwift" id="7Wv-pl-wBT">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ls4-nQ-xFV">
-                                        <rect key="frame" x="0.0" y="755.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="756" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ls4-nQ-xFV" id="ahg-75-JJ7">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
