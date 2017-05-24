@@ -278,8 +278,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             ()-> Void in
         })
         
-        /******************** Populate the Application with Dummy Data for Testing **********/
-        Helpers.populateData()
     }
     
     @IBAction func passwordTextFieldChanged(_ sender: Any) {
