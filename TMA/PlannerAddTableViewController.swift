@@ -25,6 +25,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var coursePicker: UIPickerView!
     
+    @IBOutlet weak var startDateText: UILabel!
     @IBOutlet weak var dateLabel: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     
@@ -36,21 +37,29 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var reminderPicker: UIDatePicker!
     
     @IBAction func toggledDuration(_ sender: Any) {
-        if(deadlineSwitch.isOn) { // Turned on.
-            
+        
+        // Get rid of the endDatePicker.
+        //endDateLabel.text = nil
+        endDatePicker.isHidden = true
+        
+        if deadlineSwitch.isOn {
+            startDateText.text = "Deadline"
         }
-        else { // Turned off.
-            
+        else {
+            startDateText.text = "Start Time"
         }
+        
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        })
     }
     
     @IBAction func setDate(_ sender: UIDatePicker) {
-        
         dateLabel.text = dateFormatter.string(from: datePicker.date)
     }
     
     @IBAction func setEndDate(_ sender: UIDatePicker) {
-        
         endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
     }
     
@@ -120,7 +129,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBAction func save(_ sender: Any) {
         
         if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||
-            (self.dateLabel.text?.isEmpty)! || (self.endDateLabel.text?.isEmpty)!{
+            (self.dateLabel.text?.isEmpty)! || ((self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn) {
             
             let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -138,11 +147,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
             
-            if (self.endDateLabel.text?.isEmpty)! {
+            if (self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn {
                 tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
         }
-        else if(datePicker.date >= endDatePicker.date) {
+        else if(datePicker.date >= endDatePicker.date && !deadlineSwitch.isOn) {
             let alert = UIAlertController(title: "Alert", message: "Invalid dates selected. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -160,11 +169,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 
                 event.title = titleTextField.text
                 event.date = datePicker.date
-                event.endDate = endDatePicker.date
                 event.course = course
-                event.type = segmentController.selectedSegmentIndex
                 event.reminderID = UUID().uuidString
-                event.duration = Date.getDifference(initial: event.date, final: event.endDate)
+                
+                if deadlineSwitch.isOn {
+                    event.endDate = event.date
+                    event.type = DEADLINE_EVENT
+                    event.duration = 0.0
+                }
+                else {
+                    event.endDate = endDatePicker.date
+                    event.type = segmentController.selectedSegmentIndex
+                    event.duration = Date.getDifference(initial: event.date, final: event.endDate)
+                }
                 
                 if reminderSwitch.isOn {
                     // Schedule a notification.
@@ -190,9 +207,17 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     event!.title = titleTextField.text
                     event!.course = course
                     event!.date = dateFormatter.date(from: dateLabel.text!)
-                    event!.endDate = dateFormatter.date(from: endDateLabel.text!)
-                    event!.type = segmentController.selectedSegmentIndex
-                    event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                    
+                    if(deadlineSwitch.isOn) {
+                        event!.endDate = event!.date
+                        event!.type = DEADLINE_EVENT
+                        event!.duration = 0.0
+                    }
+                    else {
+                        event!.endDate = dateFormatter.date(from: endDateLabel.text!)
+                        event!.type = segmentController.selectedSegmentIndex
+                        event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                    }
                     
                     // Remove any existing notifications for this event.
                     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event!.reminderID])
@@ -303,35 +328,39 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
+        let typePath = IndexPath(row: 1, section: 0)
+        let coursePickerPath = IndexPath(row: 4, section: 0)
+        let startPickerPath = IndexPath(row: 1, section: 1)
+        let endLabelPath = IndexPath(row: 2, section: 1)
+        let endPickerPath = IndexPath(row: 3, section: 1)
+        let reminderPickerPath = IndexPath(row: 1, section: 2)
         
-        //if(deadlineSwitch.isOn) {
-            // Hide type and end date.
-            
-        //}
         
-        if(indexPath.section == 0 && indexPath.row == 4)
+        if (deadlineSwitch.isOn && (indexPath == typePath || indexPath == endLabelPath))
+        {
+            return 0.0
+        }
+        else if indexPath == coursePickerPath
         {
             let height: CGFloat = coursePicker.isHidden ? 0.0 : 217
             return height
         }
-        
-        if(indexPath.section == 1 && indexPath.row == 1)
+        else if indexPath == startPickerPath
         {
             let height: CGFloat = datePicker.isHidden ? 0.0 : 216
             return height
         }
-        
-        if(indexPath.section == 1 && indexPath.row == 3)
+        else if indexPath == endPickerPath
         {
             let height: CGFloat = endDatePicker.isHidden ? 0.0 : 216
             return height
         }
-        
-        if(indexPath.section == 2 && indexPath.row == 1)
+        else if indexPath == reminderPickerPath
         {
             let height: CGFloat = reminderPicker.isHidden ? 0.0 : 216
             return height
         }
+        
         return super.tableView(self.tableView, heightForRowAt: indexPath)
     }
     
@@ -387,7 +416,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 reminderPicker.isHidden = true
             }
         }
-        else if endDateIndexPath == indexPath {
+        else if endDateIndexPath == indexPath && !deadlineSwitch.isOn {
                 
             endDatePicker.isHidden = !endDatePicker.isHidden
             
