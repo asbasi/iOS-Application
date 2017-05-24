@@ -43,7 +43,6 @@
 		8F2CCA231EA7F4860068B942 /* Tutorial4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */; };
 		8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */; };
 		8F2CCA271EA7F49A0068B942 /* Tutorial6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */; };
-		8FE687B41ED61F52004E1121 /* PushTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE687B31ED61F52004E1121 /* PushTableViewCell.swift */; };
 		CDEA2E4143FB96BA70560E8D /* Pods_TMA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7502B2147074D6021D7D283E /* Pods_TMA.framework */; };
 /* End PBXBuildFile section */
 
@@ -101,7 +100,6 @@
 		8F2CCA221EA7F4860068B942 /* Tutorial4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial4ViewController.swift; sourceTree = "<group>"; };
 		8F2CCA241EA7F48F0068B942 /* Tutorial5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial5ViewController.swift; sourceTree = "<group>"; };
 		8F2CCA261EA7F49A0068B942 /* Tutorial6ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial6ViewController.swift; sourceTree = "<group>"; };
-		8FE687B31ED61F52004E1121 /* PushTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTableViewCell.swift; sourceTree = "<group>"; };
 		D4FC14DB066D9863D73C298B /* Pods-TMA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -219,7 +217,6 @@
 		6015DBFF1E9F754B005C8009 /* Settings Pages */ = {
 			isa = PBXGroup;
 			children = (
-				8FE687B31ED61F52004E1121 /* PushTableViewCell.swift */,
 				0009150A1EAD5628005A6BD3 /* LoginTableViewController.swift */,
 				8F2CCA181EA7F42C0068B942 /* TutorialViewController.swift */,
 				8F2CCA1A1EA7F4440068B942 /* TutorialPageViewController.swift */,
@@ -437,7 +434,6 @@
 				8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */,
 				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
-				8FE687B41ED61F52004E1121 /* PushTableViewCell.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 				007EE6F51EB0506A00E4CC30 /* Storage.swift in Sources */,
 			);
