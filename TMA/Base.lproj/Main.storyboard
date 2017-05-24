@@ -560,6 +560,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="oSe-B3-CRu" kind="show" id="ctF-Jh-ZHx"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="CIj-2C-XIA">
                                         <rect key="frame" x="0.0" y="333" width="375" height="44"/>
@@ -840,6 +843,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="myb-AI-tZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3788" y="4581"/>
+        </scene>
+        <!--About-->
+        <scene sceneID="MUq-am-sex">
+            <objects>
+                <viewController id="oSe-B3-CRu" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pXG-OB-nKa"/>
+                        <viewControllerLayoutGuide type="bottom" id="RgD-es-szf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8qz-oh-LKH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBt-Vq-T5z">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <mutableString key="text">    Most people pay great attention to how much they are spending and how to invest their money, but few people look at their time in quite the same way. We have all heard the saying “time is more valuable than money” – a piece of wisdom that makes sense considering the more efficient you are with your time, the more money you can make. However, as students, it always seems like we never have enough time. Between a social life, academics, family, and personal time, it becomes extremely difficult to balance and partition how we spend our time. As such, one of the most valuable skills anyone, particularly college students, can have is the ability to properly manage their time.    Our iOS application serves as an all-in-one platform to help students more effectively manage their time daily, weekly, and quarterly, depending on their own schedule. Users can use the application to find their free time periods based on their school schedule, assign specific hours for each day to studying, and log the amount of time they spent on each class. Using this information, the application can then aggregate all the study data into a visual representation of the user’s study habits and provide comprehensive feedback on their weekly, monthly, and quarterly progress. Ultimately, the application provides an easy, sleek, and convenient alternative to traditional written planners while giving much more well-rounded and practical feedback than existing time management applications.</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="About" id="Vza-Te-nSY"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="seG-S4-vDu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4885.6000000000004" y="3384.5577211394307"/>
         </scene>
         <!--Tutorial1 View Controller-->
         <scene sceneID="fwn-P0-1P6">
