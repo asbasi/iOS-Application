@@ -156,11 +156,11 @@ class Helpers {
     /********************************* Populate the Application for Testing and Demo ******************/
     static func populateData()
     {
-        var dateFormatter: DateFormatter = DateFormatter()
+        let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "US_en")
         dateFormatter.dateFormat = "M/d/yyyy"
         
-        var dateFormatter2: DateFormatter = DateFormatter()
+        let dateFormatter2: DateFormatter = DateFormatter()
         dateFormatter2.locale = Locale(identifier: "US_en")
         dateFormatter2.dateStyle = .short
         dateFormatter2.timeStyle = .short
@@ -207,6 +207,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 2.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -223,6 +230,13 @@ class Helpers {
             event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
             event!.durationStudied = 4.5
             event!.checked = true
+            
+            event!.reminderID = UUID().uuidString
+            if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                
+                event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+            }
+            
             Helpers.DB_insert(obj: event!)
         }
         
@@ -240,6 +254,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 3.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -268,6 +289,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 3.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -286,6 +314,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 3.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -325,6 +360,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 4.5
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -343,6 +385,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 3.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -370,6 +419,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 4.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
@@ -388,6 +444,13 @@ class Helpers {
                 event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
                 event!.durationStudied = 3.0
                 event!.checked = true
+                
+                event!.reminderID = UUID().uuidString
+                if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
+                    
+                    event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
+                }
+                
                 Helpers.DB_insert(obj: event!)
             }
         }
