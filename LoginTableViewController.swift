@@ -277,6 +277,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.present(controller, animated: true, completion: {
             ()-> Void in
         })
+        
+        /******************** Populate the Application with Dummy Data for Testing **********/
+        Helpers.populateData()
     }
     
     @IBAction func passwordTextFieldChanged(_ sender: Any) {

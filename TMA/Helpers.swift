@@ -151,6 +151,249 @@ class Helpers {
         Alamofire.request("http://192.241.206.161/\(action)?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseJSON (completionHandler: responseHandler)
     }
+    
+
+    /********************************* Populate the Application for Testing and Demo ******************/
+    static func populateData()
+    {
+        var dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "US_en")
+        dateFormatter.dateFormat = "M/d/yyyy"
+        
+        var dateFormatter2: DateFormatter = DateFormatter()
+        dateFormatter2.locale = Locale(identifier: "US_en")
+        dateFormatter2.dateStyle = .short
+        dateFormatter2.timeStyle = .short
+        
+        //create quarters
+        var quarter: Quarter?
+        var start: Date
+        var end: Date
+        var course: Course?
+        var event: Event?
+        
+        //add winter 17 quarter
+        start = dateFormatter.date(from: "1/6/2017")!
+        end = dateFormatter.date(from: "3/24/2017")!
+        quarter = Quarter()
+        quarter!.title = "Winter 2017"
+        quarter!.startDate = start
+        quarter!.endDate = end
+        quarter!.current = false
+        Helpers.DB_insert(obj: quarter!)
+        
+        //add ECS 193A to quarter
+        course = Course()
+        course!.title = "Senior Project Design A"
+        course!.identifier = "ECS 193A"
+        course!.instructor = "Xin Liu"
+        course!.units = 3
+        course!.quarter = quarter
+        course!.color = "Red"
+        
+        Helpers.DB_insert(obj: course!)
+        
+        //add homework events for course
+        for i in 1...3 {
+            for j in 0...3 {
+                let n: Int = ((i-1)*4) + (j+1)
+                let d: Int = j*7+6
+                event = Event()
+                event!.title = "Do homework \(n)"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 9:00 AM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 11:00 AM")
+                event!.type = 1
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 2.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        
+        //add project events for course
+        for i in 1...3 {
+            event = Event()
+            event!.title = "Do project \(i)"
+            event!.course = course
+            event!.date = dateFormatter2.date(from: "\(i)/17/17, 9:00 AM")
+            event!.endDate = dateFormatter2.date(from: "\(i)/17/17, 2:00 PM")
+            event!.type = 2
+            event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+            event!.durationStudied = 4.5
+            event!.checked = true
+            Helpers.DB_insert(obj: event!)
+        }
+        
+        //add study events for course
+        for i in 1...3 {
+            for j in 0...2 {
+                
+                let d: Int = j*7+8
+                event = Event()
+                event!.title = "Study"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 8:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 10:00 PM")
+                event!.type = 0
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 3.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add ECS 177 to quarter
+        course = Course()
+        course!.title = "Scientific Visualization"
+        course!.identifier = "ECS 177"
+        course!.instructor = "Nelson Max"
+        course!.units = 4
+        course!.quarter = quarter
+        course!.color = "Blue"
+        Helpers.DB_insert(obj: course!)
+        
+        //add projects for ECS 177
+        for i in 1...3 {
+            for j in 0...3 {
+                let n: Int = ((i-1)*4) + (j+1)
+                let d: Int = j*7+7
+                event = Event()
+                event!.title = "Do project \(n)"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 1:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 4:00 PM")
+                event!.type = 2
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 3.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add study event for ECS 177
+        for i in 1...3 {
+            for j in 0...2 {
+                
+                let d: Int = j*7+10
+                event = Event()
+                event!.title = "Study"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 8:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 10:00 PM")
+                event!.type = 0
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 3.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add spring 17 quarter
+        start = dateFormatter.date(from: "3/30/2017")!
+        end = dateFormatter.date(from: "6/15/2017")!
+        quarter = Quarter()
+        quarter!.title = "Spring 2017"
+        quarter!.startDate = start
+        quarter!.endDate = end
+        quarter!.current = true
+        Helpers.DB_insert(obj: quarter!)
+        
+        //add ECS 193B to quarter
+        course = Course()
+        course!.title = "Senior Project Design B"
+        course!.identifier = "ECS 193B"
+        course!.instructor = "Xin Liu"
+        course!.quarter = quarter
+        course!.units = 3
+        course!.color = "Red"
+        
+        Helpers.DB_insert(obj: course!)
+        
+        //add Project events for ECS 193B
+        for i in 4...6 {
+            for j in 0...2 {
+                let n: Int = ((i-4)*4) + (j+1)
+                let d: Int = j*7+1
+                event = Event()
+                event!.title = "Do project \(n)"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 1:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 6:00 PM")
+                event!.type = 2
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 4.5
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add study events for ECS 193B
+        for i in 4...5 {
+            for j in 0...4 {
+                
+                let d: Int = j*7+1
+                event = Event()
+                event!.title = "Study"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 8:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 10:00 PM")
+                event!.type = 0
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 3.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add ECS 150 to quarter
+        course = Course()
+        course!.title = "Operating System"
+        course!.identifier = "ECS 150"
+        course!.instructor = "Chrisopher Nitta"
+        course!.quarter = quarter
+        course!.units = 4
+        course!.color = "Blue"
+        
+        //add Project events for ECS 150
+        for i in 4...6 {
+            for j in 0...2 {
+                let n: Int = ((i-4)*4) + (j+1)
+                let d: Int = j*7+2
+                event = Event()
+                event!.title = "Do project \(n)"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 2:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 6:00 PM")
+                event!.type = 2
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 4.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+        
+        //add study events for ECS 193B
+        for i in 4...5 {
+            for j in 1...4 {
+                
+                let d: Int = j*7-1
+                event = Event()
+                event!.title = "Study"
+                event!.course = course
+                event!.date = dateFormatter2.date(from: "\(i)/\(d)/17, 8:00 PM")
+                event!.endDate = dateFormatter2.date(from: "\(i)/\(d)/17, 10:00 PM")
+                event!.type = 0
+                event!.duration = Date.getDifference(initial: event!.date, final: event!.endDate)
+                event!.durationStudied = 3.0
+                event!.checked = true
+                Helpers.DB_insert(obj: event!)
+            }
+        }
+    }
+
+    
 }
 
 extension Date {
