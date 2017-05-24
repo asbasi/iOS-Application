@@ -77,7 +77,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let encodedUsername = usernameTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         let encodedPassword = passwordTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         
-        Alamofire.request("http://192.241.206.161/?username=\(encodedUsername)&password=\(encodedPassword)", method: .get, encoding: JSONEncoding.default)
+        Alamofire.request("http://192.241.206.161/get_schedule/?username=\(encodedUsername)&password=\(encodedPassword)", method: .get, encoding: JSONEncoding.default)
             .responseJSON { response in
                 if let status = response.response?.statusCode {
                     switch(status){
