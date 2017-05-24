@@ -151,7 +151,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
             }
         }
-        else if(datePicker.date >= endDatePicker.date && !deadlineSwitch.isOn) {
+        else if(!deadlineSwitch.isOn && dateFormatter.date(from: dateLabel.text!)! >= dateFormatter.date(from: endDateLabel.text!)!) {
             let alert = UIAlertController(title: "Alert", message: "Invalid dates selected. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -168,7 +168,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 let event = Event()
                 
                 event.title = titleTextField.text
-                event.date = datePicker.date
+                event.date = dateFormatter.date(from: dateLabel.text!)
                 event.course = course
                 event.reminderID = UUID().uuidString
                 
@@ -178,7 +178,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     event.duration = 0.0
                 }
                 else {
-                    event.endDate = endDatePicker.date
+                    event.endDate = dateFormatter.date(from: dateLabel.text!)
                     event.type = segmentController.selectedSegmentIndex
                     event.duration = Date.getDifference(initial: event.date, final: event.endDate)
                 }
