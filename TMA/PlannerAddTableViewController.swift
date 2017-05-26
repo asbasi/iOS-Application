@@ -162,7 +162,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         }
         else {
             //get the course
-            let course = self.courses.filter("quarter.current = true AND identifier = '\(courses[coursePicker.selectedRow(inComponent: 0)].identifier!)'")[0]
+            let course = self.courses.filter("quarter.current = true AND identifier = '\(courseLabel.text!)'")[0]
             
             if(self.operation == "add" || self.operation == "manage") {
                 let event = Event()

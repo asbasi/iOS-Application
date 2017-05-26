@@ -10,11 +10,7 @@ import UIKit
 import SafariServices
 
 class AcknowledgementsTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
             let svc = SFSafariViewController(url: URL(string:"https://github.com/Alamofire/Alamofire")!)
