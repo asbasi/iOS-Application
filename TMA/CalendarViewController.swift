@@ -327,12 +327,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                     
                     self.events.remove(at: index.row)
                     
-                    event.durationStudied = 0.0
-                    
-                    if let id = event.calEventID {
-                        deleteEventFromCalendar(withID: id)
-                    }
-                    
                     self.realm.delete(event)
                 }
                 

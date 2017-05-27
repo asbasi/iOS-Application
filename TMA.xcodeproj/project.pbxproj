@@ -31,6 +31,7 @@
 		60AC0FE61ED7EF3300795128 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AC0FE51ED7EF3300795128 /* SettingsTableViewController.swift */; };
 		60B325BB1E8AE59F00CE6164 /* Quarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B325BA1E8AE59F00CE6164 /* Quarter.swift */; };
 		60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */; };
+		60C8889A1ED9381D00AEB142 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C888991ED9381D00AEB142 /* Schedule.swift */; };
 		60E4E9951E9603FC007EBEA4 /* ThemeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */; };
 		60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E4E9961E96174B007EBEA4 /* Theme.swift */; };
 		60FD5E331EA5724600C73B9C /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD5E321EA5724600C73B9C /* LinkedList.swift */; };
@@ -89,6 +90,7 @@
 		60AC0FE51ED7EF3300795128 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		60B325BA1E8AE59F00CE6164 /* Quarter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quarter.swift; sourceTree = "<group>"; };
 		60B5F7A51E8CD00F0025ACD0 /* QuartersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartersViewController.swift; sourceTree = "<group>"; };
+		60C888991ED9381D00AEB142 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		60E4E9941E9603FC007EBEA4 /* ThemeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTableViewController.swift; sourceTree = "<group>"; };
 		60E4E9961E96174B007EBEA4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = TMA/Theme.swift; sourceTree = "<group>"; };
 		60FD5E321EA5724600C73B9C /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
@@ -160,8 +162,9 @@
 				60B325BA1E8AE59F00CE6164 /* Quarter.swift */,
 				601962CC1E4EE780001EAAC0 /* Item.swift */,
 				00416AD41E47E5DB00DA733D /* Course.swift */,
-				00DF402B1E47DC930095B2FD /* Event.swift */,
 				007EE6F41EB0506A00E4CC30 /* Storage.swift */,
+				00DF402B1E47DC930095B2FD /* Event.swift */,
+				60C888991ED9381D00AEB142 /* Schedule.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */,
 				60E4E9971E96174B007EBEA4 /* Theme.swift in Sources */,
 				8F2CCA1D1EA7F45B0068B942 /* Tutorial1ViewController.swift in Sources */,
+				60C8889A1ED9381D00AEB142 /* Schedule.swift in Sources */,
 				8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */,
 				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,

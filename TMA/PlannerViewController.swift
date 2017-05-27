@@ -451,10 +451,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                     }
                     
                     event.durationStudied = 0.0
-                    
-                    if let id = event.calEventID {
-                        deleteEventFromCalendar(withID: id)
-                    }
+
                     self.realm.delete(event)
                 }
                 

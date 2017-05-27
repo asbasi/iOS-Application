@@ -8,7 +8,7 @@
 
 import Foundation
 import RealmSwift
-
+import UserNotifications
 
 class Course: Object {
     dynamic var title: String!
@@ -25,8 +25,26 @@ class Course: Object {
     
     func delete(realm: Realm) {
         try! realm.write {
-            let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)'")
+            
+            // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
+
+            let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
+            
+            for event in eventsToDelete {
+                
+                // Remove any pending notifications for the event.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
+                
+                if let id = event.calEventID {
+                    deleteEventFromCalendar(withID: id)
+                }
+            }
+            
             realm.delete(eventsToDelete)
+            
+            let schedulesToDelete = realm.objects(Schedule.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
+            realm.delete(schedulesToDelete)
+            
             realm.delete(self)
         }
     }
