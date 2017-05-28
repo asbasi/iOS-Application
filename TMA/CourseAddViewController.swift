@@ -15,40 +15,29 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     let eventStore = EKEventStore();
     
     let colorPickerData = [Array(colorMappings.keys)]
-    //let colorPickerData = [["Yellow", "Red", "Green", "Blue", "Purple", "Cyan", "Brown", "Grey"]]
-    
-    /*
-    func checkAllTextFields() {
-        if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false;
-        }
-        else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true;
-        }
-    }*/
     
     @IBAction func courseTitleChanged(_ sender: Any) {
-        if ((courseTitleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.white
+        if ((courseTitleTextField.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 0, section: 0))
         }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
-        if ((identifierTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.white
+        if ((identifierTextField.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 1, section: 0))
         }
     }
     
     @IBAction func instructorChanged(_ sender: Any) {
-        if ((instructorTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+        if ((instructorTextField.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 0))
         }
     }
     
     @IBAction func unitsChanged(_ sender: Any) {
         recommendedHours()
-        if ((unitTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
+        if ((unitTextField.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 3, section: 0))
         }
     }
     
@@ -106,25 +95,30 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     @IBAction func done(_ sender: Any) {
+        let titlePath = IndexPath(row: 0, section: 0)
+        let coursePath = IndexPath(row: 1, section: 0)
+        let insPath = IndexPath(row: 2, section: 0)
+        let unitPath = IndexPath(row: 3, section: 0)
+    
         if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (identifierTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
             let alert = UIAlertController(title: "Alert", message: "Missing Required Information.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
             if (self.unitTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: unitPath)
             }
             
             if (self.courseTitleTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: titlePath)
             }
             
             if (self.instructorTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: insPath)
             }
             
             if (self.identifierTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: coursePath)
             }
             
         }
@@ -265,5 +259,17 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    //change texfield to red to alert user with missing or incorrect information.
+    func changeTextFieldToRed(indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+    }
+    
+    //change texfield to white to indicate correct input.
+    func changeTextFieldToWhite(indexPath: IndexPath) {
+        if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
+        }
     }
 }
