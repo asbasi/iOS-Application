@@ -89,11 +89,11 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 course.quarter = currentQuarter
                                 
                                 var count: Int = 1
-                                var color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
+                                var color = Array(colorMappings.keys)[0]
                                 
                                 while(self.realm.objects(Course.self).filter("color = '\(color)' AND quarter.current = true").count != 0 && count <= colorMappings.count ) {
                                     
-                                    color = Array(colorMappings.keys)[Int(arc4random_uniform(UInt32(colorMappings.count)))]
+                                    color = Array(colorMappings.keys)[count]
                                     count += 1
                                 }
                                 
