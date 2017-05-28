@@ -178,7 +178,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     event.duration = 0.0
                 }
                 else {
-                    event.endDate = dateFormatter.date(from: dateLabel.text!)
+                    event.endDate = dateFormatter.date(from: endDateLabel.text!)
                     event.type = segmentController.selectedSegmentIndex
                     event.duration = Date.getDifference(initial: event.date, final: event.endDate)
                 }
