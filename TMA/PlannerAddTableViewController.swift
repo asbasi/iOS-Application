@@ -91,28 +91,29 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         }
     }
     
+    //change textfiled to white when it's not empty
     @IBAction func eventTitleChanged(_ sender: Any) {
-        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
+        if ((titleTextField.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 0))
         }
         
     }
     
     @IBAction func courseLabelChanged(_ sender: Any) {
-        if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
+        if ((courseLabel.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 3, section: 0))
         }
     }
     
     @IBAction func dateLabelChanged(_ sender: Any) {
-        if ((dateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+        if ((dateLabel.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 0, section: 1))
         }
     }
     
     @IBAction func endDateLabelChanged(_ sender: Any) {
-        if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+        if ((endDateLabel.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 1))
         }
     }
     
