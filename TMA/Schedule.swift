@@ -11,6 +11,6 @@ import RealmSwift
 
 class Schedule: Object{
     dynamic var title: String!
-    dynamic var dates: Data!
+    dynamic var dates: Data! // Json encoded string representing the [String: NSObject] dictionary of dates.
     dynamic var course: Course!
 }
