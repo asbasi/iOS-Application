@@ -158,7 +158,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                     }))
                                 }
                                 else {
-                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                                        self.dismiss(animated: true, completion: nil)
+                                    }))
                                 }
                                 self.present(alert, animated: true, completion: nil)
                             }
