@@ -38,11 +38,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
         else if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
             let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
         else
@@ -93,6 +95,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         self.calendar.reloadData()
         self.myTableView.reloadData()
+        
+        if self.realm.objects(Course.self).filter("quarter.current = true").count > 0 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
     }
     
     func getEventsForDate(_ date: Date) -> [Event]

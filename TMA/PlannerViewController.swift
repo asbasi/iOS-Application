@@ -118,11 +118,13 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
         else if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
             let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
         else {
@@ -251,6 +253,10 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.myTableView.scrollToRow(at: IndexPath(row: 0, section: section), at: UITableViewScrollPosition.top, animated: true)
             }
             section += 1
+        }
+        
+        if self.realm.objects(Course.self).filter("quarter.current = true").count > 0 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
     

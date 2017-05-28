@@ -216,7 +216,8 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
         self.courseToEdit = courses[indexPath.row]
         
-        self.performSegue(withIdentifier: "showStats", sender: nil)
+        //self.performSegue(withIdentifier: "showStats", sender: nil)
+        self.performSegue(withIdentifier: "editCourse", sender: nil)
     }
     
    // In a storyboard-based application, you will often want to do a little preparation before navigation
