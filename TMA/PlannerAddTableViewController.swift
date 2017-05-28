@@ -131,7 +131,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||
             (self.dateLabel.text?.isEmpty)! || ((self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn) {
             
-            let alert = UIAlertController(title: "Alert", message: "Missing Require Information.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Alert", message: "Missing Required Information.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
@@ -178,7 +178,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     event.duration = 0.0
                 }
                 else {
-                    event.endDate = dateFormatter.date(from: dateLabel.text!)
+                    event.endDate = dateFormatter.date(from: endDateLabel.text!)
                     event.type = segmentController.selectedSegmentIndex
                     event.duration = Date.getDifference(initial: event.date, final: event.endDate)
                 }
