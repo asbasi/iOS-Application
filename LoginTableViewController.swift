@@ -75,7 +75,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                             }
                             
                             
-                            let courses_in_realm = self.realm.objects(Course.self)
+                            
+                            let courses_in_realm_for_current_quarter = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title!)'")
                             
                             
                             for crn in Array(coursesDict.keys) {
@@ -101,7 +102,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 
                                 /////// check if course already exists
                                 var already_exists = false
-                                for course_in_realm in courses_in_realm {
+                                for course_in_realm in courses_in_realm_for_current_quarter {
                                     if course_in_realm.identifier == course.identifier {
                                         already_exists = true
                                     }
