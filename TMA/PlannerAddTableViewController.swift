@@ -92,14 +92,14 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     @IBAction func eventTitleChanged(_ sender: Any) {
-        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 1, section: 0))!.backgroundColor != UIColor.white {
+        if ((titleTextField.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
             tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.white
         }
         
     }
     
     @IBAction func courseLabelChanged(_ sender: Any) {
-        if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor != UIColor.white {
+        if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
             tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
         }
     }
@@ -128,6 +128,12 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     @IBAction func save(_ sender: Any) {
         
+        
+        let titlePath = IndexPath(row: 2, section: 0)
+        let coursePath = IndexPath(row: 3, section: 0)
+        let startLabelPath = IndexPath(row: 0, section: 1)
+        let endLabelPath = IndexPath(row: 2, section: 1)
+        
         if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||
             (self.dateLabel.text?.isEmpty)! || ((self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn) {
             
@@ -136,19 +142,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             self.present(alert, animated: true, completion: nil)
             
             if (self.titleTextField.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 2, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: titlePath)
             }
             
             if (self.courseLabel.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: coursePath)
             }
             
             if (self.dateLabel.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: startLabelPath)
             }
             
             if (self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn {
-                tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: endLabelPath)
             }
         }
         else if(!deadlineSwitch.isOn && dateFormatter.date(from: dateLabel.text!)! >= dateFormatter.date(from: endDateLabel.text!)!) {
@@ -156,9 +162,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
-            tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            changeTextFieldToRed(indexPath: startLabelPath)
             
-            tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+            changeTextFieldToRed(indexPath: endLabelPath)
         }
         else {
             //get the course
@@ -312,7 +318,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 self.segmentController.selectedSegmentIndex = self.event!.type
             }
             
-            //self.coursePicker.selectedRow(inComponent: self.coursePicker.index)
             if let date = self.event!.reminderDate {
                 self.reminderSwitch.isOn = true
                 self.reminderLabel.textColor = UIColor.blue
@@ -383,8 +388,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     courseLabel.text = courses[0].identifier
                 }
                 
-                if ((courseLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor != UIColor.white {
-                    tableView.cellForRow(at: IndexPath(row: 3, section: 0))!.backgroundColor = UIColor.white
+                if ((courseLabel.text?.isEmpty)! == false) {
+                    changeTextFieldToWhite(indexPath: courseIndexPath)
                 }
             }
             
@@ -405,8 +410,8 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 datePicker.date = Date()
                 dateLabel.text = dateFormatter.string(from: datePicker.date)
 
-                if ((dateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor != UIColor.white {
-                    tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.white
+                if ((dateLabel.text?.isEmpty)! == false) {
+                    changeTextFieldToWhite(indexPath: dateIndexPath)
                 }
             }
             
@@ -425,9 +430,10 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 endDatePicker.date = datePicker.date.addingTimeInterval(900)
                 endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
                 
-                if ((endDateLabel.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor != UIColor.white {
-                    tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.white
+                if ((endDateLabel.text?.isEmpty)! == false) {
+                    changeTextFieldToWhite(indexPath: endDateIndexPath)
                 }
+                
             }
             
             if !endDatePicker.isHidden {
@@ -477,5 +483,19 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+    
+    //change texfield to red to alert user with missing or incorrect information.
+    func changeTextFieldToRed(indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+    }
+    
+    //change texfield to white to indicate correct input.
+    func changeTextFieldToWhite(indexPath: IndexPath) {
+        if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
+        }
     }
 }
