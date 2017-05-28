@@ -117,9 +117,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 let classes = courseDict["classes"] as! [String: NSObject]
                                 //////////create events for course
                                 for classs in Array(classes.keys) { //Lecture/Discussion/Tutorial..
-                                    
-                                    
-                                    
                                     do {
                                         let jsonDataDates = try JSONSerialization.data(withJSONObject: classes[classs] as! [String: NSObject], options: .prettyPrinted)
                                         
@@ -159,7 +156,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 }
                                 else {
                                     alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                                        self.dismiss(animated: true, completion: nil)
+                                        self.navigationController?.popToRootViewController(animated: true)
                                     }))
                                 }
                                 self.present(alert, animated: true, completion: nil)

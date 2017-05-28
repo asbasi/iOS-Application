@@ -165,7 +165,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         self.calendar.frame.size.height = bounds.height
         self.myTableView.frame.origin.y = calendar.frame.maxY
         
-        self.myTableView.frame = CGRect(x: self.myTableView.frame.origin.x, y: self.myTableView.frame.origin.y, width: self.view.frame.width, height: self.view.frame.maxY - calendar.frame.maxY)
+        self.myTableView.frame = CGRect(x: self.myTableView.frame.origin.x, y: self.myTableView.frame.origin.y, width: self.view.frame.width, height: self.view.frame.maxY - calendar.frame.maxY - 49)
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
