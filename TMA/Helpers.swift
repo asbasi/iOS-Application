@@ -232,10 +232,10 @@ class Helpers {
                     var the_date = currentClassStartDate
                     the_date = Calendar.current.date(byAdding: .day, value: -1, to: the_date)!
                     //subtract 1 day because self.get() starts from the day after
-                    while the_date < currentClassEndDate {
+                    while the_date <= currentClassEndDate {
                         the_date = Helpers.getDay(direction: .Next, dayName: week_days_translation[week_day]!, fromDate: the_date) as Date
                         
-                        if(the_date >= currentClassEndDate){
+                        if(the_date > currentClassEndDate){
                             break;
                         }
                         
