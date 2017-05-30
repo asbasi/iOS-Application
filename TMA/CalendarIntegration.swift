@@ -156,13 +156,30 @@ func requestAccessToCalendar() {
 
 func getMainCalendar() -> EKCalendar? {
     if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
-        return eventStore.calendar(withIdentifier: identifier as! String)
+        
+        // return eventStore.calendar(withIdentifier: identifier as! String)
+        
+        let calendars = eventStore.calendars(for: .event)
+        for calendar in calendars {
+            if(calendar.calendarIdentifier == (identifier as! String)) {
+                return calendar
+            }
+        }
     }
     return nil
 }
 
 func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
-    return eventStore.calendar(withIdentifier: identifier)
+    // return eventStore.calendar(withIdentifier: identifier)
+    
+    let calendars = eventStore.calendars(for: .event)
+    for calendar in calendars {
+        if(calendar.calendarIdentifier == identifier) {
+            return calendar
+        }
+    }
+    
+    return nil
 }
 
 func createCalendar(withTitle title: String) -> String? {
@@ -229,7 +246,7 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
     
     var identifier: String?
     
-    if let calendarForEvent = eventStore.calendar(withIdentifier: calendarIdentifier) {
+    if let calendarForEvent = getCalendar(withIdentifier: calendarIdentifier) {
         
         // Create the calendar event.
         let newEvent = EKEvent(eventStore: eventStore)

@@ -11,7 +11,7 @@ import Foundation
 import RealmSwift
 import Alamofire
 
-let colorMappings: [String: UIColor] = ["None": UIColor.clear, "Yellow": UIColor.yellow, "Red": UIColor.red, "Green": UIColor.green, "Blue": UIColor.blue, "Purple": UIColor.purple, "Cyan": UIColor.cyan, "Brown": UIColor.brown, "Black": UIColor.black]
+let colorMappings: [String: UIColor] = ["Red": UIColor.red, "Yellow": UIColor.yellow, "Green": UIColor.green, "Blue": UIColor.blue, "Purple": UIColor.purple, "Cyan": UIColor.cyan, "Brown": UIColor.brown, "Black": UIColor.black]
 
 class Helpers {
     static let realm = try! Realm()

@@ -12,7 +12,26 @@ import EventKit
 
 class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
-    let eventStore = EKEventStore();
+    let eventStore = EKEventStore()
+    
+    @IBOutlet weak var colorLabel: UITextField!
+    @IBOutlet weak var colorPicker: UIPickerView!
+    
+    let realm = try! Realm()
+    
+    var color: UIColor!
+    var editOrAdd: String = "" // "edit" or "add"
+    
+    var quarter: Quarter!
+    
+    var course: Course?
+    var courses: Results<Course>!
+    
+    @IBOutlet weak var identifierTextField: UITextField!
+    @IBOutlet weak var instructorTextField: UITextField!
+    @IBOutlet weak var unitTextField: UITextField!
+    @IBOutlet weak var courseTitleTextField: UITextField!
+    @IBOutlet weak var recommendedTextField: UILabel!
     
     let colorPickerData = [Array(colorMappings.keys)]
     
@@ -58,25 +77,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
-    
-    @IBOutlet weak var colorLabel: UITextField!
-    @IBOutlet weak var colorPicker: UIPickerView!
-    
-    let realm = try! Realm()
-    
-    var color: UIColor!
-    var editOrAdd: String = "" // "edit" or "add"
-    
-    var quarter: Quarter!
-    
-    var course: Course?
-    var courses: Results<Course>!
-    
-    @IBOutlet weak var identifierTextField: UITextField!
-    @IBOutlet weak var instructorTextField: UITextField!
-    @IBOutlet weak var unitTextField: UITextField!
-    @IBOutlet weak var courseTitleTextField: UITextField!
-    @IBOutlet weak var recommendedTextField: UILabel!
 
     @IBAction func cancel(_ sender: Any) {
         self.dismissKeyboard()
@@ -184,7 +184,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
         self.courses = self.realm.objects(Course.self)
 
-        self.colorLabel.text = "None"
+        self.colorLabel.text = colorPickerData[0].first
         
         if self.editOrAdd == "edit" {
             self.navigationItem.title = self.course!.title

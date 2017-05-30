@@ -60,17 +60,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.reloadData()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        //self.tableView.tableFooterView = UIView()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     /*
@@ -216,7 +205,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
         self.courseToEdit = courses[indexPath.row]
         
-        //self.performSegue(withIdentifier: "showStats", sender: nil)
         self.performSegue(withIdentifier: "editCourse", sender: nil)
     }
     
@@ -225,24 +213,19 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier! == "showStats" {
-            let courseDetailViewController = segue.destination as! CourseStatsViewController
-            courseDetailViewController.course = courseToEdit!
-        }
-        else {
-            let navigation: UINavigationController = segue.destination as! UINavigationController
-            var courseAddViewController = CourseAddViewController.init()
-            courseAddViewController = navigation.viewControllers[0] as! CourseAddViewController
+        let navigation: UINavigationController = segue.destination as! UINavigationController
+        var courseAddViewController = CourseAddViewController.init()
+        courseAddViewController = navigation.viewControllers[0] as! CourseAddViewController
 
-            courseAddViewController.quarter = self.quarter
-            
-            if segue.identifier! == "addCourse" {
-                courseAddViewController.editOrAdd = "add"
-            }
-            else if segue.identifier! == "editCourse" {
-                courseAddViewController.editOrAdd = "edit"
-                courseAddViewController.course = courseToEdit!
-            }
+        courseAddViewController.quarter = self.quarter
+        
+        if segue.identifier! == "addCourse" {
+            courseAddViewController.editOrAdd = "add"
         }
+        else if segue.identifier! == "editCourse" {
+            courseAddViewController.editOrAdd = "edit"
+            courseAddViewController.course = courseToEdit!
+        }
+
     }
 }

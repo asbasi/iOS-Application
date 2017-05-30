@@ -188,7 +188,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.quarterToEdit = self.quarters[indexPath.row]
-        //self.performSegue(withIdentifier: "QuarterStatePage", sender: nil)
+
         self.performSegue(withIdentifier: "editQuarter", sender: nil)
     }
     
@@ -203,23 +203,17 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if segue.identifier == "QuarterStatePage"{
-            let quarterStatsViewController = segue.destination as! QuarterStatsViewController
-            quarterStatsViewController.quarter = quarterToEdit
+        let navigation: UINavigationController = segue.destination as! UINavigationController
+        let quartersAddViewController = navigation.viewControllers[0] as! QuarterAddTableViewController
+        
+        if segue.identifier == "addQuarter" {
+            quartersAddViewController.operation = "add"
         }
-        else {
-            let navigation: UINavigationController = segue.destination as! UINavigationController
-            let quartersAddViewController = navigation.viewControllers[0] as! QuarterAddTableViewController
-            
-            if segue.identifier == "addQuarter" {
-                quartersAddViewController.operation = "add"
-            }
-            else if segue.identifier == "editQuarter" {
-                quartersAddViewController.operation = "edit"
-                quartersAddViewController.quarter = quarterToEdit
-            }
-            
+        else if segue.identifier == "editQuarter" {
+            quartersAddViewController.operation = "edit"
+            quartersAddViewController.quarter = quarterToEdit
         }
+
     }
     
 }

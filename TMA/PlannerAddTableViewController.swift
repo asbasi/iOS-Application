@@ -341,7 +341,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         let endPickerPath = IndexPath(row: 3, section: 1)
         let reminderPickerPath = IndexPath(row: 1, section: 2)
         
-        
         if (deadlineSwitch.isOn && (indexPath == typePath || indexPath == endLabelPath))
         {
             return 0.0
