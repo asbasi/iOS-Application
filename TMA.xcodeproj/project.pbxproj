@@ -19,6 +19,7 @@
 		00DF402C1E47DC930095B2FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402B1E47DC930095B2FD /* Event.swift */; };
 		00DF40301E47E0700095B2FD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF402F1E47E0700095B2FD /* Helpers.swift */; };
 		1A4EDA221ED637CD00CA3E7E /* AcknowledgementsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4EDA211ED637CD00CA3E7E /* AcknowledgementsTableViewController.swift */; };
+		600AE1561EDE903000B322D0 /* ScheduleMainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AE1551EDE903000B322D0 /* ScheduleMainTableViewController.swift */; };
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602BFBD91E641A58006FED32 /* CalendarViewController.swift */; };
@@ -76,6 +77,7 @@
 		00DF402F1E47E0700095B2FD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = TMA/Helpers.swift; sourceTree = "<group>"; };
 		1A4EDA211ED637CD00CA3E7E /* AcknowledgementsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsTableViewController.swift; sourceTree = "<group>"; };
 		403CEAE2226B172832B9F12D /* Pods-TMA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMA.release.xcconfig"; path = "Pods/Target Support Files/Pods-TMA/Pods-TMA.release.xcconfig"; sourceTree = "<group>"; };
+		600AE1551EDE903000B322D0 /* ScheduleMainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleMainTableViewController.swift; sourceTree = "<group>"; };
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		602BFBD91E641A58006FED32 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +175,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		600AE1571EDE903800B322D0 /* Schedule Pages */ = {
+			isa = PBXGroup;
+			children = (
+				600AE1551EDE903000B322D0 /* ScheduleMainTableViewController.swift */,
+			);
+			name = "Schedule Pages";
+			sourceTree = "<group>";
+		};
 		6015DBF61E9F7406005C8009 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +220,7 @@
 		6015DBFD1E9F751F005C8009 /* Course Pages */ = {
 			isa = PBXGroup;
 			children = (
+				600AE1571EDE903800B322D0 /* Schedule Pages */,
 				005709AB1E480046008D2D96 /* CourseAddViewController.swift */,
 				009C4E2B1E42DD2800260378 /* CourseViewController.swift */,
 			);
@@ -429,6 +440,7 @@
 				60C8889A1ED9381D00AEB142 /* Schedule.swift in Sources */,
 				8F2CCA1B1EA7F4440068B942 /* TutorialPageViewController.swift in Sources */,
 				8F2CCA1F1EA7F46F0068B942 /* Tutorial2ViewController.swift in Sources */,
+				600AE1561EDE903000B322D0 /* ScheduleMainTableViewController.swift in Sources */,
 				005709AC1E480046008D2D96 /* CourseAddViewController.swift in Sources */,
 				60B5F7A61E8CD00F0025ACD0 /* QuartersViewController.swift in Sources */,
 				007EE6F51EB0506A00E4CC30 /* Storage.swift in Sources */,

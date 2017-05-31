@@ -12,8 +12,6 @@ class TutorialViewController: UIViewController {
 
     @IBOutlet weak var containerView: UIView!
     
-    
-    
     var tutorialPageViewController: TutorialPageViewController? {
         didSet {
             tutorialPageViewController?.tutorialDelegate = self

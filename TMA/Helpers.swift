@@ -192,6 +192,20 @@ class Helpers {
         return date! as NSDate
     }
     
+    static func parseTime(from string: String) -> (hour: Int, min: Int) {
+        
+        ////////////////////////////////////////////////////////////////////////
+        ///////////////////just parsing the begin_time and end_time/////////////
+        ///////////////////into 2 ints each hrs & min///////////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        
+        let s_date = string.characters
+        let sh = String(Array(s_date)[0])+String(Array(s_date)[1])
+        let sm = String(Array(s_date)[2])+String(Array(s_date)[3])
+        
+        return (Int(sh)!, Int(sm)!)
+    }
+    
     static func exportSchedule(schedule: Schedule) {
         do {
             let decoded = try JSONSerialization.jsonObject(with: schedule.dates, options: [])
@@ -206,25 +220,9 @@ class Helpers {
 
                 let week_days_translation = ["M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday"]
                 for week_day in week_days {
-                    
-                    ////////////////////////////////////////////////////////////////////////
-                    ///////////////////just parsing the begin_time and end_time/////////////
-                    ///////////////////into 2 ints each hrs & min///////////////////////////
-                    ////////////////////////////////////////////////////////////////////////
-                    
-                    
-                    let s_t = (dictFromJSON["begin_time"] as! String).characters
-                    let e_t = (dictFromJSON["end_time"] as! String).characters
-                    let sh = String(Array(s_t)[0])+String(Array(s_t)[1])
-                    let sm = String(Array(s_t)[2])+String(Array(s_t)[3])
-                    let eh = String(Array(e_t)[0])+String(Array(e_t)[1])
-                    let em = String(Array(e_t)[2])+String(Array(e_t)[3])
-                    
-                    let ish = Int(sh)! //integer start hour
-                    let ism = Int(sm)! //integer start minute
-                    let ieh = Int(eh)! //integer end hour
-                    let iem = Int(em)! //integer end minute
-                    ///////////////////////////////////////////////////
+                
+                    let start_time = parseTime(from: dictFromJSON["begin_time"] as! String)
+                    let end_time = parseTime(from: dictFromJSON["end_time"] as! String)
                     
                     let currentClassStartDate = Helpers.get_date_from_string(strDate: dictFromJSON["start_date"]! as! String)
                     let currentClassEndDate = Helpers.get_date_from_string(strDate: dictFromJSON["end_date"]! as! String)
@@ -239,13 +237,13 @@ class Helpers {
                             break;
                         }
                         
-                        the_date = Helpers.set_time(mydate: the_date as Date, h: ish, m: ism)
+                        the_date = Helpers.set_time(mydate: the_date as Date, h: start_time.hour, m: start_time.min)
                         
                         // add to realm
                         let ev = Event()
                         ev.title = schedule.title
                         ev.date = the_date
-                        ev.endDate = Helpers.set_time(mydate: the_date as Date, h: ieh, m: iem)
+                        ev.endDate = Helpers.set_time(mydate: the_date as Date, h: end_time.hour, m: end_time.min)
                         ev.course = schedule.course
                         ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
                         ev.type = SCHEDULE_EVENT

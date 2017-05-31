@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import Alamofire
 import RealmSwift
+import EventKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,8 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if granted {
                 UIApplication.shared.registerForRemoteNotifications()
             }
-            else
-            {
+            else {
                 print("User denied notifications")
             }
             requestAccessToCalendar()
@@ -63,7 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-        //checkCalendarAuthorizationStatus()
+        if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
+            verifyCalendar()
+            exportEvents(toCalendar: getMainCalendar()!.calendarIdentifier)
+            sync()
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

@@ -12,10 +12,6 @@ class ThemeTableViewController: UITableViewController {
 
     private var lastSelection: IndexPath!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -23,11 +19,6 @@ class ThemeTableViewController: UITableViewController {
         
         lastSelection = IndexPath(row: theme.rawValue, section: 0)
         self.tableView.cellForRow(at: lastSelection)?.accessoryType = UITableViewCellAccessoryType.checkmark
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source

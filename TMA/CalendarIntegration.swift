@@ -19,18 +19,15 @@ func checkCalendarAuthorizationStatus() {
     
     switch(status) {
     case EKAuthorizationStatus.notDetermined:
-        verifyCalendar()
-        exportEvents(toCalendar: (getMainCalendar()?.calendarIdentifier)!)
-        sync()
+        fallthrough
     case EKAuthorizationStatus.authorized:
-        print("Access Granted")
         verifyCalendar()
         exportEvents(toCalendar: getMainCalendar()!.calendarIdentifier)
         sync()
     case EKAuthorizationStatus.denied:
-        print("Access Denied")
+        break
     default:
-        print("Case Default")
+        break
     }
 }
 
@@ -157,21 +154,13 @@ func requestAccessToCalendar() {
 func getMainCalendar() -> EKCalendar? {
     if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
         
-        // return eventStore.calendar(withIdentifier: identifier as! String)
-        
-        let calendars = eventStore.calendars(for: .event)
-        for calendar in calendars {
-            if(calendar.calendarIdentifier == (identifier as! String)) {
-                return calendar
-            }
-        }
+        return getCalendar(withIdentifier: identifier as! String)
     }
+
     return nil
 }
 
 func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
-    // return eventStore.calendar(withIdentifier: identifier)
-    
     let calendars = eventStore.calendars(for: .event)
     for calendar in calendars {
         if(calendar.calendarIdentifier == identifier) {
@@ -202,6 +191,7 @@ func createCalendar(withTitle title: String) -> String? {
         }
     }
     
+    // Used the found source.
     if(!foundSource) {
         for source in sourcesInEventStore {
             if(source.sourceType == EKSourceType.subscribed) {

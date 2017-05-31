@@ -23,9 +23,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     var editOrAdd: String = "" // "edit" or "add"
     
     var quarter: Quarter!
-    
     var course: Course?
-    var courses: Results<Course>!
     
     @IBOutlet weak var identifierTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
@@ -84,7 +82,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     private func isDuplicate() -> Bool {
-        let results = self.courses.filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND title = '\(courseTitleTextField.text!)'")
+        let results = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND title = '\(courseTitleTextField.text!)'")
         if results.count != 0 {
             let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -129,7 +127,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                     return
                 }
                 
-                self.course = Course()
                 course!.title = courseTitleTextField.text!
                 course!.identifier = identifierTextField.text!
                 course!.instructor = instructorTextField.text!
@@ -181,12 +178,14 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.colorPicker.isHidden = true
         
         self.tableView.tableFooterView = UIView()
-        
-        self.courses = self.realm.objects(Course.self)
 
         self.colorLabel.text = colorPickerData[0].first
         
-        if self.editOrAdd == "edit" {
+        if self.editOrAdd == "add" {
+            self.course = Course()
+            self.course!.identifier = UUID().uuidString // Assign it a temporary identifier.
+        }
+        else if self.editOrAdd == "edit" {
             self.navigationItem.title = self.course!.title
             
             self.courseTitleTextField.text = self.course!.title
@@ -211,16 +210,9 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.courses = self.realm.objects(Course.self)
-        
         self.tableView.reloadData()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     //MARK: - Picker View Data Sources and Delegates
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -271,5 +263,19 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
             tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
         }
+    }
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier! == "courseSchedule" {
+            
+            let courseScheduleViewController = segue.destination as! ScheduleMainTableViewController
+            courseScheduleViewController.course = self.course
+        }
+
+        
     }
 }

@@ -37,6 +37,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if self.realm.objects(Quarter.self).filter("current = true").count != 1 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
         else {
@@ -57,7 +58,12 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
         self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
+        
+        if self.realm.objects(Quarter.self).filter("current = true").count > 0 {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
         self.tableView.reloadData()
+        
     }
     
     // MARK: - Table view data source

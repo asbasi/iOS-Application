@@ -72,19 +72,12 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         // set observer for UIApplicationWillEnterForeground to refresh the app when app wakes up.
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
-        
-        refresh()
     }
 
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         
         refresh()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /******************************* Calendar Functions *******************************/
