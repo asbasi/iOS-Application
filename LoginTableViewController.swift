@@ -144,22 +144,13 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                             if Array(responseDict.keys).count != 0 {
                                 let alert = UIAlertController(title: "Success", message: "Courses imported correctly", preferredStyle: UIAlertControllerStyle.alert)
                                 
-                                if self.isTutorial {
-                                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
-                                        self.dismiss(animated: true, completion: nil)
-                                        UserDefaults.standard.set(true, forKey: "showed")
-                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                        let controller = storyboard.instantiateViewController(withIdentifier: "tabBarID")
-                                        self.present(controller, animated: true, completion: {
-                                            ()-> Void in
-                                        })
-                                    }))
-                                }
-                                else {
-                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                                        self.navigationController?.popToRootViewController(animated: true)
-                                    }))
-                                }
+                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { action in
+                                    self.dismiss(animated: true, completion: nil)
+                                    UserDefaults.standard.set(true, forKey: "showed")
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let controller = storyboard.instantiateViewController(withIdentifier: "tabBarID")
+                                    self.present(controller, animated: true, completion: nil)
+                                }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         } //end dispatch main queue
