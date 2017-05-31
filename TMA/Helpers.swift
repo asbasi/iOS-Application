@@ -288,7 +288,7 @@ class Helpers {
         start = dateFormatter.date(from: "1/6/2017")!
         end = dateFormatter.date(from: "3/24/2017")!
         quarter = Quarter()
-        quarter!.title = "Winter 2017"
+        quarter!.title = UUID().uuidString
         quarter!.startDate = start
         quarter!.endDate = end
         quarter!.current = false
@@ -441,10 +441,10 @@ class Helpers {
         start = dateFormatter.date(from: "3/30/2017")!
         end = dateFormatter.date(from: "6/15/2017")!
         quarter = Quarter()
-        quarter!.title = "Spring 2017"
+        quarter!.title = UUID().uuidString
         quarter!.startDate = start
         quarter!.endDate = end
-        quarter!.current = true
+        quarter!.current = false
         Helpers.DB_insert(obj: quarter!)
         
         //add ECS 193B to quarter
