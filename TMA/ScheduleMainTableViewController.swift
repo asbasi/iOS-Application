@@ -111,6 +111,11 @@ class ScheduleMainTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier! == "addSchedule" {
+            let scheduleAddTableViewController = segue.destination as! ScheduleAddTableViewController
+            scheduleAddTableViewController.course = self.course
+        }
     }
 
 }

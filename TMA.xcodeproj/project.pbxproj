@@ -23,6 +23,7 @@
 		601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */; };
 		601962CD1E4EE780001EAAC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601962CC1E4EE780001EAAC0 /* Item.swift */; };
 		602BFBDA1E641A58006FED32 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602BFBD91E641A58006FED32 /* CalendarViewController.swift */; };
+		6061CCF21EDF7928008F8FCA /* ScheduleAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6061CCF11EDF7928008F8FCA /* ScheduleAddTableViewController.swift */; };
 		606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */; };
 		60752EBA1E9DD95C00D699B3 /* CalendarIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */; };
 		607A78501E983DE100177692 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607A784F1E983DE100177692 /* Keys.swift */; };
@@ -81,6 +82,7 @@
 		601962C01E4EB14C001EAAC0 /* PlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlannerViewController.swift; sourceTree = "<group>"; };
 		601962CC1E4EE780001EAAC0 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		602BFBD91E641A58006FED32 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		6061CCF11EDF7928008F8FCA /* ScheduleAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleAddTableViewController.swift; sourceTree = "<group>"; };
 		606B3A851E8E12D8000DF9DC /* QuarterAddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuarterAddTableViewController.swift; sourceTree = "<group>"; };
 		60752EB91E9DD95C00D699B3 /* CalendarIntegration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CalendarIntegration.swift; path = TMA/CalendarIntegration.swift; sourceTree = "<group>"; };
 		607A784F1E983DE100177692 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = TMA/Keys.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				600AE1551EDE903000B322D0 /* ScheduleMainTableViewController.swift */,
+				6061CCF11EDF7928008F8FCA /* ScheduleAddTableViewController.swift */,
 			);
 			name = "Schedule Pages";
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				009C4E2C1E42DD2800260378 /* CourseViewController.swift in Sources */,
 				601962CD1E4EE780001EAAC0 /* Item.swift in Sources */,
 				601962C11E4EB14C001EAAC0 /* PlannerViewController.swift in Sources */,
+				6061CCF21EDF7928008F8FCA /* ScheduleAddTableViewController.swift in Sources */,
 				606B3A861E8E12D8000DF9DC /* QuarterAddTableViewController.swift in Sources */,
 				8F2CCA191EA7F42C0068B942 /* TutorialViewController.swift in Sources */,
 				8F2CCA251EA7F48F0068B942 /* Tutorial5ViewController.swift in Sources */,
