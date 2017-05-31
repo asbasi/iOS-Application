@@ -18,6 +18,12 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     var quarter: Quarter?
     var dateFormatter: DateFormatter = DateFormatter()
     
+    let titlePath = IndexPath(row: 0, section: 0)
+    let startPath = IndexPath(row: 0, section: 1)
+    let startPickerPath = IndexPath(row: 1, section: 1)
+    let endPath = IndexPath(row: 2, section: 1)
+    let endPickerPath = IndexPath(row: 3, section: 1)
+    
     @IBOutlet weak var quarterTitle: UITextField!
     @IBOutlet weak var currentSwitch: UISwitch!
     
@@ -28,19 +34,10 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     @IBOutlet weak var endDatePicker: FSCalendar!
     
     @IBOutlet weak var pageTitle: UINavigationItem!
-    /*
-    private func checkAllTextFields() {
-        if (quarterTitle.text?.isEmpty)! {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-        else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
-        }
-    }*/
     
     @IBAction func quarterTitleChanged(_ sender: Any) {
-        if ((quarterTitle.text?.isEmpty)! == false) && tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.white
+        if ((quarterTitle.text?.isEmpty)! == false) {
+            changeTextFieldToWhite(indexPath: titlePath)
         }
     }
     
@@ -93,7 +90,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
             self.present(alert, animated: true, completion: nil)
             
             if (self.quarterTitle.text?.isEmpty)! {
-                tableView.cellForRow(at: IndexPath(row: 0, section: 0))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: titlePath)
             }
         }
         else {
@@ -123,9 +120,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 self.present(alert, animated: true, completion: nil)
                 
                 
-                tableView.cellForRow(at: IndexPath(row: 0, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
-                
-                tableView.cellForRow(at: IndexPath(row: 2, section: 1))!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+                changeTextFieldToRed(indexPath: startPath)
+                changeTextFieldToRed(indexPath: endPath)
                 
                 return
             }
@@ -236,20 +232,20 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     /******************************* Table View Functions *******************************/
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if indexPath == startPath {
             toggleStartDatePicker()
         }
-        else if indexPath.section == 1 && indexPath.row == 2 {
+        else if indexPath == endPath {
             toggleEndDatePicker()
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if startDatePicker.isHidden && indexPath.section == 1 && indexPath.row == 1 {
+        if startDatePicker.isHidden && indexPath == startPickerPath {
             return 0
         }
-        else if endDatePicker.isHidden && indexPath.section == 1 && indexPath.row == 3 {
+        else if endDatePicker.isHidden && indexPath == endPickerPath {
             return 0
         }
         else {
@@ -264,6 +260,17 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         return true
     }
     
+    //change texfield to red to alert user with missing or incorrect information.
+    func changeTextFieldToRed(indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
+    }
+    
+    //change texfield to white to indicate correct input.
+    func changeTextFieldToWhite(indexPath: IndexPath) {
+        if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
+            tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
+        }
+    }
     
     /******************************* Calendar Functions *******************************/
     

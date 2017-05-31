@@ -25,36 +25,43 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     var quarter: Quarter!
     var course: Course?
     
+    let colorPickerData = [Array(colorMappings.keys)]
+    
+    let titlePath = IndexPath(row: 0, section: 0)
+    let coursePath = IndexPath(row: 1, section: 0)
+    let insPath = IndexPath(row: 2, section: 0)
+    let unitPath = IndexPath(row: 3, section: 0)
+    let colorPath = IndexPath(row: 0, section: 1)
+    let colorPickerPath = IndexPath(row: 1, section: 1)
+    
     @IBOutlet weak var identifierTextField: UITextField!
     @IBOutlet weak var instructorTextField: UITextField!
     @IBOutlet weak var unitTextField: UITextField!
     @IBOutlet weak var courseTitleTextField: UITextField!
     @IBOutlet weak var recommendedTextField: UILabel!
     
-    let colorPickerData = [Array(colorMappings.keys)]
-    
     @IBAction func courseTitleChanged(_ sender: Any) {
         if ((courseTitleTextField.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 0, section: 0))
+            changeTextFieldToWhite(indexPath: titlePath)
         }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
         if ((identifierTextField.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 1, section: 0))
+            changeTextFieldToWhite(indexPath: coursePath)
         }
     }
     
     @IBAction func instructorChanged(_ sender: Any) {
         if ((instructorTextField.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 0))
+            changeTextFieldToWhite(indexPath: insPath)
         }
     }
     
     @IBAction func unitsChanged(_ sender: Any) {
         recommendedHours()
         if ((unitTextField.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 3, section: 0))
+            changeTextFieldToWhite(indexPath: unitPath)
         }
     }
     
@@ -93,10 +100,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     @IBAction func done(_ sender: Any) {
-        let titlePath = IndexPath(row: 0, section: 0)
-        let coursePath = IndexPath(row: 1, section: 0)
-        let insPath = IndexPath(row: 2, section: 0)
-        let unitPath = IndexPath(row: 3, section: 0)
     
         if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (identifierTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {
             let alert = UIAlertController(title: "Alert", message: "Missing Required Information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -233,14 +236,14 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 0 {
+        if indexPath == colorPath {
             toggleShowColorPicker()
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if colorPicker.isHidden && indexPath.section == 1 && indexPath.row == 1 {
+        if colorPicker.isHidden && indexPath == colorPickerPath {
             return 0
         }
         else {
@@ -248,6 +251,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
     
+    /******************************* Text Field Functions *******************************/
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

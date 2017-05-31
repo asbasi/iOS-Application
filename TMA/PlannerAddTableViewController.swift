@@ -15,6 +15,16 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     let realm = try! Realm()
     let eventStore = EKEventStore()
     
+    let typePath = IndexPath(row: 1, section: 0)
+    let titlePath = IndexPath(row: 2, section: 0)
+    let coursePath = IndexPath(row: 3, section: 0)
+    let coursePickerPath = IndexPath(row: 4, section: 0)
+    let startPath = IndexPath(row: 0, section: 1)
+    let startPickerPath = IndexPath(row: 1, section: 1)
+    let endPath = IndexPath(row: 2, section: 1)
+    let endPickerPath = IndexPath(row: 3, section: 1)
+    let reminderPickerPath = IndexPath(row: 1, section: 2)
+    
     @IBOutlet weak var deadlineSwitch: UISwitch!
     
     @IBOutlet weak var segmentController: UISegmentedControl!
@@ -94,26 +104,26 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     //change textfiled to white when it's not empty
     @IBAction func eventTitleChanged(_ sender: Any) {
         if ((titleTextField.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 0))
+            changeTextFieldToWhite(indexPath: titlePath)
         }
         
     }
     
     @IBAction func courseLabelChanged(_ sender: Any) {
         if ((courseLabel.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 3, section: 0))
+            changeTextFieldToWhite(indexPath: coursePath)
         }
     }
     
     @IBAction func dateLabelChanged(_ sender: Any) {
         if ((dateLabel.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 0, section: 1))
+            changeTextFieldToWhite(indexPath: startPath)
         }
     }
     
     @IBAction func endDateLabelChanged(_ sender: Any) {
         if ((endDateLabel.text?.isEmpty)! == false) {
-            changeTextFieldToWhite(indexPath: IndexPath(row: 2, section: 1))
+            changeTextFieldToWhite(indexPath: endPath)
         }
     }
     
@@ -128,12 +138,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     }
     
     @IBAction func save(_ sender: Any) {
-        
-        
-        let titlePath = IndexPath(row: 2, section: 0)
-        let coursePath = IndexPath(row: 3, section: 0)
-        let startLabelPath = IndexPath(row: 0, section: 1)
-        let endLabelPath = IndexPath(row: 2, section: 1)
         
         if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||
             (self.dateLabel.text?.isEmpty)! || ((self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn) {
@@ -151,11 +155,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             }
             
             if (self.dateLabel.text?.isEmpty)! {
-                changeTextFieldToRed(indexPath: startLabelPath)
+                changeTextFieldToRed(indexPath: startPath)
             }
             
             if (self.endDateLabel.text?.isEmpty)! && !deadlineSwitch.isOn {
-                changeTextFieldToRed(indexPath: endLabelPath)
+                changeTextFieldToRed(indexPath: endPath)
             }
         }
         else if(!deadlineSwitch.isOn && dateFormatter.date(from: dateLabel.text!)! >= dateFormatter.date(from: endDateLabel.text!)!) {
@@ -163,9 +167,9 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
-            changeTextFieldToRed(indexPath: startLabelPath)
+            changeTextFieldToRed(indexPath: startPath)
             
-            changeTextFieldToRed(indexPath: endLabelPath)
+            changeTextFieldToRed(indexPath: endPath)
         }
         else {
             //get the course
@@ -334,14 +338,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        let typePath = IndexPath(row: 1, section: 0)
-        let coursePickerPath = IndexPath(row: 4, section: 0)
-        let startPickerPath = IndexPath(row: 1, section: 1)
-        let endLabelPath = IndexPath(row: 2, section: 1)
-        let endPickerPath = IndexPath(row: 3, section: 1)
-        let reminderPickerPath = IndexPath(row: 1, section: 2)
-        
-        if (deadlineSwitch.isOn && (indexPath == typePath || indexPath == endLabelPath))
+        if (deadlineSwitch.isOn && (indexPath == typePath || indexPath == endPath))
         {
             return 0.0
         }
@@ -480,11 +477,11 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         courseLabel.text = courses[row].identifier
     }
     
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
     
     
     //change texfield to red to alert user with missing or incorrect information.
