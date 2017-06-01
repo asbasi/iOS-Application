@@ -437,23 +437,14 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                // Remove any pending notifications for the event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
-                
-                if let id = event.calEventID {
-                    deleteEventFromCalendar(withID: id)
-                }
-                
                 try! self.realm.write {
                     
                     self.events[index.section].remove(at: index.row)
                     if self.events[index.section].count == 0 {
                         self.events.remove(at: index.section)
                     }
-                    
-                    event.durationStudied = 0.0
 
-                    self.realm.delete(event)
+                    event.delete(from: self.realm)
                 }
                 
                 //self.animatedRemove(at: index, type: "delete")

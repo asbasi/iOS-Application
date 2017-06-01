@@ -180,7 +180,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let deleteAction = UIAlertAction(title: "Delete Course", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
 
-                course.delete(realm: self.realm)
+                course.delete(from: self.realm)
                 self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RealmSwift
 
 class Storage {
     dynamic var value: String = ""

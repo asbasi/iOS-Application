@@ -314,20 +314,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                if let id = event.calEventID {
-                    deleteEventFromCalendar(withID: id)
-                }
-                
-                // Remove any pending notifications for the event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
-                
                 try! self.realm.write {
-                    let event: Event = self.events[index.row]
-                    
                     self.events.remove(at: index.row)
-                    
-                    self.realm.delete(event)
                 }
+                
+                event.delete(from: self.realm)
                 
                 self.events = self.getEventsForDate(self.selectedDate)
                 

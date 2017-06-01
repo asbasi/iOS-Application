@@ -23,7 +23,7 @@ class Course: Object {
         return []
     }
     
-    func delete(realm: Realm) {
+    func delete(from realm: Realm) {
         try! realm.write {
             
             // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
@@ -31,16 +31,8 @@ class Course: Object {
             let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
             
             for event in eventsToDelete {
-                
-                // Remove any pending notifications for the event.
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.reminderID])
-                
-                if let id = event.calEventID {
-                    deleteEventFromCalendar(withID: id)
-                }
+                event.delete(from: realm)
             }
-            
-            realm.delete(eventsToDelete)
             
             let schedulesToDelete = realm.objects(Schedule.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
             realm.delete(schedulesToDelete)

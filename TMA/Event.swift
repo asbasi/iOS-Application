@@ -8,7 +8,7 @@
 
 import Foundation
 import RealmSwift
-
+import UserNotifications
 
 class Event: Item {
     dynamic var checked: Bool = false
@@ -16,4 +16,16 @@ class Event: Item {
     dynamic var reminderDate: Date? = nil
     dynamic var calEventID: String? = nil
     dynamic var durationStudied: Float = 0.0 //hours
+    
+    func delete(from realm: Realm) {
+        
+        // Remove any pending notifications for the event.
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.reminderID])
+        
+        if let id = self.calEventID {
+            deleteEventFromCalendar(withID: id)
+        }
+        
+        realm.delete(self)
+    }
 }

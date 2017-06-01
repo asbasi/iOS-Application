@@ -155,7 +155,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             let deleteAction = UIAlertAction(title: "Delete Quarter", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                quarter.delete(realm: self.realm)
+                quarter.delete(from: self.realm)
                 self.tableView.reloadData()
             })
             optionMenu.addAction(deleteAction);
