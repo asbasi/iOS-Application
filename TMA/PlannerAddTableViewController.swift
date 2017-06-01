@@ -482,17 +482,4 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         textField.resignFirstResponder()
         return true
     }
-    
-    
-    //change texfield to red to alert user with missing or incorrect information.
-    func changeTextFieldToRed(indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
-    }
-    
-    //change texfield to white to indicate correct input.
-    func changeTextFieldToWhite(indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
-        }
-    }
 }

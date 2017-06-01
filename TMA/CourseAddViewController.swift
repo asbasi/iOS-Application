@@ -86,6 +86,12 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBAction func cancel(_ sender: Any) {
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
+        
+        // Get rid of any saved schedules for this course.
+        if editOrAdd == "add" {
+            let schedulesToDelete = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
+            self.realm.delete(schedulesToDelete)
+        }
     }
     
     private func isDuplicate() -> Bool {
@@ -130,6 +136,13 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                     return
                 }
                 
+                // Note: At this point the identifier for the course is a massive uuid string that was assigned temporarily.
+                let schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
+                
+                for schedule in schedules {
+                    Helpers.exportSchedule(schedule: schedule)
+                }
+                
                 course!.title = courseTitleTextField.text!
                 course!.identifier = identifierTextField.text!
                 course!.instructor = instructorTextField.text!
@@ -139,8 +152,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 
                 Helpers.DB_insert(obj: course!)
             }
-            
-            if(editOrAdd=="edit"){
+            else if(editOrAdd=="edit"){
                 try! self.realm.write {
                     
                     if course!.title != courseTitleTextField.text! {
@@ -257,17 +269,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         return true
     }
     
-    //change texfield to red to alert user with missing or incorrect information.
-    func changeTextFieldToRed(indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.init(red: 0.94, green: 0.638, blue: 0.638, alpha: 1.0)
-    }
-    
-    //change texfield to white to indicate correct input.
-    func changeTextFieldToWhite(indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)!.backgroundColor != UIColor.white {
-            tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
-        }
-    }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -278,6 +279,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             
             let courseScheduleViewController = segue.destination as! ScheduleMainTableViewController
             courseScheduleViewController.course = self.course
+            courseScheduleViewController.mode = self.editOrAdd
         }
 
         

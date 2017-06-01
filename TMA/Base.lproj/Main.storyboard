@@ -294,6 +294,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="vbP-RD-zN0" kind="show" identifier="editSchedule" id="iDf-Wu-RFj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K1m-0p-cbC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -323,6 +326,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="titleChanged:" destination="vbP-RD-zN0" eventType="valueChanged" id="KN7-C5-yJF"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -345,11 +351,11 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="5/27/17" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0IH-SY-EtP">
+                                                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="5/27/17" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0IH-SY-EtP">
                                                     <rect key="frame" x="181" y="6" width="186" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -363,7 +369,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="nMR-vo-QHb">
-                                                    <rect key="frame" x="-5" y="0.0" width="373" height="216"/>
+                                                    <rect key="frame" x="2" y="-1" width="373" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="517629661.00039297">
                                                         <!--2017-05-28 02:01:01 +0000-->
@@ -386,11 +392,11 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="5/27/17" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-y5-Pxg">
+                                                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="5/27/17" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-y5-Pxg">
                                                     <rect key="frame" x="181" y="7" width="186" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -404,7 +410,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ryc-bN-m86">
-                                                    <rect key="frame" x="-5" y="0.0" width="373" height="216"/>
+                                                    <rect key="frame" x="1" y="0.0" width="373" height="216"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="517629666.05002999">
                                                         <!--2017-05-28 02:01:06 +0000-->
@@ -534,7 +540,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="M, T, W, R, F, S" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDL-Qe-BlK">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDL-Qe-BlK">
                                                     <rect key="frame" x="160" y="11" width="174" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -558,6 +564,19 @@
                     <navigationItem key="navigationItem" title="Add Schedule" id="3OT-be-Ngn">
                         <barButtonItem key="rightBarButtonItem" title="Save" systemItem="save" id="HFL-Er-mUd"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="_endDateCalendar" destination="Zg4-Uj-wXX" id="ghe-pp-mGy"/>
+                        <outlet property="_endDateTextField" destination="c7g-1M-DIM" id="fBZ-qa-9ZZ"/>
+                        <outlet property="_endTimePicker" destination="ryc-bN-m86" id="1iG-Hv-0ax"/>
+                        <outlet property="_endTimeTextField" destination="Wow-y5-Pxg" id="9KO-O3-ZxR"/>
+                        <outlet property="_oneDayToggle" destination="Ym2-2Q-4WM" id="zEq-km-NQs"/>
+                        <outlet property="_startDateCalendar" destination="rJN-6x-Mmu" id="Egp-S4-SN9"/>
+                        <outlet property="_startDateTextField" destination="KYQ-hY-mVj" id="Ssl-Xj-ELV"/>
+                        <outlet property="_startTimePicker" destination="nMR-vo-QHb" id="ZUj-0k-M4Q"/>
+                        <outlet property="_startTimeTextField" destination="0IH-SY-EtP" id="zEu-SH-0ND"/>
+                        <outlet property="_titleTextField" destination="eGw-wa-EbT" id="sqG-Fh-A2s"/>
+                        <outlet property="_weekdaysTextField" destination="GDL-Qe-BlK" id="om0-Yc-aKJ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Nu-np-XTO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1051,7 +1070,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Support" id="NeC-OC-1r4">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="R0E-Gm-1HW">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="R0E-Gm-1HW">
                                         <rect key="frame" x="0.0" y="344" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R0E-Gm-1HW" id="1OT-8C-UB1">
@@ -1065,9 +1084,9 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="If You're Reading This It's Too Late" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxf-jk-FxO">
-                                                    <rect key="frame" x="44" y="10" width="277" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="support@ibackontrack.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxf-jk-FxO">
+                                                    <rect key="frame" x="88" y="11" width="258" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -1107,7 +1126,7 @@
                             <tableViewSection headerTitle="Login" footerTitle="If desired, enter your student login in order for the application to auto-populate your courses." id="Fs3-Bk-oV1">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="E0l-D9-9pn">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E0l-D9-9pn" id="WQy-7l-fHK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -1134,7 +1153,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5Se-cd-nq4">
-                                        <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="100" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Se-cd-nq4" id="1BQ-cJ-GZR">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -1554,7 +1573,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9F-FZ-lag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3826" y="3033"/>
+            <point key="canvasLocation" x="3825" y="3033"/>
         </scene>
         <!--Acknowledgements-->
         <scene sceneID="i1b-iO-OVM">
@@ -2582,10 +2601,11 @@
         <image name="settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hU1-k3-hHN"/>
         <segue reference="vpM-11-6Pv"/>
+        <segue reference="hU1-k3-hHN"/>
         <segue reference="Vnq-rb-DX9"/>
         <segue reference="He4-fe-9db"/>
+        <segue reference="iDf-Wu-RFj"/>
         <segue reference="P94-6A-Aar"/>
         <segue reference="GBk-Mu-z6t"/>
     </inferredMetricsTieBreakers>

@@ -20,12 +20,18 @@ class ScheduleMainTableViewController: UITableViewController {
 
     var course: Course!
     var schedules: Results<Schedule>!
+    var mode: String! // "add" or "edit"
+    var scheduleToEdit: Schedule?
     
     let realm = try! Realm()
     
     func refresh() {
-        schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course.identifier!)'")
+        schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course.identifier!)' AND course.quarter.title = '\(course.quarter.title!)'")
         checkCalendarAuthorizationStatus()
+        
+        if mode == "edit" {
+            
+        }
         
         self.tableView.reloadData()
     }
@@ -93,6 +99,12 @@ class ScheduleMainTableViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        scheduleToEdit = schedules[indexPath.row]
+        
+        performSegue(withIdentifier: "editSchedule", sender: nil)
+    }
+    
     /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -112,9 +124,15 @@ class ScheduleMainTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
+        let scheduleAddTableViewController = segue.destination as! ScheduleAddTableViewController
+        scheduleAddTableViewController.course = self.course
+        
         if segue.identifier! == "addSchedule" {
-            let scheduleAddTableViewController = segue.destination as! ScheduleAddTableViewController
-            scheduleAddTableViewController.course = self.course
+            scheduleAddTableViewController.mode = "add"
+        }
+        else if segue.identifier! == "editSchedule" {
+            scheduleAddTableViewController.mode = "edit"
+            scheduleAddTableViewController.schedule = scheduleToEdit
         }
     }
 
