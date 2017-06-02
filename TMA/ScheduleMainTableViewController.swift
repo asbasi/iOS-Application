@@ -29,10 +29,6 @@ class ScheduleMainTableViewController: UITableViewController {
         schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course.identifier!)' AND course.quarter.title = '\(course.quarter.title!)'")
         checkCalendarAuthorizationStatus()
         
-        if mode == "edit" {
-            
-        }
-        
         self.tableView.reloadData()
     }
     
@@ -94,8 +90,8 @@ class ScheduleMainTableViewController: UITableViewController {
             if let dictFromJSON = decoded as? [String: NSObject] {
                 cell.days.text = dictFromJSON["week_days"] as? String
                 
-                let start_time_raw = Helpers.parseTime(from: dictFromJSON["begin_time"] as! String)
-                let end_time_raw = Helpers.parseTime(from: dictFromJSON["end_time"] as! String)
+                let start_time_raw = Schedule.parseTime(from: dictFromJSON["begin_time"] as! String)
+                let end_time_raw = Schedule.parseTime(from: dictFromJSON["end_time"] as! String)
                 
                 let start = Helpers.set_time(mydate: Date(), h: start_time_raw.hour, m: start_time_raw.min)
                 let end = Helpers.set_time(mydate: Date(), h: end_time_raw.hour, m: end_time_raw.min)
@@ -149,9 +145,11 @@ class ScheduleMainTableViewController: UITableViewController {
         
         if segue.identifier! == "addSchedule" {
             scheduleAddTableViewController.mode = "add"
+            scheduleAddTableViewController.course = self.course
         }
         else if segue.identifier! == "editSchedule" {
             scheduleAddTableViewController.mode = "edit"
+            scheduleAddTableViewController.course = self.course
             scheduleAddTableViewController.schedule = scheduleToEdit
         }
     }

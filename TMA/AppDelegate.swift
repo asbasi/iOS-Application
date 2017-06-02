@@ -37,8 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             requestAccessToCalendar()
         }
         
-        
-        
         // Sets up the theme of the app.
         let theme = ThemeManager.currentTheme()
         ThemeManager.applyTheme(theme: theme)

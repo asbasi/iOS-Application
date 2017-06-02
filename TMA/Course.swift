@@ -24,19 +24,19 @@ class Course: Object {
     }
     
     func delete(from realm: Realm) {
-        try! realm.write {
-            
-            // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
+        // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
+        let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
+        
+        for event in eventsToDelete {
+            event.delete(from: realm)
+        }
+        
+        let schedulesToDelete = realm.objects(Schedule.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
+        for schedule in schedulesToDelete {
+            schedule.delete(from: realm)
+        }
 
-            let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
-            
-            for event in eventsToDelete {
-                event.delete(from: realm)
-            }
-            
-            let schedulesToDelete = realm.objects(Schedule.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
-            realm.delete(schedulesToDelete)
-            
+        try! realm.write {
             realm.delete(self)
         }
     }

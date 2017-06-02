@@ -140,7 +140,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 let schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
                 
                 for schedule in schedules {
-                    Helpers.exportSchedule(schedule: schedule)
+                    schedule.export()
                 }
                 
                 course!.title = courseTitleTextField.text!

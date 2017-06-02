@@ -58,7 +58,7 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
 
     /************************************** Helpers **************************************/
     
-    
+
     /************************************** Actions **************************************/
     
 
@@ -86,7 +86,6 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
     
     @IBAction func weekdaysChanged(_ sender: Any) {
         if (_weekdaysTextField.text?.isEmpty)! == false {
-            _weekdaysTextField.textColor = UIColor.black
             changeTextFieldToWhite(indexPath: weekdaysTextPath)
         }
         else {
@@ -116,11 +115,32 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
             self.present(alert, animated: true, completion: nil)
         }
         else {
+            // Check the times.
+            let start: Date = timeFormatter.date(from: _startTimeTextField.text!)!
+            let end: Date = timeFormatter.date(from: _endTimeTextField.text!)!
+            
+            if(start >= end) {
+                let alert = UIAlertController(title: "Alert", message: "Invalid start and end times. Ensure that the start time is before the end time.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+                
+                changeTextFieldToRed(indexPath: startTimeTextPath)
+                changeTextFieldToRed(indexPath: endTimeTextPath)
+                
+                return
+            }
+            
             if mode == "add" {
+                // Create the schedule.
+                
                 
             }
             else if mode == "edit" {
+                // Set the new values.
                 
+                // Refresh the schedule in case there was changes.
+                schedule.refresh(in: self.realm)
             }
         }
     }
@@ -166,8 +186,24 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
                 let decoded = try JSONSerialization.jsonObject(with: schedule!.dates, options: [])
                 
                 self.datesDictionary = decoded as? [String: NSObject]
-                print("Dates dictionary")
-                print("self.datesDictionary")
+                
+                // Set the start and end times.
+                
+                
+                // Set the start and end dates.
+                let start_date = Helpers.get_date_from_string(strDate: datesDictionary["start_date"] as! String)
+                let end_date = Helpers.get_date_from_string(strDate: datesDictionary["end_date"] as! String)
+                
+                _startDateTextField.text = dateFormatter.string(from: start_date)
+                _endDateTextField.text = dateFormatter.string(from: end_date)
+
+                _startDateCalendar.select(start_date)
+                _endDateCalendar.select(end_date)
+                
+                
+                // Set the weekdays.
+                _weekdaysTextField.text = datesDictionary["week_days"] as? String
+    
             }
             catch {
                 print(error.localizedDescription)
@@ -192,12 +228,10 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         if calendar == _startDateCalendar {
-            _startDateTextField.textColor = UIColor.black
             _startDateTextField.text = dateFormatter.string(from: date)
             changeTextFieldToWhite(indexPath: startDayTextPath)
         }
         else if calendar == _endDateCalendar {
-            _endDateTextField.textColor = UIColor.black
             _endDateTextField.text = dateFormatter.string(from: date)
             changeTextFieldToWhite(indexPath: endDayTextPath)
         }
@@ -238,7 +272,6 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
             
             if (_startTimeTextField.text?.isEmpty)! {
                 _startTimeTextField.text = timeFormatter.string(from: _startTimePicker.date)
-                _startTimeTextField.textColor = UIColor.black
                 changeTextFieldToWhite(indexPath: indexPath)
             }
             
@@ -254,7 +287,6 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
             if (_endTimeTextField.text?.isEmpty)! {
                 _endTimePicker.date = _startTimePicker.date.addingTimeInterval(900)
                 _endTimeTextField.text = timeFormatter.string(from: _endTimePicker.date)
-                _endTimeTextField.textColor = UIColor.black
                 changeTextFieldToWhite(indexPath: indexPath)
             }
             

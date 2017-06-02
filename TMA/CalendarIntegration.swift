@@ -22,8 +22,8 @@ func checkCalendarAuthorizationStatus() {
         fallthrough
     case EKAuthorizationStatus.authorized:
         verifyCalendar()
-        exportEvents(toCalendar: getMainCalendar()!.calendarIdentifier)
         sync()
+        exportEvents(toCalendar: getMainCalendar()!.calendarIdentifier)
     case EKAuthorizationStatus.denied:
         break
     default:
@@ -96,9 +96,10 @@ func exportEvents(toCalendar calendar: String)
             if let _ = eventStore.event(withIdentifier: identifier) {
                 editEventInCalendar(event: event, toCalendar: calendar) // Restore the event to what it was in-app.
             }
-            else if (event.type != SCHEDULE_EVENT){ // Event was deleted from calendar (and isn't a schedule event).
+            else { // Create the event again.
+                let calEventID = addEventToCalendar(event: event, toCalendar: calendar)
                 try! realm.write {
-                    realm.delete(event)
+                    event.calEventID = calEventID
                 }
             }
         }

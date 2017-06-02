@@ -48,16 +48,26 @@ class Helpers {
     }
     
     static func get_date_from_string(strDate: String) -> Date {
-        let formatter = DateFormatter()
-        
         let a = strDate.components(separatedBy: " ")
         let b = a[0]+" "+a[1]+" "+a[2]
         
+        let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
         formatter.dateFormat = "MMM, dd yyyy"
         
         let x = formatter.date(from: b)
+        
         return x!
+    }
+    
+    static func get_string_from_date(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "US_en")
+        formatter.dateFormat = "MMM, dd yyyy"
+        
+        let strDate = formatter.string(from: date) + " 00:00:00"
+        
+        return strDate
     }
     
     static func set_time(mydate: Date, h: Int, m: Int) -> Date{
@@ -135,6 +145,7 @@ class Helpers {
                     eventJSON.removeValue(forKey: "calEventID")
                     eventJSON.removeValue(forKey: "reminderDate")
                     eventJSON.removeValue(forKey: "reminderID")
+                    eventJSON.removeValue(forKey: "schedule")
                     eventsJSON.append(eventJSON)
                 }
                 
@@ -151,119 +162,6 @@ class Helpers {
         Alamofire.request("https://ibackontrack.com/\(action)?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseJSON (completionHandler: responseHandler)
     }
-    
-    
-    /********************************* Populate the Class Schedule into the Application and Calendar. ******************/
-    private static func getWeekDaysInEnglish() -> [String] {
-        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-        calendar.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
-        return calendar.weekdaySymbols
-    }
-    
-    enum SearchDirection {
-        case Next
-        case Previous
-        
-        var calendarOptions: NSCalendar.Options {
-            switch self {
-            case .Next:
-                return .matchNextTime
-            case .Previous:
-                return [.searchBackwards, .matchNextTime]
-            }
-        }
-    }
-    
-    private static func getDay(direction: SearchDirection, dayName: String, fromDate: Date) -> NSDate {
-        let weekdaysName = Helpers.getWeekDaysInEnglish()
-        
-        assert(weekdaysName.contains(dayName), "weekday symbol should be in form \(weekdaysName)")
-        
-        let nextWeekDayIndex = weekdaysName.index(of: dayName)! + 1 // weekday is in form 1 ... 7 where as index is 0 ... 6
-        
-        
-        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-        
-        let nextDateComponent = NSDateComponents()
-        nextDateComponent.weekday = nextWeekDayIndex
-        
-        
-        let date = calendar.nextDate(after: fromDate, matching: nextDateComponent as DateComponents, options: direction.calendarOptions)
-        return date! as NSDate
-    }
-    
-    static func parseTime(from string: String) -> (hour: Int, min: Int) {
-        
-        ////////////////////////////////////////////////////////////////////////
-        ///////////////////just parsing the begin_time and end_time/////////////
-        ///////////////////into 2 ints each hrs & min///////////////////////////
-        ////////////////////////////////////////////////////////////////////////
-        
-        let s_date = string.characters
-        let sh = String(Array(s_date)[0])+String(Array(s_date)[1])
-        let sm = String(Array(s_date)[2])+String(Array(s_date)[3])
-        
-        return (Int(sh)!, Int(sm)!)
-    }
-    
-    static func exportSchedule(schedule: Schedule) {
-        do {
-            let decoded = try JSONSerialization.jsonObject(with: schedule.dates, options: [])
-            
-            if let dictFromJSON = decoded as? [String: NSObject] {
-                
-                if (dictFromJSON["week_days"] as! String) == "" {
-                    return
-                }
-                
-                let week_days = (dictFromJSON["week_days"] as! String).components(separatedBy: ",")
-
-                let week_days_translation = ["M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday"]
-                for week_day in week_days {
-                
-                    let start_time = parseTime(from: dictFromJSON["begin_time"] as! String)
-                    let end_time = parseTime(from: dictFromJSON["end_time"] as! String)
-                    
-                    let currentClassStartDate = Helpers.get_date_from_string(strDate: dictFromJSON["start_date"]! as! String)
-                    let currentClassEndDate = Helpers.get_date_from_string(strDate: dictFromJSON["end_date"]! as! String)
-                    
-                    var the_date = currentClassStartDate
-                    the_date = Calendar.current.date(byAdding: .day, value: -1, to: the_date)!
-                    //subtract 1 day because self.get() starts from the day after
-                    while the_date <= currentClassEndDate {
-                        the_date = Helpers.getDay(direction: .Next, dayName: week_days_translation[week_day]!, fromDate: the_date) as Date
-                        
-                        if(the_date > currentClassEndDate){
-                            break;
-                        }
-                        
-                        the_date = Helpers.set_time(mydate: the_date as Date, h: start_time.hour, m: start_time.min)
-                        
-                        // add to realm
-                        let ev = Event()
-                        ev.title = schedule.title
-                        ev.date = the_date
-                        ev.endDate = Helpers.set_time(mydate: the_date as Date, h: end_time.hour, m: end_time.min)
-                        ev.course = schedule.course
-                        ev.duration = Date.getDifference(initial: ev.date, final: ev.endDate)
-                        ev.type = SCHEDULE_EVENT
-                        ev.reminderID = UUID().uuidString
-                        
-                        Helpers.DB_insert(obj: ev)
-                        
-                        //increment 1 day so we dont get the same date next time
-                        the_date = Calendar.current.date(byAdding: .day, value: 1, to: the_date)!
-                    }
-                    
-                    checkCalendarAuthorizationStatus()
-                }
-            }
-        }
-        catch {
-            print(error.localizedDescription)
-        }
-    }
-    
 
     /********************************* Populate the Application for Testing and Demo ******************/
     static func populateData()
@@ -320,7 +218,6 @@ class Helpers {
                 event!.durationStudied = 2.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -343,7 +240,6 @@ class Helpers {
             event!.durationStudied = 4.5
             event!.checked = true
             
-            event!.reminderID = UUID().uuidString
             if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                 
                 event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -367,7 +263,6 @@ class Helpers {
                 event!.durationStudied = 3.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -402,7 +297,6 @@ class Helpers {
                 event!.durationStudied = 3.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -427,7 +321,6 @@ class Helpers {
                 event!.durationStudied = 3.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -473,7 +366,6 @@ class Helpers {
                 event!.durationStudied = 4.5
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -498,7 +390,6 @@ class Helpers {
                 event!.durationStudied = 3.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -532,7 +423,6 @@ class Helpers {
                 event!.durationStudied = 4.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)
@@ -557,7 +447,6 @@ class Helpers {
                 event!.durationStudied = 3.0
                 event!.checked = true
                 
-                event!.reminderID = UUID().uuidString
                 if let calendarIdentifier = UserDefaults.standard.value(forKey: calendarKey) {
                     
                     event!.calEventID = addEventToCalendar(event: event!, toCalendar: calendarIdentifier as! String)

@@ -12,10 +12,11 @@ import UserNotifications
 
 class Event: Item {
     dynamic var checked: Bool = false
-    dynamic var reminderID: String!
+    dynamic var reminderID: String = UUID().uuidString
     dynamic var reminderDate: Date? = nil
     dynamic var calEventID: String? = nil
     dynamic var durationStudied: Float = 0.0 //hours
+    dynamic var schedule: Schedule? // If the event is related to a particular schedule.
     
     func delete(from realm: Realm) {
         

@@ -181,7 +181,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 event.title = titleTextField.text
                 event.date = dateFormatter.date(from: dateLabel.text!)
                 event.course = course
-                event.reminderID = UUID().uuidString
                 
                 if deadlineSwitch.isOn {
                     event.endDate = event.date
