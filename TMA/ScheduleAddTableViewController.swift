@@ -10,7 +10,7 @@ import UIKit
 import FSCalendar
 import RealmSwift
 
-class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance, UITextFieldDelegate {
 
     /************************************** Global Variables **************************************/
 
@@ -138,6 +138,9 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
         dateFormatter.locale = Locale(identifier: "US_en")
         dateFormatter.dateFormat = "M/d/yy"
         
+        // TextField Setup.
+        _titleTextField.delegate = self
+        
         // Picker Setup.
         _startTimePicker.isHidden = true
         _endTimePicker.isHidden = true
@@ -179,6 +182,9 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
                 present(alert, animated: true, completion: nil)
             }
         }
+        
+        // Ensure that the keyboard disappears when the user taps elsewhere.
+        self.hideKeyboardWhenTapped()
     }
 
 
@@ -195,6 +201,13 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
             _endDateTextField.text = dateFormatter.string(from: date)
             changeTextFieldToWhite(indexPath: endDayTextPath)
         }
+    }
+
+    /************************************** Text Field Functions **************************************/
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     /************************************** Table View Functions **************************************/

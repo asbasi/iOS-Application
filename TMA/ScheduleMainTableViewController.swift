@@ -39,6 +39,8 @@ class ScheduleMainTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        refresh()
+    
         // set observer for UIApplicationWillEnterForeground to refresh the app when app wakes up.
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
     }
@@ -51,7 +53,25 @@ class ScheduleMainTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if self.schedules.count > 0 {
+            self.tableView.backgroundView = nil
+            self.tableView.separatorStyle = .singleLine
+            return 1
+        }
+
+        let rect = CGRect(x: 0,
+        y: 0,
+        width: self.tableView.bounds.size.width,
+        height: self.tableView.bounds.size.height)
+        let noDataLabel: UILabel = UILabel(frame: rect)
+
+        noDataLabel.text = "No Schedules currently created for this course"
+        noDataLabel.textColor = UIColor.gray
+        noDataLabel.textAlignment = NSTextAlignment.center
+        self.tableView.backgroundView = noDataLabel
+        self.tableView.separatorStyle = .none
+
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
