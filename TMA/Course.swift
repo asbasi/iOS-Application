@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 import UserNotifications
 
+/* Class contain all the variables related to a object.*/
 class Course: Object {
     dynamic var title: String!
     dynamic var identifier: String!

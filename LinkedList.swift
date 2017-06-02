@@ -51,7 +51,7 @@ public final class LinkedList<T: Equatable> {
         }
     }
     
-    /// The number of elements in the list at any given time
+    // The number of elements in the list at any given time
     public private(set) var count: Int = 0
     
     /// Wether or not the list is empty. Returns `true` when

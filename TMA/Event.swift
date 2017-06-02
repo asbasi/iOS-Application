@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 import UserNotifications
 
+/* Class contain all the variables related to an Event.*/
 class Event: Item {
     dynamic var checked: Bool = false
     dynamic var reminderID: String = UUID().uuidString

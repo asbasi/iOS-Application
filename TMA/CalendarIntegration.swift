@@ -14,6 +14,7 @@ import UIKit
 let realm = try! Realm()
 let eventStore = EKEventStore()
 
+/// Checks if the Calender authirized ot not
 func checkCalendarAuthorizationStatus() {
     let status = EKEventStore.authorizationStatus(for: .event)
     
@@ -152,6 +153,7 @@ func requestAccessToCalendar() {
     })
 }
 
+/// Get the main claneder and return it
 func getMainCalendar() -> EKCalendar? {
     if let identifier = UserDefaults.standard.value(forKey: calendarKey) {
         
@@ -161,6 +163,7 @@ func getMainCalendar() -> EKCalendar? {
     return nil
 }
 
+/// Get a desired calender and return it
 func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
     let calendars = eventStore.calendars(for: .event)
     for calendar in calendars {
@@ -171,6 +174,7 @@ func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
     
     return nil
 }
+
 /// Creates the in-app calendar, if iCloud is configured use that as the source if not use the local source.
 func createCalendar(withTitle title: String) -> String? {
     var identifier: String?
@@ -271,6 +275,7 @@ func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> 
     return identifier
 }
 
+/// Edit the choosen events in the calendar
 func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
     
     if let identifier = event.calEventID {
@@ -300,6 +305,7 @@ func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
     }
 }
 
+/// Delete the choosen events in the calendar
 func deleteEventFromCalendar(withID eventID: String) {
     
     var flag: Bool = false
@@ -330,7 +336,7 @@ func deleteEventFromCalendar(withID eventID: String) {
     }
 }
 
-
+/// Get calendar events
 func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]?) -> [EKEvent] {
     
     var events: [EKEvent] = []

@@ -13,6 +13,7 @@ import Alamofire
 
 let colorMappings: [String: UIColor] = ["Red": UIColor.red, "Yellow": UIColor.yellow, "Green": UIColor.green, "Blue": UIColor.blue, "Purple": UIColor.purple, "Cyan": UIColor.cyan, "Brown": UIColor.brown, "Black": UIColor.black]
 
+/* Class that contain all the helper functions that's been used through all application*/
 class Helpers {
     static let realm = try! Realm()
     
@@ -21,7 +22,7 @@ class Helpers {
             self.realm.add(obj)
         }
     }
-    
+    /// Add the hour studied to the total hours
     static func add_duration_studied(for course: Course, in quarter: Quarter) -> Float {
         var sum: Float = 0.0
         let events = self.realm.objects(Event.self).filter("course.title = '\(course.title!)' AND course.quarter.title = '\(quarter.title!)'")
@@ -46,7 +47,7 @@ class Helpers {
         }
         return sum
     }
-    
+    /// Convert a string to a date and return the date
     static func get_date_from_string(strDate: String) -> Date {
         let a = strDate.components(separatedBy: " ")
         let b = a[0]+" "+a[1]+" "+a[2]
@@ -59,7 +60,7 @@ class Helpers {
         
         return x!
     }
-    
+    /// Convert a date to a string and return the string
     static func get_string_from_date(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "US_en")
@@ -69,7 +70,7 @@ class Helpers {
         
         return strDate
     }
-    
+    /// Set the time to the current time
     static func set_time(mydate: Date, h: Int, m: Int) -> Date{
         let gregorian = Calendar(identifier: .gregorian)
         var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: mydate)
@@ -79,7 +80,7 @@ class Helpers {
         
         return gregorian.date(from: components)!
     }
-    
+    /// Get the 24 hours representation and return in as a string
     static func get_24hr_representation(from strDate: String) -> String {
         // Convert to a date.
         let dateFormatter = DateFormatter()
@@ -95,7 +96,7 @@ class Helpers {
         
         return date24_usable
     }
-    
+    /// Get the Log alert for a specific event 
     static func getLogAlert(event: Event, realm: Realm) -> UIAlertController {
         let alert = UIAlertController(title: "Enter Time", message: "How much time (in hours and minutes) did you spend studying?", preferredStyle: .alert)
         
@@ -134,6 +135,7 @@ class Helpers {
         return alert
     }
     
+    /// Export the generated date to the server
     static func export_data_to_server(action: String, responseHandler: @escaping (DataResponse<Any>) -> Void) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
@@ -180,6 +182,7 @@ class Helpers {
     }
 
     /********************************* Populate the Application for Testing and Demo ******************/
+    /// Populates dummy date for deguging purposes
     static func populateData()
     {
         let dateFormatter: DateFormatter = DateFormatter()

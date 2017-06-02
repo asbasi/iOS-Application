@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+/* Class contain all the variables related to a schedule.*/
 class Schedule: Object{
     dynamic var title: String!
     dynamic var dates: Data! // Json encoded string representing the [String: NSObject] dictionary of dates.

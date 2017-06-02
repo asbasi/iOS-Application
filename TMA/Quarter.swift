@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+/* Class contain all the variables related to a quarter.*/
 class Quarter: Object {
     dynamic var title: String!
     dynamic var startDate: Date!
