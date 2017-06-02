@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Class containing all code related to the Tutorial page
 class TutorialPageViewController: UIPageViewController {
     
     weak var tutorialDelegate: TutorialPageViewControllerDelegate?
@@ -36,7 +37,7 @@ class TutorialPageViewController: UIPageViewController {
     }
     
     /**
-     Scrolls to the next view controller.
+     * Scrolls to the next view controller.
      */
     func scrollToNextViewController() {
         if let visibleViewController = viewControllers?.first,
@@ -47,10 +48,9 @@ class TutorialPageViewController: UIPageViewController {
     }
     
     /**
-     Scrolls to the view controller at the given index. Automatically calculates
-     the direction.
-     
-     - parameter newIndex: the new index to scroll to
+     * Scrolls to the view controller at the given index. Automatically calculates
+     * the direction.
+     * parameter newIndex: the new index to scroll to
      */
     func scrollToViewController(index newIndex: Int) {
         if let firstViewController = viewControllers?.first,
@@ -67,9 +67,8 @@ class TutorialPageViewController: UIPageViewController {
     }
     
     /**
-     Scrolls to the given 'viewController' page.
-     
-     - parameter viewController: the view controller to show.
+     * Scrolls to the given 'viewController' page.
+     * parameter viewController: the view controller to show.
      */
     fileprivate func scrollToViewController(_ viewController: UIViewController,
                                             direction: UIPageViewControllerNavigationDirection = .forward) {
@@ -85,7 +84,7 @@ class TutorialPageViewController: UIPageViewController {
     }
     
     /**
-     Notifies '_tutorialDelegate' that the current page index was updated.
+     * Notifies '_tutorialDelegate' that the current page index was updated.
      */
     fileprivate func notifyTutorialDelegateOfNewIndex() {
         if let firstViewController = viewControllers?.first,
@@ -160,19 +159,17 @@ extension TutorialPageViewController: UIPageViewControllerDelegate {
 protocol TutorialPageViewControllerDelegate: class {
     
     /**
-     Called when the number of pages is updated.
-     
-     - parameter tutorialPageViewController: the TutorialPageViewController instance
-     - parameter count: the total number of pages.
+     * Called when the number of pages is updated.
+     * parameter tutorialPageViewController: the TutorialPageViewController instance
+     * parameter count: the total number of pages.
      */
     func tutorialPageViewController(_ tutorialPageViewController: TutorialPageViewController,
                                     didUpdatePageCount count: Int)
     
     /**
-     Called when the current index is updated.
-     
-     - parameter tutorialPageViewController: the TutorialPageViewController instance
-     - parameter index: the index of the currently visible page.
+     * Called when the current index is updated.
+     * parameter tutorialPageViewController: the TutorialPageViewController instance
+     * parameter index: the index of the currently visible page.
      */
     func tutorialPageViewController(_ tutorialPageViewController: TutorialPageViewController,
                                     didUpdatePageIndex index: Int)

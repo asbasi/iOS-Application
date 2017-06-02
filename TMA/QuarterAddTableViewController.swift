@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 import FSCalendar
-
+/// This Class represents the tableViewController for Quarter Add/Edit page
 class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITextFieldDelegate {
 
     let realm = try! Realm()
@@ -35,6 +35,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     
     @IBOutlet weak var pageTitle: UINavigationItem!
     
+    /// Apply the Quarter Title change if the field is not empty.
     @IBAction func quarterTitleChanged(_ sender: Any) {
         if ((quarterTitle.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
@@ -68,7 +69,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         self.dismiss(animated: true, completion: nil)
     }
 
-    // Checks if the quarter title is a duplicate. Returns false if it is.
+    /// Checks if the quarter title is a duplicate. Returns false if it does.
     private func isDuplicate() -> Bool {
         // Check to make sure that this course has a different title than all others.
         let quarters = self.realm.objects(Quarter.self).filter("title = '\(quarterTitle.text!)'")
@@ -81,6 +82,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
         return false
     }
     
+    /// Save all the entries if there is no missing requirement information
     @IBAction func save(_ sender: Any) {
         
         if (self.quarterTitle.text?.isEmpty)! {
@@ -262,6 +264,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     
     /******************************* Calendar Functions *******************************/
     
+    ///
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition){
         if calendar == startDatePicker {
             self.startDate.text = dateFormatter.string(from: date)

@@ -10,6 +10,7 @@ import RealmSwift
 import UserNotifications
 import EventKit
 
+/// This class represents the Add/Edit table view controller
 class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     let realm = try! Realm()
@@ -46,6 +47,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
     @IBOutlet weak var reminderLabel: UILabel!
     @IBOutlet weak var reminderPicker: UIDatePicker!
     
+    /// Specifies if it is a hard deadline or an event using a toggle
     @IBAction func toggledDuration(_ sender: Any) {
         
         // Get rid of the endDatePicker.
@@ -65,14 +67,17 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         })
     }
     
+    /// set the date specified in the datelabel in the Add/Edit planner page
     @IBAction func setDate(_ sender: UIDatePicker) {
         dateLabel.text = dateFormatter.string(from: datePicker.date)
     }
     
+    /// set the end date specified in the end datelabel in the Add/Edit planner page
     @IBAction func setEndDate(_ sender: UIDatePicker) {
         endDateLabel.text = dateFormatter.string(from: endDatePicker.date)
     }
     
+    /// determine if the reminder is set or not for the event
     @IBAction func toggleReminderPicker(_ sender: Any) {
         reminderSwitch.isOn = !reminderSwitch.isOn
         
@@ -95,32 +100,33 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         })
     }
     
+    /// set the reminder for the event
     @IBAction func setReminder(_ sender: UIDatePicker) {
         if !reminderPicker.isHidden {
             reminderLabel.text = dateFormatter.string(from: reminderPicker.date)
         }
     }
     
-    //change textfiled to white when it's not empty
+    /// change textfiled to white when it's not empty
     @IBAction func eventTitleChanged(_ sender: Any) {
         if ((titleTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
         }
         
     }
-    
+    /// change textLabel to white when it's not empty
     @IBAction func courseLabelChanged(_ sender: Any) {
         if ((courseLabel.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: coursePath)
         }
     }
-    
+    /// change dateLabel to white when it's not empty
     @IBAction func dateLabelChanged(_ sender: Any) {
         if ((dateLabel.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: startPath)
         }
     }
-    
+    /// change endDateLabel to white when it's not empty
     @IBAction func endDateLabelChanged(_ sender: Any) {
         if ((endDateLabel.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: endPath)
@@ -136,7 +142,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
     }
-    
+    /// Check all the requires information for an event then saves it 
     @IBAction func save(_ sender: Any) {
         
         if (self.titleTextField.text?.isEmpty)! || (self.courseLabel.text?.isEmpty)! ||

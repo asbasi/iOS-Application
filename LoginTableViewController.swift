@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import RealmSwift
 
+/// Class containing all code related to Login page
 class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     
     var noCurrentQuarter = false
@@ -27,6 +28,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.view.addSubview(indicator)
     }
     
+    /// Generates the data pulled form SISWEB based on the user's schedule.
     @IBAction func Done(_ sender: Any) {
         var currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
         
@@ -189,6 +191,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         checkAllTextFields()
     }
     
+    /// Enable the save button after it check if all the entries all filled.
     func checkAllTextFields() {
         if ((usernameTextField.text?.isEmpty)! || (passwordTextField.text?.isEmpty)!) {
             self.navigationItem.rightBarButtonItem?.isEnabled = false;

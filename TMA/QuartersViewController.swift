@@ -18,7 +18,7 @@ class QuarterTableViewCell: UITableViewCell {
     @IBOutlet weak var viewCourses: UIButton!
     @IBOutlet weak var viewStats: UIButton!
 }
-
+/// This class represent the viewController for quarter page
 class QuartersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     let realm = try! Realm()
@@ -28,6 +28,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet weak var tableView: UITableView!
     
+    /// Generate a link to quatrer stat page and provide it to user
     func responseHandler (response: DataResponse<Any>) {
         if let status = response.response?.statusCode {
             print("status=\(status)")
@@ -98,7 +99,8 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return ""
     }
-
+    
+    // Check to see if a quarter has been added or not, if it hasn't show a warrning massage
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.quarters.count > 0 {
             self.tableView.backgroundView = nil
