@@ -600,3 +600,9 @@ extension UITableViewController {
         tableView.cellForRow(at: indexPath)!.backgroundColor = UIColor.white
     }
 }
+
+extension Dictionary where Value: Equatable {
+    func key(forValue value: Value) -> Key? {
+        return first { $0.1 == value }?.0
+    }
+}

@@ -80,7 +80,7 @@ class Schedule: Object{
                 
                 let week_days = (dictFromJSON["week_days"] as! String).components(separatedBy: ",")
                 
-                let week_days_translation = ["M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday"]
+                let week_days_translation = ["M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday", "Su" : "Sunday"]
                 for week_day in week_days {
                     
                     let start_time = Schedule.parseTime(from: dictFromJSON["begin_time"] as! String)

@@ -10,7 +10,7 @@ import UIKit
 import FSCalendar
 import RealmSwift
 
-class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance, UITextFieldDelegate {
+class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance, UITextFieldDelegate, writeValueBackDelegate {
 
     /************************************** Global Variables **************************************/
 
@@ -377,4 +377,19 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
     
     /************************************** Segue Functions **************************************/
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier! == "weekdayPick" {
+            let weekdayPickerTableViewController = segue.destination as! WeekdayPickerTableViewController
+            weekdayPickerTableViewController.weekdays = _weekdaysTextField.text!
+            weekdayPickerTableViewController.delegate = self
+        }
+    }
+    
+    func writeValueBack(value: String?) {
+        _weekdaysTextField.text = value
+    }
 }
+
