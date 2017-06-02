@@ -95,7 +95,10 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         // Get rid of any saved schedules for this course.
         if editOrAdd == "add" {
             let schedulesToDelete = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
-            self.realm.delete(schedulesToDelete)
+            
+            for schedule in schedulesToDelete {
+                schedule.delete(from: realm)
+            }
         }
     }
     
