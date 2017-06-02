@@ -39,9 +39,18 @@ class WeekdayPickerTableViewController: UITableViewController {
     
     
     private func getWeekdays() {
+        var week_days = ""
+        
         for i in 0...6 {
             if selected[i] {
+                let code = mappings.key(forValue: i)
                 
+                if i == 0 {
+                    week_days += code!
+                }
+                else {
+                    week_days += ",\(code!)"
+                }
             }
         }
     }
