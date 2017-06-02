@@ -39,7 +39,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let username = usernameTextField.text!
         let password = passwordTextField.text!
         let param: [String: AnyObject] = ["username": username as AnyObject, "password": password as AnyObject]
-        let url = "http://192.241.206.161/get_schedule"
+        let url = "https://ibackontrack.com/get_schedule"
         Alamofire.request(url, method: .post, parameters: param, encoding: JSONEncoding.default)
             .responseJSON { response in
                 if let status = response.response?.statusCode {

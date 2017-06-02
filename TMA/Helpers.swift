@@ -148,7 +148,7 @@ class Helpers {
         
         let parameters: Parameters = ["quarters": quartersJSON]
         
-        Alamofire.request("http://192.241.206.161/\(action)?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
+        Alamofire.request("https://ibackontrack.com/\(action)?UID=\(UIDevice.init().identifierForVendor!)", method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .responseJSON (completionHandler: responseHandler)
     }
     
