@@ -129,7 +129,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                         
                                         Helpers.DB_insert(obj: schedule)
                                         
-                                        schedule.export()
+                                        schedule.export(to: self.realm)
                                     }
                                     catch {
                                         print(error.localizedDescription)

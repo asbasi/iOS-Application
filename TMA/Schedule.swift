@@ -67,7 +67,7 @@ class Schedule: Object{
         return (Int(sh)!, Int(sm)!)
     }
     
-    func export() {
+    func export(to realm: Realm) {
         do {
             let decoded = try JSONSerialization.jsonObject(with: self.dates, options: [])
             
@@ -148,6 +148,6 @@ class Schedule: Object{
     
     func refresh(in realm: Realm) {
         self.deleteEvents(from: realm)
-        self.export()
+        self.export(to: realm)
     }
 }

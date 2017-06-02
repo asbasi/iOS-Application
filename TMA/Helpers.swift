@@ -80,6 +80,22 @@ class Helpers {
         return gregorian.date(from: components)!
     }
     
+    static func get_24hr_representation(from strDate: String) -> String {
+        // Convert to a date.
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        let date = dateFormatter.date(from: strDate)
+        
+        // Convert to 24 hour format.
+        dateFormatter.dateFormat = "HH:mm"
+        let date24_raw = dateFormatter.string(from: date!)
+        
+        // Remove the colon.
+        let date24_usable = date24_raw.replacingOccurrences(of: ":", with: "")
+        
+        return date24_usable
+    }
+    
     static func getLogAlert(event: Event, realm: Realm) -> UIAlertController {
         let alert = UIAlertController(title: "Enter Time", message: "How much time (in hours and minutes) did you spend studying?", preferredStyle: .alert)
         

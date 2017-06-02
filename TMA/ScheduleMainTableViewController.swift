@@ -121,17 +121,41 @@ class ScheduleMainTableViewController: UITableViewController {
         performSegue(withIdentifier: "editSchedule", sender: nil)
     }
     
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let schedule = self.schedules[index.row]
+            
+            let optionMenu = UIAlertController(title: nil, message: "Schedule will be deleted forever.", preferredStyle: .actionSheet)
+            
+            let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                
+                schedule.delete(from: self.realm)
+            
+                self.tableView.reloadData()
+            })
+            optionMenu.addAction(deleteAction);
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            optionMenu.addAction(cancelAction)
+            
+            self.present(optionMenu, animated: true, completion: nil)
+        }//end delete
+        delete.backgroundColor = .red
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            
+            self.scheduleToEdit = self.schedules[index.row]
+            
+            self.performSegue(withIdentifier: "editSchedule", sender: nil)
+        }
+        edit.backgroundColor = .blue
+        
+        return [delete, edit]
     }
-    */
+
 
     // MARK: - Navigation
 

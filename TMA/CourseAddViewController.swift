@@ -140,7 +140,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 let schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
                 
                 for schedule in schedules {
-                    schedule.export()
+                    schedule.export(to: realm)
                 }
                 
                 course!.title = courseTitleTextField.text!
@@ -199,6 +199,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         if self.editOrAdd == "add" {
             self.course = Course()
             self.course!.identifier = UUID().uuidString // Assign it a temporary identifier.
+            self.course!.quarter = quarter // Assign it to the current quarter.
         }
         else if self.editOrAdd == "edit" {
             self.navigationItem.title = self.course!.title

@@ -27,6 +27,8 @@ class Event: Item {
             deleteEventFromCalendar(withID: id)
         }
         
-        realm.delete(self)
+        try! realm.write {
+            realm.delete(self)
+        }
     }
 }

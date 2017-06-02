@@ -160,10 +160,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
             })
             optionMenu.addAction(deleteAction);
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-                
-            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             optionMenu.addAction(cancelAction)
             
             self.present(optionMenu, animated: true, completion: nil)

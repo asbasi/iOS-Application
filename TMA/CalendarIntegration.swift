@@ -301,6 +301,8 @@ func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
 
 func deleteEventFromCalendar(withID eventID: String) {
     
+    var flag: Bool = false
+    
     eventStore.requestAccess(to: .event, completion:
         { (granted, error) in
             if granted {
@@ -308,6 +310,7 @@ func deleteEventFromCalendar(withID eventID: String) {
                 if let calEvent = eventStore.event(withIdentifier: eventID) {
                     do {
                         try eventStore.remove(calEvent, span: .thisEvent, commit: true)
+                        
                     }
                     catch {
                         let alert = UIAlertController(title: "Event could not be deleted from calendar", message: (error as Error).localizedDescription, preferredStyle: .alert)
@@ -317,8 +320,13 @@ func deleteEventFromCalendar(withID eventID: String) {
                         UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
                 }
+                
+                flag = true
             }
     })
+    
+    while(!flag) {
+    }
 }
 
 

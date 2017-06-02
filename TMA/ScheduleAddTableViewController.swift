@@ -56,9 +56,6 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
     
     @IBOutlet weak var _weekdaysTextField: UITextField!
 
-    /************************************** Helpers **************************************/
-    
-
     /************************************** Actions **************************************/
     
 
@@ -116,10 +113,10 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
         }
         else {
             // Check the times.
-            let start: Date = timeFormatter.date(from: _startTimeTextField.text!)!
-            let end: Date = timeFormatter.date(from: _endTimeTextField.text!)!
+            let start_time: Date = timeFormatter.date(from: _startTimeTextField.text!)!
+            let end_time: Date = timeFormatter.date(from: _endTimeTextField.text!)!
             
-            if(start >= end) {
+            if(start_time >= end_time) {
                 let alert = UIAlertController(title: "Alert", message: "Invalid start and end times. Ensure that the start time is before the end time.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -131,17 +128,64 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
                 return
             }
             
-            if mode == "add" {
-                // Create the schedule.
+            // Check the dates.
+            let start_date: Date = dateFormatter.date(from: _startDateTextField.text!)!
+            let end_date: Date = dateFormatter.date(from: _endDateTextField.text!)!
+            
+            if(start_date > end_date) {
+                let alert = UIAlertController(title: "Alert", message: "Invalid start and end dates. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 
+                changeTextFieldToRed(indexPath: startDayTextPath)
+                changeTextFieldToRed(indexPath: endDayTextPath)
                 
+                return
             }
-            else if mode == "edit" {
-                // Set the new values.
+            
+            // Set the new values.
+            datesDictionary["start_date"] = Helpers.get_string_from_date(date: start_date) as NSObject
+            datesDictionary["end_date"] = Helpers.get_string_from_date(date: end_date) as NSObject
+            datesDictionary["week_days"] = _weekdaysTextField.text! as NSObject
+            datesDictionary["begin_time"] = Helpers.get_24hr_representation(from: _startTimeTextField.text!) as NSObject
+            datesDictionary["end_time"] = Helpers.get_24hr_representation(from: _endTimeTextField.text!) as NSObject
+
+            do {
+                // Convert the dictionary to json and store it.
+                let jsonDataDates = try JSONSerialization.data(withJSONObject: datesDictionary, options: .prettyPrinted)
                 
-                // Refresh the schedule in case there was changes.
-                schedule.refresh(in: self.realm)
+                if mode == "add" {
+                    // Create the schedule.
+                    let schedule = Schedule()
+                    
+                    schedule.title = _titleTextField.text
+                    schedule.dates = jsonDataDates
+                    schedule.course = course
+                    
+                    // Add the schedule to realm (not that the course has a crazy uuid identifier)
+                    Helpers.DB_insert(obj: schedule)
+                    
+                }
+                else if mode == "edit" {
+                 
+                    try! self.realm.write {
+                        schedule!.title = _titleTextField.text
+                        schedule!.dates = jsonDataDates
+                        
+                    }
+                    // Refresh the schedule in case there was changes.
+                    schedule.refresh(in: self.realm)
+                }
             }
+            catch {
+                print(error.localizedDescription)
+                let alert = UIAlertController(title: "Error", message: "Error converting schedule to JSON", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+            self.dismissKeyboard()
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -186,9 +230,18 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
                 let decoded = try JSONSerialization.jsonObject(with: schedule!.dates, options: [])
                 
                 self.datesDictionary = decoded as? [String: NSObject]
+                print("Dates dictionary for Schedule")
+                print(datesDictionary)
                 
                 // Set the start and end times.
+                let start_time_raw = Schedule.parseTime(from: datesDictionary["begin_time"] as! String)
+                let end_time_raw = Schedule.parseTime(from: datesDictionary["end_time"] as! String)
                 
+                let start_time = Helpers.set_time(mydate: Date(), h: start_time_raw.hour, m: start_time_raw.min)
+                let end_time = Helpers.set_time(mydate: Date(), h: end_time_raw.hour, m: end_time_raw.min)
+                
+                _startTimeTextField.text = timeFormatter.string(from: start_time)
+                _endTimeTextField.text = timeFormatter.string(from: end_time)
                 
                 // Set the start and end dates.
                 let start_date = Helpers.get_date_from_string(strDate: datesDictionary["start_date"] as! String)
@@ -321,4 +374,7 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
             self.tableView.endUpdates()
         })
     }
+    
+    /************************************** Segue Functions **************************************/
+    
 }
