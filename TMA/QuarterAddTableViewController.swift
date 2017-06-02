@@ -265,9 +265,11 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition){
         if calendar == startDatePicker {
             self.startDate.text = dateFormatter.string(from: date)
+            changeTextFieldToWhite(indexPath: startPickerPath)
         }
         else if calendar == endDatePicker {
             self.endDate.text = dateFormatter.string(from: date)
+            changeTextFieldToWhite(indexPath: endPickerPath)
         }
     }
 }
