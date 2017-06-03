@@ -440,15 +440,12 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             let deleteAction = UIAlertAction(title: "Delete Event", style: .destructive, handler: {
                 (alert: UIAlertAction!) -> Void in
                 
-                try! self.realm.write {
-                    
-                    self.events[index.section].remove(at: index.row)
-                    if self.events[index.section].count == 0 {
-                        self.events.remove(at: index.section)
-                    }
-
-                    event.delete(from: self.realm)
+                self.events[index.section].remove(at: index.row)
+                if self.events[index.section].count == 0 {
+                    self.events.remove(at: index.section)
                 }
+
+                event.delete(from: self.realm)
                 
                 //self.animatedRemove(at: index, type: "delete")
                 self.populateSegments()
