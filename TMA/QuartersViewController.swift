@@ -55,7 +55,15 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }))
                 
-                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Copy", style: .cancel, handler: { [weak alert] (_) in
+                    //copy link to the clipboard
+                    let textField = alert!.textFields![0]
+                    if let chartURL = textField.text {
+                        let pasteBoard = UIPasteboard.general
+                        pasteBoard.string = chartURL
+                    }
+                    
+                }))
                 
                 self.present(alert, animated: true, completion: nil)
                 
