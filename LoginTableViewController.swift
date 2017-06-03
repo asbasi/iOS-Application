@@ -74,6 +74,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 
                                 quarter.current = true
                                 Helpers.DB_insert(obj: quarter)
+                                self.noCurrentQuarter = false
                                 currentQuarter = quarter
                             }
                             
