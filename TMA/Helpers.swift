@@ -161,15 +161,17 @@ class Helpers {
                 let events = realm.objects(Event.self).filter("course.title = '\(course.title!)'")
                 // loop through every events
                 for event in events {
-                    var eventJSON = event.toDictionary() as! Dictionary<String, Any>
-                    eventJSON["date"] = formatter.string(from: eventJSON["date"] as! Date)
-                    eventJSON["endDate"] = formatter.string(from: eventJSON["endDate"] as! Date)
-                    eventJSON.removeValue(forKey: "course")
-                    eventJSON.removeValue(forKey: "calEventID")
-                    eventJSON.removeValue(forKey: "reminderDate")
-                    eventJSON.removeValue(forKey: "reminderID")
-                    eventJSON.removeValue(forKey: "schedule")
-                    eventsJSON.append(eventJSON)
+                    if event.type != SCHEDULE_EVENT {
+                        var eventJSON = event.toDictionary() as! Dictionary<String, Any>
+                        eventJSON["date"] = formatter.string(from: eventJSON["date"] as! Date)
+                        eventJSON["endDate"] = formatter.string(from: eventJSON["endDate"] as! Date)
+                        eventJSON.removeValue(forKey: "course")
+                        eventJSON.removeValue(forKey: "calEventID")
+                        eventJSON.removeValue(forKey: "reminderDate")
+                        eventJSON.removeValue(forKey: "reminderID")
+                        eventJSON.removeValue(forKey: "schedule")
+                        eventsJSON.append(eventJSON)
+                    }
                 }
                 
                 courseJSON["events"] = eventsJSON
