@@ -220,7 +220,7 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
         _endDateCalendar.isHidden = true
         
         if mode == "add" {
-            
+            self.datesDictionary = [String: NSObject]()
         }
         else if mode == "edit" {
             
@@ -392,6 +392,9 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
         _weekdaysTextField.text = value
         
         self.tableView.reloadData()
+        if _weekdaysTextField.text != "" {
+            changeTextFieldToWhite(indexPath: weekdaysTextPath)
+        }
     }
 }
 

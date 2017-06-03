@@ -24,6 +24,9 @@ class WeekdayPickerTableViewController: UITableViewController {
         
         if let parsed_days = week_days {
             for day in parsed_days {
+                if day == "" {
+                    continue
+                }
                 selected[mappings[day]!] = true
             }
         }
@@ -43,7 +46,7 @@ class WeekdayPickerTableViewController: UITableViewController {
             if selected[i] {
                 let code = mappings.key(forValue: i)
                 
-                if i == 0 {
+                if weekdays == "" {
                     weekdays = weekdays! + code!
                 }
                 else {
