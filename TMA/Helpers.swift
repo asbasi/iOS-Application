@@ -140,21 +140,26 @@ class Helpers {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         
+        // get the list of all the quarter form the database
         let allQuarters = realm.objects(Quarter.self)
         var quartersJSON = [Dictionary<String, Any>]()
+        // loop through each quarter
         for quarter in allQuarters {
             var quarterJSON = quarter.toDictionary() as! Dictionary<String, Any>
             quarterJSON["startDate"] = formatter.string(from: quarterJSON["startDate"] as! Date)
             quarterJSON["endDate"] = formatter.string(from: quarterJSON["endDate"] as! Date)
             var coursesJSON = [[String: Any]]()
             
+            // get the list of the courses related to the quarter
             let courses = realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
+            // loop through each course
             for course in courses {
                 var courseJSON = course.toDictionary() as! Dictionary<String, Any>
                 courseJSON.removeValue(forKey: "quarter")
                 var eventsJSON = [[String: Any]]()
-                
+                // get the list of all the events related to the course
                 let events = realm.objects(Event.self).filter("course.title = '\(course.title!)'")
+                // loop through every events
                 for event in events {
                     var eventJSON = event.toDictionary() as! Dictionary<String, Any>
                     eventJSON["date"] = formatter.string(from: eventJSON["date"] as! Date)

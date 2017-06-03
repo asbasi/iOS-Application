@@ -22,14 +22,14 @@ class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var color: UIImageView!
     
     var buttonAction: ((_ sender: PlannerViewCell) -> Void)?
-    
+    /// Handles the check box for the event
     @IBAction func checkboxToggled(_ sender: AnyObject) {
         self.buttonAction?(self)
     }
     
     /// Setup the table view cell for the planner and calendar pages.
     func setUI(event: Event) {
-        
+        // check if the event has scheduled
         if(event.type == SCHEDULE_EVENT) {
             self.title?.text = "\(event.title!) (\(event.course.title!))"
         }
@@ -50,14 +50,15 @@ class PlannerViewCell: UITableViewCell {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        
+        // fix the event time if it is a deadline event.
         if(event.type == DEADLINE_EVENT){
             self.time?.text = "Deadline: " + formatter.string(from: event.date)
         }
+        // if the event duration is 24, set the text to all day.
         else if(event.duration == 24.0) {
             self.time?.text = "All Day"
         }
-        else {
+        else { // set the time to the event assigned time.
             self.time?.text = formatter.string(from: event.date ) + " - " + formatter.string(from: Date.getEndDate(fromStart: event.date, withDuration: event.duration))
         }
 
@@ -70,7 +71,7 @@ class PlannerViewCell: UITableViewCell {
         if event.type > OTHER_EVENT {
             self.checkbox.isHidden = true
         }
-        
+        // set the back ground color for each event based on its type
         if event.type == FREE_TIME_EVENT
         {
             self.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.1)
@@ -118,18 +119,20 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     /// checks if the current quarter exist then add an event
     @IBAction func addingEvent(_ sender: Any) {
+        // check if the current quarter hasn't been setup, generates error
         if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
-        }
+        }// if the current qurter has been setup but there is no courses added to it generates error
         else if self.realm.objects(Course.self).filter("quarter.current = true").count == 0 {
             let alert = UIAlertController(title: "No Courses", message: "You must add a course to the current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.present(alert, animated: true, completion: nil)
         }
+        // if the current quarter exist and contain courses, add the event
         else {
             self.performSegue(withIdentifier: "addEvent", sender: nil)
         }
@@ -165,7 +168,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             if quarters.count != 0 {
                 quarter = quarters.first
             }
-            
+            // if quarter not= nil, populate the data related to the quarter
             if quarter != nil {
                 var dateBegin = Calendar.current.startOfDay(for: quarter!.startDate)
                 let dateEnd = Calendar.current.startOfDay(for: quarter!.endDate)
@@ -192,7 +195,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 var plannedEvents: [Event] = []
                 
-                if segment != 1 && dateBegin >= todayDate { //only show scheduled events in all events segment and when its today or the next 7 days
+                //only show scheduled events in all events segment and when its today or the next 7 days
+                if segment != 1 && dateBegin >= todayDate {
                     plannedEvents = Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]))
                 }
                 else {
