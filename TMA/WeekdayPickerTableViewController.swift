@@ -29,37 +29,50 @@ class WeekdayPickerTableViewController: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         setSelected()
-        
-        self.tableView.reloadData()
+        setCells()
     }
     
-    
     private func getWeekdays() {
-        var week_days = ""
+        weekdays = ""
         
         for i in 0...6 {
             if selected[i] {
                 let code = mappings.key(forValue: i)
                 
                 if i == 0 {
-                    week_days += code!
+                    weekdays = weekdays! + code!
                 }
                 else {
-                    week_days += ",\(code!)"
+                    weekdays = weekdays! + ",\(code!)"
                 }
             }
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         
+        getWeekdays()
         
         delegate?.writeValueBack(value: weekdays)
         
         super.viewWillDisappear(animated)
+    }
+    
+    private func setCells() {
+        for i in 0...6 {
+            let path = IndexPath(row: i, section: 0)
+            if selected[i] {
+                print("Set \(mappings.key(forValue: i)!)")
+                self.tableView.cellForRow(at: path)?.accessoryType = UITableViewCellAccessoryType.checkmark
+            }
+            else {
+                self.tableView.cellForRow(at: path)?.accessoryType = UITableViewCellAccessoryType.none
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

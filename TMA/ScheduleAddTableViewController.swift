@@ -390,6 +390,8 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
     
     func writeValueBack(value: String?) {
         _weekdaysTextField.text = value
+        
+        self.tableView.reloadData()
     }
 }
 
