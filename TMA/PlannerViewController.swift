@@ -168,7 +168,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             if quarters.count != 0 {
                 quarter = quarters.first
             }
-            // if quarter not= nil, populate the data related to the quarter
+            // if quarter not = nil, populate the data related to the quarter
             if quarter != nil {
                 var dateBegin = Calendar.current.startOfDay(for: quarter!.startDate)
                 let dateEnd = Calendar.current.startOfDay(for: quarter!.endDate)
@@ -190,6 +190,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             
             for dateBegin in allDates
             {
+                components.second = -1
                 let dateEnd = Calendar.current.date(byAdding: components, to: dateBegin)
                 
                 
