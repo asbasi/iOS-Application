@@ -168,7 +168,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             if quarters.count != 0 {
                 quarter = quarters.first
             }
-            // if quarter not = nil, populate the data related to the quarter
+            // If there exists a current quarter use it's start and end dates to filter events.
             if quarter != nil {
                 var dateBegin = Calendar.current.startOfDay(for: quarter!.startDate)
                 let dateEnd = Calendar.current.startOfDay(for: quarter!.endDate)
@@ -196,7 +196,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 
                 var plannedEvents: [Event] = []
                 
-                //only show scheduled events in all events segment and when its today or the next 7 days
+                // Only show future scheduled events in the planned and all segments.
                 if segment != 1 && dateBegin >= todayDate {
                     plannedEvents = Array(segmentEventsArray[segment].filter("date BETWEEN %@", [dateBegin,dateEnd]))
                 }
@@ -212,6 +212,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                 if(dateBegin >= todayDate && segment != 1) {
                     var calEvents: [EKEvent] = []
                     
+                    // If we have access to the iOS Calendar use it, otherwise use just the data we have in-app.
                     if EKEventStore.authorizationStatus(for: .event) == EKAuthorizationStatus.authorized {
                         let calendars = eventStore.calendars(for: .event)
                         calEvents = getCalendarEvents(forDate: dateBegin, fromCalendars: calendars)
@@ -231,6 +232,8 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         }
                     }
                     freeTimes = findFreeTimes(onDate: (Calendar.current.isDateInToday(dateBegin) ? Date() : dateBegin), withEvents: calEvents)
+                    
+                    // Events in the iOS calendar that aren't directly related to the application.
                     calendarEvents = importEvents(for: dateBegin)
                 }
                 
