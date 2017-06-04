@@ -65,20 +65,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 return
                             }
                             
-                            if self.noCurrentQuarter {
+                            if self.realm.objects(Quarter.self).filter("current = true").count == 0 { // No current quarter.
                                 let quarter = Quarter()
                                 let quarterDict = responseDict["quarter"] as! [String: String]
                                 quarter.title = quarterDict["title"]
                                 quarter.startDate = Helpers.get_date_from_string(strDate: quarterDict["start_date"]!)
                                 quarter.endDate = Helpers.get_date_from_string(strDate: quarterDict["end_date"]!)
-                                
                                 quarter.current = true
                                 Helpers.DB_insert(obj: quarter)
-                                self.noCurrentQuarter = false
-                                currentQuarter = quarter
                             }
-                            
-                            
                             
                             let courses_in_realm_for_current_quarter = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title!)'")
                             
@@ -212,11 +207,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         
         if !isTutorial {
             self.navigationItem.leftBarButtonItem = nil
-        }
-        
-        let currentQuarters = self.realm.objects(Quarter.self).filter("current = true")
-        if currentQuarters.count != 1 {
-            noCurrentQuarter = true
         }
     }
     
