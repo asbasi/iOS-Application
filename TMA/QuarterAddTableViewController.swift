@@ -84,7 +84,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     
     /// Save all the entries if there is no missing requirement information
     @IBAction func save(_ sender: Any) {
-        
+        // if the quarter title is empty and save button has been pushed, generate error
         if (self.quarterTitle.text?.isEmpty)! {
             
             let alert = UIAlertController(title: "Alert", message: "Missing Required Information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -95,11 +95,12 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 changeTextFieldToRed(indexPath: titlePath)
             }
         }
+        // if the text field is not empty save it.
         else {
             
             var start: Date
             var end: Date
-            
+            // if the start and end date of the quarter has not be specified set it to default
             if startDate.text != "" {
                 start = dateFormatter.date(from: startDate.text!)!
             }
@@ -115,7 +116,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 components.setValue(2, for: .month)
                 end = Calendar.current.date(byAdding: components, to: start)!
             }
-            
+            // check if the start date is set a date after the end date, generate error
             if(start >= end) {
                 let alert = UIAlertController(title: "Alert", message: "Invalid Quarter dates. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -127,7 +128,7 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
                 
                 return
             }
-            
+            // if the quarter exist do nothing (prevents duplication)
             if operation == "add" {
                 if isDuplicate() {
                     return

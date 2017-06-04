@@ -141,10 +141,11 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
     func populateSegments()
     {
         let cal = Calendar(identifier: .gregorian)
-        
+        // read all the events from the data base
         let allEvents = self.realm.objects(Event.self).filter("course.quarter.current = true").sorted(byKeyPath: "date", ascending: true)
-        
+        // set the active events imported from the database to the activeEvent variable
         let activeEvents = allEvents.filter("checked = false").sorted(byKeyPath: "date", ascending: true)
+        // set the finish events imported from the database to the finishedEvents variable
         let finishedEvents = allEvents.filter("checked = true").sorted(byKeyPath: "date", ascending: true)
         
         let segmentEventsArray = [activeEvents, finishedEvents, allEvents]
@@ -221,9 +222,9 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
                         var dateComponents = DateComponents()
                         dateComponents.day = 1
                         let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
-                        
+                        // get all the inApp events from the database
                         let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
-                        
+                        // add the to the calendar events
                         for event in inAppEvents {
                             let item = EKEvent(eventStore: eventStore)
                             item.startDate = event.date

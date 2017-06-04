@@ -284,7 +284,7 @@ func editEventInCalendar(event: Event, toCalendar calendarIdentifier: String) {
             calEvent.startDate = event.date
             
             calEvent.endDate = Date.getEndDate(fromStart: event.date, withDuration: event.duration)
-
+            // Save the event in the calendar.
             do {
                 try eventStore.save(calEvent, span: .thisEvent, commit: true)
             }

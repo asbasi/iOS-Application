@@ -139,7 +139,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.units!.text = "\(course.units) units"
 
         let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter?.title! ?? "1337")' AND course.identifier = '\(course.identifier!)' AND type != \(SCHEDULE_EVENT)")
-        
+        // calculate the actual hours vs assigned hours to get the percentage
         let numerator = Helpers.add_duration_studied(events: all_planner)
         let denominator = Helpers.add_duration(events: all_planner)
         

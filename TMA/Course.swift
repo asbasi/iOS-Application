@@ -23,7 +23,7 @@ class Course: Object {
     override static func ignoredProperties() -> [String] {
         return []
     }
-    
+    // delete a course form the database
     func delete(from realm: Realm) {
         // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
         let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")

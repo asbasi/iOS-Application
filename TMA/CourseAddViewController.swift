@@ -140,7 +140,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
             
         }
         else {
-        
+            // if a course is about to be added
             if(editOrAdd=="add"){
                 if isDuplicate() {
                     return
@@ -162,6 +162,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 
                 Helpers.DB_insert(obj: course!)
             }
+            // if a course is about to be edited
             else if(editOrAdd=="edit"){
                 try! self.realm.write {
                     
