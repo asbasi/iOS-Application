@@ -30,8 +30,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     
     /// Generates the data pulled form SISWEB based on the user's schedule.
     @IBAction func Done(_ sender: Any) {
-        var currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
-        
         self.dismissKeyboard()
         self.navigationItem.rightBarButtonItem?.isEnabled = false;
         
@@ -75,8 +73,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 Helpers.DB_insert(obj: quarter)
                             }
                             
-                            let courses_in_realm_for_current_quarter = self.realm.objects(Course.self).filter("quarter.title = '\(currentQuarter!.title!)'")
+                            let courses_in_realm_for_current_quarter = self.realm.objects(Course.self).filter("quarter.current = true")
                             
+                            let currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
                             
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
