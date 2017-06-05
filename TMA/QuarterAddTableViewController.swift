@@ -222,6 +222,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
             self.startDate.text = dateFormatter.string(from: self.quarter!.startDate)
             self.endDate.text = dateFormatter.string(from: self.quarter!.endDate)
         }
+        
+        self.hideKeyboardWhenTapped()
     }
 
     override func didReceiveMemoryWarning() {
