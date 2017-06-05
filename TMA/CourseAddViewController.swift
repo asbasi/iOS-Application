@@ -18,6 +18,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var colorPicker: UIPickerView!
     
     let realm = try! Realm()
+    var newCourse: Course?
     
     var color: UIColor!
     var editOrAdd: String = "" // "edit" or "add"
@@ -43,16 +44,14 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBAction func courseTitleChanged(_ sender: Any) {
         if ((courseTitleTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
-            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\'", with: "_")
-            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\"", with: "_")
+            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\'", with: "\\'")
         }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
         if ((identifierTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: coursePath)
-            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\'", with: "_")
-            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\"", with: "_")
+            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\'", with: "\\'")
         }
     }
     
@@ -93,11 +92,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
         // Get rid of any saved schedules for this course.
         if editOrAdd == "add" {
-            let schedulesToDelete = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
-            
-            for schedule in schedulesToDelete {
-                schedule.delete(from: realm)
-            }
+            self.course!.delete(from: realm)
         }
     }
     
@@ -150,14 +145,14 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                     schedule.export(to: realm)
                 }
                 
-                course!.title = courseTitleTextField.text!
-                course!.identifier = identifierTextField.text!
-                course!.instructor = instructorTextField.text!
-                course!.units = Float(unitTextField.text!)!
-                course!.quarter = quarter
-                course!.color = colorLabel.text!
-                
-                Helpers.DB_insert(obj: course!)
+                try! realm.write {
+                    course!.title = courseTitleTextField.text!
+                    course!.identifier = identifierTextField.text!
+                    course!.instructor = instructorTextField.text!
+                    course!.units = Float(unitTextField.text!)!
+                    course!.quarter = quarter
+                    course!.color = colorLabel.text!
+                }
             }
             else if(editOrAdd=="edit"){
                 try! self.realm.write {
@@ -204,10 +199,14 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.colorLabel.text = colorPickerData[0].first
         
         if self.editOrAdd == "add" {
+            
+            // Create a dummy course to use for the schedule creation.
             self.course = Course()
             self.course!.title = UUID().uuidString
-            self.course!.identifier = UUID().uuidString // Assign it a temporary identifier.
-            self.course!.quarter = quarter // Assign it to the current quarter.
+            self.course!.identifier = UUID().uuidString
+            self.course!.quarter = quarter
+            
+            Helpers.DB_insert(obj: course!)
         }
         else if self.editOrAdd == "edit" {
             self.navigationItem.title = self.course!.title
