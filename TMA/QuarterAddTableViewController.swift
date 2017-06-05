@@ -38,6 +38,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     @IBAction func quarterTitleChanged(_ sender: Any) {
         if ((quarterTitle.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
+            quarterTitle.text = quarterTitle.text?.replacingOccurrences(of: "\'", with: "_")
+            quarterTitle.text = quarterTitle.text?.replacingOccurrences(of: "\"", with: "_")
         }
     }
     

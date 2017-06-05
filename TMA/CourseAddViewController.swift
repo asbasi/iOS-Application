@@ -43,12 +43,16 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBAction func courseTitleChanged(_ sender: Any) {
         if ((courseTitleTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
+            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\'", with: "_")
+            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\"", with: "_")
         }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
         if ((identifierTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: coursePath)
+            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\'", with: "_")
+            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\"", with: "_")
         }
     }
     
@@ -273,7 +277,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         textField.resignFirstResponder()
         return true
     }
-    
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
