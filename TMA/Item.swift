@@ -21,7 +21,6 @@ let DEADLINE_EVENT = 8
 
 let eventType: [String] = ["Study", "Homework", "Project", "Lab", "Other"]
 
-/* Class contain all the variables related to an item.*/
 class Item: Object {
     dynamic var title: String!
     dynamic var date: Date!
