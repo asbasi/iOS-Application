@@ -31,7 +31,7 @@ class Helpers {
         }
         return sum
     }
-    // add the planned study hours
+    
     static func add_duration(events: Results<Event>) -> Float{
         var sum: Float = 0.0
         for x in events {
@@ -39,7 +39,7 @@ class Helpers {
         }
         return sum
     }
-    // add the actual study hours
+    
     static func add_duration_studied(events: Results<Event>) -> Float{
         var sum: Float = 0.0
         for x in events {

@@ -121,7 +121,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
                 var dateComponents = DateComponents()
                 dateComponents.day = 1
                 let endDate = Calendar.current.date(byAdding: dateComponents, to: dateBegin)
-                // get all the inApp events form the db
+                
                 let inAppEvents = self.realm.objects(Event.self).filter("date BETWEEN %@", [dateBegin, endDate]).sorted(byKeyPath: "date", ascending: true)
                 
                 for event in inAppEvents {

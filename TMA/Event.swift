@@ -18,7 +18,7 @@ class Event: Item {
     dynamic var calEventID: String? = nil
     dynamic var durationStudied: Float = 0.0 //hours
     dynamic var schedule: Schedule? // If the event is related to a particular schedule.
-    // delete an event from the database
+    
     func delete(from realm: Realm) {
         
         // Remove any pending notifications for the event.

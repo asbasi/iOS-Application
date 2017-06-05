@@ -52,7 +52,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                         DispatchQueue.main.async {
                             
                             let coursesDict = responseDict["courses"] as! [String: NSObject]
-                            //user name and passwords are incorrect
+                            
                             if Array(coursesDict.keys).count == 0 {
                                 self.navigationItem.rightBarButtonItem?.isEnabled = true;
                                 self.indicator.stopAnimating()
@@ -62,7 +62,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 self.present(alert, animated: true, completion: nil)
                                 return
                             }
-                            // if the current quarter exist, import its data
+                            
                             if self.realm.objects(Quarter.self).filter("current = true").count == 0 { // No current quarter.
                                 let quarter = Quarter()
                                 let quarterDict = responseDict["quarter"] as! [String: String]
@@ -72,11 +72,11 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 quarter.current = true
                                 Helpers.DB_insert(obj: quarter)
                             }
-                            // getting the courses for the current quarter from db
+                            
                             let courses_in_realm_for_current_quarter = self.realm.objects(Course.self).filter("quarter.current = true")
                             
                             let currentQuarter = self.realm.objects(Quarter.self).filter("current = true").first
-                            // read the data related to each course
+                            
                             for crn in Array(coursesDict.keys) {
                                 let courseDict = coursesDict[crn] as! [String: NSObject]
                                 

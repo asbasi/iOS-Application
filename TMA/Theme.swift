@@ -14,7 +14,7 @@ import UIKit
 
 enum Theme: Int {
     case Default = 0, Purple = 1, Red = 2, Davis = 3, Pink = 4
-    // set the color of bar background of the theame
+    
     var barColor: UIColor {
         switch self {
             case .Default:
@@ -30,7 +30,7 @@ enum Theme: Int {
 
         }
     }
-    // set the color of the selected items and title in the theme
+    
     var tintColor: UIColor {
         switch self {
         case .Default:
@@ -52,19 +52,16 @@ enum Theme: Int {
 
 
 struct ThemeManager {
-    // set the current theme when lunch
     static func currentTheme() -> Theme {
         let storedTheme: Int = UserDefaults.standard.integer(forKey: selectedThemeKey)
-        // if the theme hasn't change the default is the UC Davis Theme
         if storedTheme == 0 {
             return .Default
         }
-        // if the theame has changed set the theme user specified
         else {
             return Theme(rawValue: storedTheme)!
         }
     }
-    // Change the theme to the desire theme
+    
     static func applyTheme(theme: Theme) {
         UserDefaults.standard.set(theme.rawValue, forKey: selectedThemeKey)
         UserDefaults.standard.synchronize()

@@ -168,7 +168,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 changeTextFieldToRed(indexPath: endPath)
             }
         }
-        // for the deadline if the start date is after the end date generate error
         else if(!deadlineSwitch.isOn && dateFormatter.date(from: dateLabel.text!)! >= dateFormatter.date(from: endDateLabel.text!)!) {
             let alert = UIAlertController(title: "Alert", message: "Invalid dates selected. Ensure that the start date is before the end date.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -178,7 +177,6 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
             
             changeTextFieldToRed(indexPath: endPath)
         }
-        // if all the data is correctly inputed save
         else {
             //get the course
             let course = self.courses.filter("quarter.current = true AND identifier = '\(courseLabel.text!)'")[0]
@@ -189,7 +187,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                 event.title = titleTextField.text
                 event.date = dateFormatter.date(from: dateLabel.text!)
                 event.course = course
-                // set the entered deadline
+                
                 if deadlineSwitch.isOn {
                     event.endDate = event.date
                     event.type = DEADLINE_EVENT
@@ -200,7 +198,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     event.type = segmentController.selectedSegmentIndex
                     event.duration = Date.getDifference(initial: event.date, final: event.endDate)
                 }
-                // set reminder for the event if it is on
+                
                 if reminderSwitch.isOn {
                     // Schedule a notification.
                     event.reminderDate = reminderPicker.date
@@ -216,17 +214,16 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
                     
                     event.calEventID = addEventToCalendar(event: event, toCalendar: calendarIdentifier as! String)
                 }
-                // insert the event into the database
+                
                 Helpers.DB_insert(obj: event)
                 
             }
-            // if a course has been edited
             else if(self.operation == "edit" || self.operation == "show") {
                 try! self.realm.write {
                     event!.title = titleTextField.text
                     event!.course = course
                     event!.date = dateFormatter.date(from: dateLabel.text!)
-                    // set the entered deadline
+                    
                     if(deadlineSwitch.isOn) {
                         event!.endDate = event!.date
                         event!.type = DEADLINE_EVENT
