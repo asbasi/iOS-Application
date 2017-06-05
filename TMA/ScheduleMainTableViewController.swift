@@ -170,11 +170,13 @@ class ScheduleMainTableViewController: UITableViewController {
         if segue.identifier! == "addSchedule" {
             scheduleAddTableViewController.mode = "add"
             scheduleAddTableViewController.course = self.course
+            scheduleAddTableViewController.previousMode = self.mode
         }
         else if segue.identifier! == "editSchedule" {
             scheduleAddTableViewController.mode = "edit"
             scheduleAddTableViewController.course = self.course
             scheduleAddTableViewController.schedule = scheduleToEdit
+            scheduleAddTableViewController.previousMode = self.mode
         }
     }
 

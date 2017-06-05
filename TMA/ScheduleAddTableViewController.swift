@@ -16,6 +16,7 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
 
     var course: Course!
     let realm = try! Realm()
+    var previousMode: String!
     var mode: String!
     var schedule: Schedule!
     var datesDictionary: [String : NSObject]!
@@ -162,8 +163,12 @@ class ScheduleAddTableViewController: UITableViewController, FSCalendarDelegate,
                     schedule.dates = jsonDataDates
                     schedule.course = course
                     
-                    // Add the schedule to realm (not that the course has a crazy uuid identifier)
+                    // Add the schedule to realm (note that the course has a crazy uuid identifier)
                     Helpers.DB_insert(obj: schedule)
+                    
+                    if previousMode == "edit" { // Can immediately add the event to schedule.
+                        schedule.export(to: realm)
+                    }
                     
                 }
                 else if mode == "edit" {

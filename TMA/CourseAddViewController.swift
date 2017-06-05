@@ -201,6 +201,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         
         if self.editOrAdd == "add" {
             self.course = Course()
+            self.course!.title = UUID().uuidString
             self.course!.identifier = UUID().uuidString // Assign it a temporary identifier.
             self.course!.quarter = quarter // Assign it to the current quarter.
         }
