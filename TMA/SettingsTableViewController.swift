@@ -11,7 +11,6 @@ import MessageUI
 
 class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     
-    /// Generates data for debugging purpose
     @IBAction func autoPopulate(_ sender: Any) {
         Helpers.populateData()
         

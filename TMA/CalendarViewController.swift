@@ -14,7 +14,6 @@ import UserNotifications
 import FSCalendar
 import EventKit
 
-/// Class containing all code related to the Calendar page
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate{
 
     @IBOutlet weak var myTableView: UITableView!
@@ -35,7 +34,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return panGesture
     }()
     
-    /// Add an event to the calendar if the current quarter exist
     @IBAction func addingEvent(_ sender: Any) {
         if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
@@ -83,7 +81,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     /******************************* Calendar Functions *******************************/
-    /// refresh the clanedar page
+    
     func refresh() {
         checkCalendarAuthorizationStatus()
         self.events = getEventsForDate(selectedDate)
@@ -95,7 +93,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
-    /// look through the iOS calendar and look for free times and retrun it as an event
+    
     func getEventsForDate(_ date: Date) -> [Event]
     {
         var components = DateComponents()
@@ -140,7 +138,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         return (freeTimes + plannedEvents + calendarEvents).sorted(by: { $0.date < $1.date })
     }
     
-    /// Calculate how many events are scheduled for a specific day
+    // How many events are scheduled for that day?
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         let numEvents = getEventsForDate(date).filter({(event: Event) -> Bool in return event.type != FREE_TIME_EVENT}).count
         
@@ -205,7 +203,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
     }
     
-    /// Check if any events scheduled for the selected day
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.events.count > 0 {
             self.myTableView.backgroundView = nil

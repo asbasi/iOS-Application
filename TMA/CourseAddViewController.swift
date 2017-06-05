@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 import EventKit
-/// Class containing all code related to the Course Add/Edit page
+
 class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     let eventStore = EKEventStore()
@@ -40,28 +40,24 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var courseTitleTextField: UITextField!
     @IBOutlet weak var recommendedTextField: UILabel!
     
-    /// Check if the course title has change
     @IBAction func courseTitleChanged(_ sender: Any) {
         if ((courseTitleTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
         }
     }
     
-    /// Check if the course identifier has changed
     @IBAction func courseChanged(_ sender: Any) {
         if ((identifierTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: coursePath)
         }
     }
     
-    /// Check if the istructor name has changed
     @IBAction func instructorChanged(_ sender: Any) {
         if ((instructorTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: insPath)
         }
     }
     
-    /// Check if the course unit has changed
     @IBAction func unitsChanged(_ sender: Any) {
         recommendedHours()
         if ((unitTextField.text?.isEmpty)! == false) {
@@ -69,7 +65,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
     
-    /// Calculates recommended study hours based on the number of units
     private func recommendedHours() {
         if unitTextField.text != "" {
             if Float(unitTextField.text!) != nil {
@@ -87,7 +82,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
-    
+
     @IBAction func cancel(_ sender: Any) {
         self.dismissKeyboard()
         self.dismiss(animated: true, completion: nil)
@@ -102,7 +97,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
     
-    /// Check for duplicate by comparing the new course enrty with the data in the database
     private func isDuplicate() -> Bool {
         let results = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND title = '\(courseTitleTextField.text!)'")
         if results.count != 0 {
@@ -114,7 +108,6 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
         return false
     }
     
-    /// Save the new course after checks the correctness of its entries
     @IBAction func done(_ sender: Any) {
     
         if ((unitTextField.text?.isEmpty)! || (courseTitleTextField.text?.isEmpty)! || (identifierTextField.text?.isEmpty)! || (instructorTextField.text?.isEmpty)!) {

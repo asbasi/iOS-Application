@@ -31,7 +31,7 @@ func checkCalendarAuthorizationStatus() {
     }
 }
 
-/// Checks if the calendar exists and, if not, create one (if possible).
+// Checks if the calendar exists and, if not, create one (if possible).
 func verifyCalendar() {
     // Calendar identifier exists in user defaults.
     if let identifier = UserDefaults.standard.value(forKey: calendarKey)
@@ -53,7 +53,7 @@ func verifyCalendar() {
     }
 }
 
-/// Removes any events that have exist in the BoT Calendar, but not in-app.
+// Removes any events that have exist in the BoT Calendar, but not in-app.
 func sync() {
     if let calendar = getMainCalendar() {
 
@@ -84,7 +84,7 @@ func sync() {
         }
     }
 }
-/// export events from the calendar
+
 func exportEvents(toCalendar calendar: String)
 {
     let events = realm.objects(Event.self)
@@ -112,7 +112,7 @@ func exportEvents(toCalendar calendar: String)
     }
 }
 
-/// import events to the calendar
+
 func importEvents(for date: Date) -> [Event] {
     var events: [Event] = []
     
@@ -139,7 +139,7 @@ func importEvents(for date: Date) -> [Event] {
     return events
 }
 
-/// request an access to iOS calendar
+
 func requestAccessToCalendar() {
     eventStore.requestAccess(to: .event, completion:
         { (granted, error) in
@@ -171,7 +171,7 @@ func getCalendar(withIdentifier identifier: String) -> EKCalendar? {
     
     return nil
 }
-/// Creates the in-app calendar, if iCloud is configured use that as the source if not use the local source.
+
 func createCalendar(withTitle title: String) -> String? {
     var identifier: String?
     
@@ -229,7 +229,6 @@ func createCalendar(withTitle title: String) -> String? {
     return identifier
 }
 
-/// Add event to the calendar
 func addEventToCalendar(event: Event, toCalendar calendarIdentifier: String) -> String? {
     
     if EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized {
@@ -362,7 +361,6 @@ func getCalendarEvents(forDate date: Date, fromCalendars calendars: [EKCalendar]
     return events
 }
 
-/// Calculates the free times for each day based on the user calendar events
 func findFreeTimes(onDate date: Date, withEvents events: [EKEvent]) -> [Event] {
     
     // NOTE: This function ignores free times for the date if it's before the current time.

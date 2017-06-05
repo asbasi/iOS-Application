@@ -13,7 +13,6 @@ import BEMCheckBox
 import UserNotifications
 import EventKit
 
-/// Class containing all code related to the planner cell
 class PlannerViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var course: UILabel!
@@ -27,7 +26,6 @@ class PlannerViewCell: UITableViewCell {
         self.buttonAction?(self)
     }
     
-    /// Setup the table view cell for the planner and calendar pages.
     func setUI(event: Event) {
         
         if(event.type == SCHEDULE_EVENT) {
@@ -90,7 +88,6 @@ class PlannerViewCell: UITableViewCell {
     }
 }
 
-/// Class containing all code related to the main planner page
 class PlannerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let eventStore = EKEventStore()
@@ -117,7 +114,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.myTableView.reloadData()
     }
-    /// checks if the current quarter exist then add an event
+    
     @IBAction func addingEvent(_ sender: Any) {
         
         if self.realm.objects(Quarter.self).filter("current = true").count == 0 {
@@ -137,7 +134,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
             self.performSegue(withIdentifier: "addEvent", sender: nil)
         }
     }
-    /// This function populate the segmanes related to all the events
+    
     func populateSegments()
     {
         let cal = Calendar(identifier: .gregorian)

@@ -9,7 +9,6 @@
 import UIKit
 import SafariServices
 
-/// Class Acknowledges all SDKs the application using. 
 class AcknowledgementsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

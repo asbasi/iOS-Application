@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-/// Class containing all code related to the course table view cell
+
 class CourseTableViewCell: UITableViewCell {
     @IBOutlet weak var color: UIImageView!
     @IBOutlet weak var percentage: UILabel!
@@ -22,7 +22,7 @@ class CourseTableViewCell: UITableViewCell {
     @IBOutlet weak var viewStats: UIButton!
 }
 
-/// Class containing all code related to the main courses page
+
 class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
     let realm = try! Realm()
@@ -33,7 +33,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var courseToEdit: Course!
     var courses: Results<Course>!
 
-    /// It will allow to add a course after it checks if the current quarter exist
     @IBAction func add(_ sender: Any) {
         if self.realm.objects(Quarter.self).filter("current = true").count != 1 {
             let alert = UIAlertController(title: "Current Quarter Error", message: "You must have one current quarter before you can create events.", preferredStyle: UIAlertControllerStyle.alert)
@@ -85,7 +84,6 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return ""
     }
     
-    /// returns number of sections of the table view
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.courses.count > 0 {
             self.tableView.backgroundView = nil
