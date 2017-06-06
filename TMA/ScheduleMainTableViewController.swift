@@ -91,16 +91,23 @@ class ScheduleMainTableViewController: UITableViewController {
             if let dictFromJSON = decoded as? [String: NSObject] {
                 cell.days.text = dictFromJSON["week_days"] as? String
                 
-                let start_time_raw = Schedule.parseTime(from: dictFromJSON["begin_time"] as! String)
-                let end_time_raw = Schedule.parseTime(from: dictFromJSON["end_time"] as! String)
-                
-                let start = Helpers.set_time(mydate: Date(), h: start_time_raw.hour, m: start_time_raw.min)
-                let end = Helpers.set_time(mydate: Date(), h: end_time_raw.hour, m: end_time_raw.min)
-                
                 let formatter = DateFormatter()
                 formatter.dateFormat = "h:mm a"
+                var timesStr = ""
                 
-                cell.times.text = formatter.string(from: start) + " - " + formatter.string(from: end)
+                if let begin_time = dictFromJSON["begin_time"] as? String {
+                    let start_time_raw = Schedule.parseTime(from: begin_time)
+                    let start = Helpers.set_time(mydate: Date(), h: start_time_raw.hour, m: start_time_raw.min)
+                    timesStr += formatter.string(from: start) + " - "
+                }
+                
+                if let end_time = dictFromJSON["end_time"] as? String {
+                    let end_time_raw = Schedule.parseTime(from: end_time)
+                    let end = Helpers.set_time(mydate: Date(), h: end_time_raw.hour, m: end_time_raw.min)
+                    timesStr += formatter.string(from: end)
+                }
+                
+                cell.times.text = timesStr
                 
                 let start_date = Helpers.get_date_from_string(strDate: dictFromJSON["start_date"]! as! String)
                 let end_date = Helpers.get_date_from_string(strDate: dictFromJSON["end_date"]! as! String)

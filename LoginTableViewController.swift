@@ -115,16 +115,40 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 //////////create events for course
                                 for classs in Array(classes.keys) { //Lecture/Discussion/Tutorial..
                                     do {
-                                        let jsonDataDates = try JSONSerialization.data(withJSONObject: classes[classs] as! [String: NSObject], options: .prettyPrinted)
                                         
-                                        let schedule = Schedule()
-                                        schedule.title = classs
-                                        schedule.dates = jsonDataDates
-                                        schedule.course = course
+                                        let scheduleDict = classes[classs] as! [String: NSObject]
                                         
-                                        Helpers.DB_insert(obj: schedule)
+                                        let keys = [String](scheduleDict.keys)
                                         
-                                        schedule.export(to: self.realm)
+                                        var valid: Bool = true
+                                        for key in keys {
+                                            if let _ = scheduleDict[key] as? String {
+                                                valid = false
+                                                break;
+                                            }
+                                        }
+                                        
+                                        if valid {
+                                            
+                                            let jsonDataDates = try JSONSerialization.data(withJSONObject: classes[classs] as! [String: NSObject], options: .prettyPrinted)
+                                            
+                                            let schedule = Schedule()
+                                            schedule.title = classs
+                                            schedule.dates = jsonDataDates
+                                            schedule.course = course
+                                            
+                                            Helpers.DB_insert(obj: schedule)
+                                            
+                                            schedule.export(to: self.realm)
+                                        }
+                                        else {
+                                            print("Course contained invalid information. Import failed for \(course.identifier!).")
+                                            /*
+                                            let alert = UIAlertController(title: "Error", message: "Course contained invalid information. Import failed for \(course.identifier!).", preferredStyle: .alert)
+                                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                                            self.present(alert, animated: true, completion: nil)
+                                            */
+                                        }
                                     }
                                     catch {
                                         print(error.localizedDescription)
