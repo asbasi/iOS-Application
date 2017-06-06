@@ -26,7 +26,8 @@ class ScheduleMainTableViewController: UITableViewController {
     let realm = try! Realm()
     
     func refresh() {
-        schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course.identifier!)' AND course.quarter.title = '\(course.quarter.title!)'")
+        schedules = self.realm.objects(Schedule.self).filter(NSPredicate(format: "course.quarter.title == %@ AND course.identifier == %@", course.quarter.title!, course.identifier!))
+        
         checkCalendarAuthorizationStatus()
         
         self.tableView.reloadData()

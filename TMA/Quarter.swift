@@ -16,7 +16,7 @@ class Quarter: Object {
     dynamic var current: Bool = false
     
     func delete(from realm: Realm) {
-        let courses = realm.objects(Course.self).filter("quarter.title = '\(self.title!)'")
+        let courses = realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", self.title!))
         
         for course in courses {
             course.delete(from: realm)

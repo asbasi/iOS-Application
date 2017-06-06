@@ -4,7 +4,7 @@
 //
 //  Created by Arvinder Basi on 3/29/17.
 //  Copyright © 2017 Abdulrahman Sahmoud. All rights reserved.
-//
+//"
 
 import UIKit
 import RealmSwift
@@ -88,6 +88,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         debugPrint("Path to realm file: " + self.realm.configuration.fileURL!.absoluteString)
+                
         self.quarters = self.realm.objects(Quarter.self).sorted(byKeyPath: "startDate", ascending: false)
     }
     
@@ -141,8 +142,7 @@ class QuartersViewController: UIViewController, UITableViewDelegate, UITableView
         
         cell.dates!.text = "\(formatter.string(from: quarter.startDate)) to \(formatter.string(from: quarter.endDate))"
         
-        
-        let count = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'").count
+        let count = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", quarter.title!)).count
         cell.numCourses!.text = "\(count) courses"
         
         cell.current.backgroundColor = quarter.current ? UIColor.green : UIColor.gray

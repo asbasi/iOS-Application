@@ -44,14 +44,12 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     @IBAction func courseTitleChanged(_ sender: Any) {
         if ((courseTitleTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
-            courseTitleTextField.text = courseTitleTextField.text?.replacingOccurrences(of: "\'", with: "\\'")
         }
     }
     
     @IBAction func courseChanged(_ sender: Any) {
         if ((identifierTextField.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: coursePath)
-            identifierTextField.text = identifierTextField.text?.replacingOccurrences(of: "\'", with: "\\'")
         }
     }
     
@@ -97,7 +95,8 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
     
     private func isDuplicate() -> Bool {
-        let results = self.realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)' AND identifier = '\(identifierTextField.text!)' AND title = '\(courseTitleTextField.text!)'")
+        
+        let results = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@ AND identifier == %@ AND title == %@", quarter.title!, identifierTextField.text!, courseTitleTextField.text!))
         if results.count != 0 {
             let alert = UIAlertController(title: "Error", message: "Course identifier Already Exists", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -139,7 +138,7 @@ class CourseAddViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 }
                 
                 // Note: At this point the identifier for the course is a massive uuid string that was assigned temporarily.
-                let schedules = self.realm.objects(Schedule.self).filter("course.identifier = '\(course!.identifier!)'")
+                let schedules = self.realm.objects(Schedule.self).filter(NSPredicate(format: "course.identifier == %@", course!.identifier!))
                 
                 for schedule in schedules {
                     schedule.export(to: realm)

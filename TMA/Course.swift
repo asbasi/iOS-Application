@@ -25,13 +25,13 @@ class Course: Object {
     
     func delete(from realm: Realm) {
         // NOTE: We include the course.quarter.title = ... in order to handle duplicate courses in different quarters.
-        let eventsToDelete = realm.objects(Event.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
+        let eventsToDelete = realm.objects(Event.self).filter(NSPredicate(format: "course.identifier == %@ AND course.quarter.title == %@", self.identifier!, self.quarter.title!))
         
         for event in eventsToDelete {
             event.delete(from: realm)
         }
+        let schedulesToDelete = realm.objects(Schedule.self).filter(NSPredicate(format: "course.quarter.title == %@ AND course.identifier == %@", self.quarter.title!, self.identifier!))
         
-        let schedulesToDelete = realm.objects(Schedule.self).filter("course.identifier = '\(self.identifier!)' AND course.quarter.title = '\(self.quarter.title!)'")
         for schedule in schedulesToDelete {
             schedule.delete(from: realm)
         }

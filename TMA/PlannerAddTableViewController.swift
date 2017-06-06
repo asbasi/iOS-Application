@@ -173,7 +173,7 @@ class PlannerAddTableViewController: UITableViewController, UIPickerViewDataSour
         }
         else {
             //get the course
-            let course = self.courses.filter("quarter.current = true AND identifier = '\(courseLabel.text!)'")[0]
+            let course = self.courses.filter(NSPredicate(format: "quarter.current = true AND identifier == %@", courseLabel.text!))[0]
             
             if(self.operation == "add" || self.operation == "manage") {
                 let event = Event()

@@ -24,7 +24,7 @@ class Helpers {
     
     static func add_duration_studied(for course: Course, in quarter: Quarter) -> Float {
         var sum: Float = 0.0
-        let events = self.realm.objects(Event.self).filter("course.title = '\(course.title!)' AND course.quarter.title = '\(quarter.title!)'")
+        let events = self.realm.objects(Event.self).filter(NSPredicate(format: "course.title == %@ AND course.quarter.title == %@", course.title!, quarter.title!))
         for event in events {
             sum += event.durationStudied
         }
@@ -148,15 +148,14 @@ class Helpers {
             quarterJSON["endDate"] = formatter.string(from: quarterJSON["endDate"] as! Date)
             var coursesJSON = [[String: Any]]()
             
-            
-            let courses = realm.objects(Course.self).filter("quarter.title = '\(quarter.title!)'")
+            let courses = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", quarter.title!))
             
             for course in courses {
                 var courseJSON = course.toDictionary() as! Dictionary<String, Any>
                 courseJSON.removeValue(forKey: "quarter")
                 var eventsJSON = [[String: Any]]()
                 
-                let events = realm.objects(Event.self).filter("course.title = '\(course.title!)'")
+                let events = realm.objects(Event.self).filter(NSPredicate(format: "course.title == %@", course.title!))
                 
                 for event in events {
                     if event.type != SCHEDULE_EVENT {

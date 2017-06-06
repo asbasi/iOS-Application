@@ -57,7 +57,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.quarter = nil
         }
 
-        self.courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
+        self.courses = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", self.quarter?.title! ?? "1337"))
         
         if self.realm.objects(Quarter.self).filter("current = true").count > 0 {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -135,8 +135,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.courseIdentifer!.text = course.identifier
         cell.instructor!.text = course.instructor
         cell.units!.text = "\(course.units) units"
-
-        let all_planner = self.realm.objects(Event.self).filter("course.quarter.title = '\(self.quarter?.title! ?? "1337")' AND course.identifier = '\(course.identifier!)' AND type != \(SCHEDULE_EVENT)")
+        let all_planner = self.realm.objects(Event.self).filter(NSPredicate(format: "course.quarter.title == %@ AND course.identifier == %@ AND type != \(SCHEDULE_EVENT)", self.quarter?.title! ?? "1337", course.identifier!))
         
         let numerator = Helpers.add_duration_studied(events: all_planner)
         let denominator = Helpers.add_duration(events: all_planner)
@@ -196,8 +195,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
         delete.backgroundColor = .red
 
         let edit = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
-
-            let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
+            let courses = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", self.quarter?.title! ?? "1337"))
             self.courseToEdit = courses[index.row]
             
             self.performSegue(withIdentifier: "editCourse", sender: nil)
@@ -208,7 +206,7 @@ class CourseViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let courses = self.realm.objects(Course.self).filter("quarter.title = '\(self.quarter?.title! ?? "1337")'")
+        let courses = self.realm.objects(Course.self).filter(NSPredicate(format: "quarter.title == %@", self.quarter?.title! ?? "1337"))
         self.courseToEdit = courses[indexPath.row]
         
         self.performSegue(withIdentifier: "editCourse", sender: nil)

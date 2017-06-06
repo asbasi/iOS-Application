@@ -38,7 +38,6 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     @IBAction func quarterTitleChanged(_ sender: Any) {
         if ((quarterTitle.text?.isEmpty)! == false) {
             changeTextFieldToWhite(indexPath: titlePath)
-            //quarterTitle.text = quarterTitle.text?.replacingOccurrences(of: "'", with: "\'")
         }
     }
     
@@ -72,7 +71,8 @@ class QuarterAddTableViewController: UITableViewController, FSCalendarDataSource
     // Checks if the quarter title is a duplicate. Returns false if it is.
     private func isDuplicate() -> Bool {
         // Check to make sure that this course has a different title than all others.
-        let quarters = self.realm.objects(Quarter.self).filter("title = '\(quarterTitle.text!)'")
+        
+        let quarters = self.realm.objects(Quarter.self).filter(NSPredicate(format: "title == %@", quarterTitle.text!))
         if quarters.count != 0 {
             let alert = UIAlertController(title: "Error", message: "Quarter with this title already Exists", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))

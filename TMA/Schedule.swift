@@ -128,7 +128,7 @@ class Schedule: Object{
     
     private func deleteEvents(from realm: Realm) {
         // Get all schedule related events for the course.
-        let allEventsForCourse = realm.objects(Event.self).filter("type = \(SCHEDULE_EVENT) AND course.identifier = '\(self.course.identifier!)' AND course.quarter.title = '\(self.course.quarter.title!)'")
+        let allEventsForCourse = realm.objects(Event.self).filter(NSPredicate(format: "course.quarter.title == %@ AND course.identifier == %@ AND type = \(SCHEDULE_EVENT)", self.course.quarter.title!, course.identifier!))
         
         // Parse out the events related to this particular schedule.
         for event in allEventsForCourse {
