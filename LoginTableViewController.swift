@@ -123,8 +123,11 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                         var valid: Bool = true
                                         for key in keys {
                                             if let _ = scheduleDict[key] as? String {
+                                                continue
+                                            }
+                                            else {
                                                 valid = false
-                                                break;
+                                                break
                                             }
                                         }
                                         
