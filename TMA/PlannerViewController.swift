@@ -148,7 +148,7 @@ class PlannerViewController: UIViewController, UITableViewDataSource, UITableVie
         
         self.segmentController.setTitle("Active (\(activeEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 0)
         self.segmentController.setTitle("Finished (\(finishedEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 1)
-        self.segmentController.setTitle("Active (\(allEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 2)
+        self.segmentController.setTitle("All (\(allEvents.filter("type != \(SCHEDULE_EVENT) AND type != \(FREE_TIME_EVENT)").count))", forSegmentAt: 2)
         
         var components = DateComponents()
         components.day = 1
