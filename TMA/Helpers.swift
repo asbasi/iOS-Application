@@ -118,11 +118,16 @@ class Helpers {
             var durationStudied: Float = 0.0
             
             if hoursField.text != "" {
-                durationStudied += (Float(hoursField.text!)!)
+                
+                if let hours = Float(hoursField.text!) {
+                    durationStudied += hours
+                }
             }
             
             if minsField.text != "" {
-                durationStudied += (Float(minsField.text!)!) / 60
+                if let mins = Float(minsField.text!) {
+                    durationStudied += mins / 60
+                }
             }
             
             try! self.realm.write {
