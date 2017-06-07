@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import SafariServices
 
 class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     
@@ -20,13 +21,17 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 2 {
+        if indexPath.section == 3 {
             
             // IMPORTANT: This won't work on the simulator. Only on an actual device.
             let email = "support@ibackontrack.com"
             if let url = URL(string: "mailto:\(email)") {
                 UIApplication.shared.open(url)
             }
+        }
+        else if indexPath.section == 2 {
+            let svc = SFSafariViewController(url: URL(string:"https://ibackontrack.com")!)
+            present(svc, animated: true, completion: nil)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
